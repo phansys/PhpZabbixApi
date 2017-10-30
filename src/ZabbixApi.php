@@ -1,7 +1,7 @@
 <?php
 /**
- * @file    <FILENAME_CONCRETE>
- * @brief   Class file for the implementation of the class <CLASSNAME_CONCRETE>.
+ * @file    ZabbixApi.php
+ * @brief   Class file for the implementation of the class ZabbixApi.
  *
  * Implement your customizations in this file.
  *
@@ -31,15 +31,11 @@
 
 namespace ZabbixApi;
 
-require '<FILENAME_ABSTRACT>';
-
 /**
  * @brief   Concrete class for the Zabbix API.
  */
 
-class <CLASSNAME_CONCRETE> extends <CLASSNAME_ABSTRACT>
+class ZabbixApi extends AbstractZabbixApi
 {
 
 }
-
-?>
