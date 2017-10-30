@@ -1,12 +1,14 @@
 ## PhpZabbixApi
 
+[![Build Status](https://travis-ci.org/phansys/PhpZabbixApi.svg?branch=travis)](https://travis-ci.org/phansys/PhpZabbixApi)
+
 > __I'M LOOKING FOR CONTRIBUTORS, [CLICK HERE FOR MORE INFORMATIONS](https://github.com/confirm/PhpZabbixApi/issues/28)__
 
 ### About
 
 PhpZabbixApi is an open-source PHP class library to communicate with the Zabbix™ JSON-RPC API.
 
-Because PhpZabbixApi is generated directly from the origin Zabbix™ 2.0 PHP front-end source code / files, each real Zabbix™ JSON-RPC API method is implemented (hard-coded) directly as an own PHP method. This means PhpZabbixApi is IDE-friendly, because you've a PHP method for each API method, and there are no PHP magic functions or alike.
+Because PhpZabbixApi is generated directly from the origin Zabbix™ PHP front-end source code / files, each real Zabbix™ JSON-RPC API method is implemented (hard-coded) directly as an own PHP method. This means PhpZabbixApi is IDE-friendly, because you've a PHP method for each API method, and there are no PHP magic functions or alike.
 
 ### License
 
@@ -30,19 +32,19 @@ You might want to point `PATH_ZABBIX`  to your Zabbix™ installation directory.
 If you setup everything correctly, you should be able to create the library by executing:
 
 ```bash
-php build.php
+php build/build.php
 ```
 
-There are also pre-built libraries available in the `build/` directory, if you don't want to build it yourself.
+There are also pre-built libraries available in the `src/` directory, if you don't want to build it yourself.
 
 ### Download
 
-[Download a release](https://github.com/domibarton/PhpZabbixApi/releases) and extract the pre-built PHP library from the `build/` directory.
+[Download a release](https://github.com/domibarton/PhpZabbixApi/releases) and extract the pre-built PHP library from the `src/` directory.
 
 Make sure you've downloaded the following files and stored them in the same directory:
 
-* `ZabbixApi.class.php`
-* `ZabbixApiAbstract.class.php`
+* `ZabbixApi.php`
+* `AbstractZabbixApi.php`
 
 For example:
 
@@ -50,8 +52,8 @@ For example:
 my_application
 ├── index.php
 └── lib
-    ├── ZabbixApiAbstract.class.php
-    └── ZabbixApi.class.php
+    ├── AbstractZabbixApi.php
+    └── ZabbixApi.php
 ```
 
 ### Composer
@@ -66,15 +68,15 @@ All [tagged](https://github.com/domibarton/PhpZabbixApi/tags) versions can be in
 
 
 ```
-composer require 'confirm-it-solutions/php-zabbix-api:2.2.2'
-composer require 'confirm-it-solutions/php-zabbix-api:2.4.2'
+composer require 'confirm-it-solutions/php-zabbix-api:^2.2'
+composer require 'confirm-it-solutions/php-zabbix-api:^2.4'
 ```
 
 If you're looking for more "bleeding-edge" versions (e.g. for testing), then you could also use [branches](https://github.com/confirm-it-solutions/PhpZabbixApi/branches):
 
 ```
-composer require 'confirm-it-solutions/php-zabbix-api:2.2.*@dev'
-composer require 'confirm-it-solutions/php-zabbix-api:2.4.*@dev'
+composer require 'confirm-it-solutions/php-zabbix-api:2.2@dev'
+composer require 'confirm-it-solutions/php-zabbix-api:2.4@dev'
 ```
 
 ## Using the thing
@@ -101,24 +103,25 @@ dcheck.isWritable   dcheckIsWritable()
 By default there are only 2 classes defined:
 
 ```
-ZabbixApiAbstract
+AbstractZabbixApi
 └── ZabbixApi
 ```
 
 If you want to customize or extend the library, you might want to do that in the `ZabbixApi` class.
-Out of the box, `ZabbixApi` is an empty class inherited from `ZabbixApiAbstract`.
+Out of the box, `ZabbixApi` is an empty class inherited from `AbstractZabbixApi`.
 
-By customizing only `ZabbixApi`, you're able to update `ZabbixApiAbstract` (the build) at any time, without merging your customizations manually.
+By customizing only `ZabbixApi`, you're able to update `AbstractZabbixApi` (the build) at any time, without merging your customizations manually.
 
 ### Basic usage
 
-To use the PhpZabbixApi you just have to load `ZabbixApi.class.php`, create a new `ZabbixApi` instance, and you're ready to go:
+To use the PhpZabbixApi you just have to load `ZabbixApi.php`, create a new `ZabbixApi` instance, and you're ready to go:
 
 ```php
 <?php
 // load ZabbixApi
-require_once 'lib/ZabbixApi.class.php';
+require_once __DIR__.'/vendor/autoload.php';
 use ZabbixApi\ZabbixApi;
+use ZabbixApi\Exception;
 
 try
 {

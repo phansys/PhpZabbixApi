@@ -1,0 +1,38 @@
+language: php
+
+dist: precise
+sudo: false
+
+git:
+    depth: 1
+
+matrix:
+    fast_finish: true
+
+php:
+    - 5.3
+    - 5.4
+    - 5.5
+    - 5.6
+    - 7.0
+    - 7.1.3
+
+env:
+    - ZABBIX_MINOR=2.4 ZABBIX_PATCH=2.4.0
+    - ZABBIX_MINOR=2.4 ZABBIX_PATCH=2.4.8
+
+before_install:
+    - |
+      # General configuration
+      stty cols 120
+      mkdir -p /opt/zabbix
+      wget -qO- https://repo.zabbix.com/zabbix/$ZABBIX_MINOR/ubuntu/pool/main/z/zabbix/zabbix_$ZABBIX_PATCH.orig.tar.gz | tar xvz -C /opt/zabbix
+      ln -s /opt/zabbix/zabbix-$ZABBIX_PATCH/frontends/php/ /opt/zabbix/frontend
+
+install:
+    - php ./build/build.php
+    - composer install --prefer-dist --optimize-autoloader --classmap-authoritative --no-interaction --no-scripts
+
+script:
+    - ./vendor/bin/phpunit
+    - DIFF=$(git diff -p -- src/); if [[ $DIFF ]]; then echo -e "Some files have differences:\n$DIFF" && exit 1; fi;

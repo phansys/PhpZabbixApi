@@ -28,8 +28,8 @@
  * Load required files.
  */
 
-    require 'inc/config.inc.php';
-    require 'inc/replacePlaceholders.func.php';
+    require __DIR__.'/config.inc.php';
+    require __DIR__.'/replacePlaceholders.func.php';
 
 /*
  * Define some pathes and do some sanity checks for existence of the pathes.
@@ -78,8 +78,10 @@
     $templatePlaceholders = array(
         'CLASSNAME_ABSTRACT' => CLASSNAME_ABSTRACT,
         'CLASSNAME_CONCRETE' => CLASSNAME_CONCRETE,
+        'CLASSNAME_EXCEPTION' => CLASSNAME_EXCEPTION,
         'FILENAME_ABSTRACT'  => FILENAME_ABSTRACT,
-        'FILENAME_CONCRETE'  => FILENAME_CONCRETE
+        'FILENAME_CONCRETE'  => FILENAME_CONCRETE,
+        'FILENAME_EXCEPTION'  => FILENAME_EXCEPTION,
     );
 
 /*
@@ -88,13 +90,13 @@
  * Create a new class and extend it from the origin Zabbix classes, so that we
  * can fetch the class map directly from the Zabbix classes without defining
  * it here.
- * 
+ *
  * There are some differences between the Zabbix versions:
  *
- *  < 2.4:  The class map is stored as a static property directly in the 
- *          origin API class. 
+ *  < 2.4:  The class map is stored as a static property directly in the
+ *          origin API class.
  *
- *  >= 2.4: The class map is stored as an instance property in the 
+ *  >= 2.4: The class map is stored as an instance property in the
  *          origin CApiServiceFactory class.
  */
 
@@ -116,7 +118,7 @@
                 return $classMap;
             }
         }
-    } 
+    }
     else
     {
         require PATH_ZABBIX.'/include/classes/api/CZBXAPI.php';
@@ -248,6 +250,30 @@
     else
     {
         echo 'SKIPPED: concrete class file "'.PATH_BUILD.'/'.FILENAME_CONCRETE.'"'."\n";
+    }
+
+/*
+ * Build exception template.
+ */
+
+    if(!file_exists(PATH_BUILD.'/'.FILENAME_EXCEPTION))
+    {
+        // get template
+        if(!$template = file_get_contents(PATH_TEMPLATES.'/exception.tpl.php'))
+            die();
+
+        // build file content
+        $fileContent = replacePlaceholders($template, $templatePlaceholders);
+
+        // write abstract class
+        if(!file_put_contents(PATH_BUILD.'/'.FILENAME_EXCEPTION, $fileContent))
+            die();
+
+        echo 'BUILT: conrete class file "'.PATH_BUILD.'/'.FILENAME_EXCEPTION.'"'."\n";
+    }
+    else
+    {
+        echo 'SKIPPED: concrete class file "'.PATH_BUILD.'/'.FILENAME_EXCEPTION.'"'."\n";
     }
 
 ?>
