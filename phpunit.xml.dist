@@ -22,10 +22,9 @@
 
     <filter>
         <whitelist>
-            <directory>build</directory>
+            <directory>src</directory>
             <exclude>
-                <directory>inc</directory>
-                <directory>templates</directory>
+                <directory>build</directory>
             </exclude>
         </whitelist>
     </filter>
