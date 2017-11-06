@@ -88,6 +88,10 @@ class ZabbixApi
      */
     public function __construct($apiUrl = '', $user = '', $password = '', $httpUser = '', $httpPassword = '', $authToken = '', ClientInterface $client = null, array $clientOptions = [])
     {
+        if ($client && $clientOptions) {
+            throw new \InvalidArgumentException('If argument 7 is provided, argument 8 must be omitted or passed with an empty array as value');
+        }
+
         if ($apiUrl) {
             $this->setApiUrl($apiUrl);
         }

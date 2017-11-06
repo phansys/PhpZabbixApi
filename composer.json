@@ -24,6 +24,9 @@
     "autoload": {
         "psr-4": { "ZabbixApi\\": ["src"] }
     },
+    "autoload-dev": {
+        "psr-4": { "ZabbixApi\\Tests\\": "tests/" }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.4-dev"
