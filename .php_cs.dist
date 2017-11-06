@@ -1,12 +1,12 @@
 <?php
 
 $header = <<<'EOF'
-This file is part of Nubity.
+This file is part of Zabbix PHP SDK package.
 
 (c) The Nubity Development Team <dev@nubity.com>
 
-This source file is subject to a proprietary license that is bundled
-with this source code in the file LICENSE.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 EOF;
 
 return PhpCsFixer\Config::create()
@@ -20,7 +20,7 @@ return PhpCsFixer\Config::create()
         'dir_constant' => true,
         'ereg_to_preg' => true,
         'general_phpdoc_annotation_remove' => ['expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'],
-//        'header_comment' => ['header' => $header],
+        'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'linebreak_after_opening_tag' => true,
         'mb_str_functions' => true,

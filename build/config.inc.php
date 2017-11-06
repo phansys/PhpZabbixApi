@@ -24,18 +24,6 @@
  */
 
 /**
- * @brief   Class name for the abstract API class.
- */
-
-define('CLASSNAME_ABSTRACT', 'AbstractZabbixApi');
-
-/**
- * @brief   Filename for the abstract API class.
- */
-
-define('FILENAME_ABSTRACT', CLASSNAME_ABSTRACT.'.php');
-
-/**
  * @brief   Class name for the concrete API class.
  */
 

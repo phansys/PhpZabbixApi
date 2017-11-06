@@ -76,10 +76,8 @@
 
     // set template placeholders
     $templatePlaceholders = array(
-        'CLASSNAME_ABSTRACT' => CLASSNAME_ABSTRACT,
         'CLASSNAME_CONCRETE' => CLASSNAME_CONCRETE,
         'CLASSNAME_EXCEPTION' => CLASSNAME_EXCEPTION,
-        'FILENAME_ABSTRACT'  => FILENAME_ABSTRACT,
         'FILENAME_CONCRETE'  => FILENAME_CONCRETE,
         'FILENAME_EXCEPTION'  => FILENAME_EXCEPTION,
     );
@@ -189,11 +187,11 @@
     }
 
 /*
- * Build abstract template.
+ * Build concrete template.
  */
 
     // get template
-    if(!$template = file_get_contents(PATH_TEMPLATES.'/abstract.tpl.php'))
+    if(!$template = file_get_contents(PATH_TEMPLATES.'/concrete.tpl.php'))
         die();
 
     // fetch API method block
@@ -201,7 +199,7 @@
 
     // sanity check
     if(count($matches) != 4)
-        die('Template "'.PATH_TEMPLATES.'"/abstract.tpl.php parsing failed!');
+        die('Template "'.PATH_TEMPLATES.'"/concrete.tpl.php parsing failed!');
 
     // initialize variable for API methods
     $apiMethods = '';
@@ -223,41 +221,14 @@
     $fileContent = replacePlaceholders($matches[1].$apiMethods.$matches[3], $templatePlaceholders);
 
     // write abstract class
-    if(!file_put_contents(PATH_BUILD.'/'.FILENAME_ABSTRACT, $fileContent))
+    if(!file_put_contents(PATH_BUILD.'/'.FILENAME_CONCRETE, $fileContent))
         die();
 
-    echo 'BUILT: abstract class file "'.PATH_BUILD.'/'.FILENAME_ABSTRACT.'"'."\n";
-
-/*
- * Build concrete template.
- */
-
-    if(!file_exists(PATH_BUILD.'/'.FILENAME_CONCRETE))
-    {
-        // get template
-        if(!$template = file_get_contents(PATH_TEMPLATES.'/concrete.tpl.php'))
-            die();
-
-        // build file content
-        $fileContent = replacePlaceholders($template, $templatePlaceholders);
-
-        // write abstract class
-        if(!file_put_contents(PATH_BUILD.'/'.FILENAME_CONCRETE, $fileContent))
-            die();
-
-        echo 'BUILT: conrete class file "'.PATH_BUILD.'/'.FILENAME_CONCRETE.'"'."\n";
-    }
-    else
-    {
-        echo 'SKIPPED: concrete class file "'.PATH_BUILD.'/'.FILENAME_CONCRETE.'"'."\n";
-    }
+    echo 'BUILT: concrete class file "'.PATH_BUILD.'/'.FILENAME_CONCRETE.'"'."\n";
 
 /*
  * Build exception template.
  */
-
-    if(!file_exists(PATH_BUILD.'/'.FILENAME_EXCEPTION))
-    {
         // get template
         if(!$template = file_get_contents(PATH_TEMPLATES.'/exception.tpl.php'))
             die();
@@ -269,11 +240,6 @@
         if(!file_put_contents(PATH_BUILD.'/'.FILENAME_EXCEPTION, $fileContent))
             die();
 
-        echo 'BUILT: conrete class file "'.PATH_BUILD.'/'.FILENAME_EXCEPTION.'"'."\n";
-    }
-    else
-    {
-        echo 'SKIPPED: concrete class file "'.PATH_BUILD.'/'.FILENAME_EXCEPTION.'"'."\n";
-    }
+        echo 'BUILT: exception class file "'.PATH_BUILD.'/'.FILENAME_EXCEPTION.'"'."\n";
 
 ?>
