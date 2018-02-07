@@ -209,7 +209,7 @@ class <CLASSNAME_CONCRETE>
     }
 
     /**
-     * Sends are request to the zabbix API and returns the response
+     * Sends request to the Zabbix API and returns the response
      *          as object.
      *
      * @param string $method     name of the API method
@@ -299,7 +299,7 @@ class <CLASSNAME_CONCRETE>
     /**
      * Login into the API.
      *
-     * This will also retreive the auth Token, which will be used for any
+     * This will also retrieves the auth Token, which will be used for any
      * further requests. Please be aware that by default the received auth
      * token will be cached on the filesystem.
      *
@@ -313,10 +313,10 @@ class <CLASSNAME_CONCRETE>
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
      * @param string $arrayKeyProperty   object property for key of array
@@ -375,10 +375,10 @@ class <CLASSNAME_CONCRETE>
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
      * @param string $arrayKeyProperty   object property for key of array
@@ -397,17 +397,17 @@ class <CLASSNAME_CONCRETE>
     }
 <!START_API_METHOD>
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method <API_METHOD>.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -429,7 +429,7 @@ class <CLASSNAME_CONCRETE>
     }
 <!END_API_METHOD>
     /**
-     * Convertes an indexed array to an associative array.
+     * Converts an indexed array to an associative array.
      *
      * @param array $objectArray           indexed array with objects
      * @param string $useObjectProperty    object property to use as array key
@@ -458,7 +458,7 @@ class <CLASSNAME_CONCRETE>
      * This method will automatically convert all provided types into a correct
      * array. Which means:
      *
-     *      - arrays will not be converted (indexed & associatve)
+     *      - arrays will not be converted (indexed & associative)
      *      - scalar values will be converted into an one-element array (indexed)
      *      - other values will result in an empty array
      *

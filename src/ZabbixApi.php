@@ -209,7 +209,7 @@ class ZabbixApi
     }
 
     /**
-     * Sends are request to the zabbix API and returns the response
+     * Sends request to the Zabbix API and returns the response
      *          as object.
      *
      * @param string $method     name of the API method
@@ -299,7 +299,7 @@ class ZabbixApi
     /**
      * Login into the API.
      *
-     * This will also retreive the auth Token, which will be used for any
+     * This will also retrieves the auth Token, which will be used for any
      * further requests. Please be aware that by default the received auth
      * token will be cached on the filesystem.
      *
@@ -313,10 +313,10 @@ class ZabbixApi
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
      * @param string $arrayKeyProperty   object property for key of array
@@ -375,10 +375,10 @@ class ZabbixApi
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
      * @param string $arrayKeyProperty   object property for key of array
@@ -397,17 +397,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method api.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -429,17 +429,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method api.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -461,17 +461,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method api.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -493,17 +493,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -525,17 +525,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -557,17 +557,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -589,17 +589,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -621,17 +621,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -653,17 +653,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.validateOperationsIntegrity.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -685,17 +685,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.validateOperationConditions.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -717,17 +717,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.validateCreate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -749,17 +749,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.validateUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -781,17 +781,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -813,17 +813,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -845,17 +845,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method action.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -877,17 +877,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method alert.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -909,17 +909,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method alert.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -941,17 +941,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method alert.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -973,17 +973,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method alert.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1005,17 +1005,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method apiinfo.version.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1037,17 +1037,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method apiinfo.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1069,17 +1069,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method apiinfo.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1101,17 +1101,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method apiinfo.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1133,17 +1133,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1165,17 +1165,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1197,17 +1197,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1229,17 +1229,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1261,17 +1261,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1293,17 +1293,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1325,17 +1325,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1357,17 +1357,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1389,17 +1389,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1421,17 +1421,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method application.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1453,17 +1453,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.export.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1485,17 +1485,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.import.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1517,17 +1517,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1549,17 +1549,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1581,17 +1581,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1613,17 +1613,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1645,17 +1645,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1677,17 +1677,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1709,17 +1709,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1741,17 +1741,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1773,17 +1773,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1805,17 +1805,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dhost.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1837,17 +1837,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dhost.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1869,17 +1869,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dhost.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1901,17 +1901,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dhost.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1933,17 +1933,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dhost.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1965,17 +1965,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -1997,17 +1997,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2029,17 +2029,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2061,17 +2061,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2093,17 +2093,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2125,17 +2125,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.copy.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2157,17 +2157,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2189,17 +2189,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2221,17 +2221,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2253,17 +2253,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.findInterfaceForItem.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2285,17 +2285,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2317,17 +2317,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2349,17 +2349,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2381,17 +2381,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2413,17 +2413,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2445,17 +2445,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2477,17 +2477,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2509,17 +2509,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2541,17 +2541,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2573,17 +2573,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2605,17 +2605,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2637,17 +2637,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2669,17 +2669,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2701,17 +2701,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method drule.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2733,17 +2733,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dservice.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2765,17 +2765,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dservice.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2797,17 +2797,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dservice.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2829,17 +2829,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dservice.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2861,17 +2861,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method dservice.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2893,17 +2893,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method event.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2925,17 +2925,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method event.acknowledge.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2957,17 +2957,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method event.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -2989,17 +2989,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method event.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3021,17 +3021,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method event.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3053,17 +3053,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3085,17 +3085,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3117,17 +3117,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3149,17 +3149,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3181,17 +3181,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3213,17 +3213,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3245,17 +3245,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3277,17 +3277,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3309,17 +3309,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3341,17 +3341,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graph.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3373,17 +3373,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphitem.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3405,17 +3405,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphitem.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3437,17 +3437,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphitem.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3469,17 +3469,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphitem.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3501,17 +3501,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3533,17 +3533,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3565,17 +3565,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3597,17 +3597,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3629,17 +3629,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3661,17 +3661,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3693,17 +3693,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3725,17 +3725,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3757,17 +3757,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3789,17 +3789,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3821,17 +3821,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3853,17 +3853,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3885,17 +3885,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3917,17 +3917,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3949,17 +3949,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -3981,17 +3981,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4013,17 +4013,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.massUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4045,17 +4045,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.massRemove.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4077,17 +4077,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4109,17 +4109,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4141,17 +4141,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4173,17 +4173,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4205,17 +4205,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4237,17 +4237,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method host.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4269,17 +4269,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4301,17 +4301,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4333,17 +4333,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4365,17 +4365,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4397,17 +4397,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4429,17 +4429,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4461,17 +4461,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4493,17 +4493,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.massRemove.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4525,17 +4525,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.massUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4557,17 +4557,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4589,17 +4589,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4621,17 +4621,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4653,17 +4653,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4685,17 +4685,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4717,17 +4717,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4749,17 +4749,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4781,17 +4781,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4813,17 +4813,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4845,17 +4845,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4877,17 +4877,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4909,17 +4909,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4941,17 +4941,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -4973,17 +4973,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5005,17 +5005,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostprototype.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5037,17 +5037,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method history.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5069,17 +5069,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method history.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5101,17 +5101,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method history.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5133,17 +5133,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method history.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5165,17 +5165,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5197,17 +5197,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5229,17 +5229,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5261,17 +5261,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5293,17 +5293,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5325,17 +5325,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5357,17 +5357,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5389,17 +5389,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.massRemove.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5421,17 +5421,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.replaceHostInterfaces.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5453,17 +5453,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5485,17 +5485,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5517,17 +5517,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5549,17 +5549,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5581,17 +5581,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5613,17 +5613,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5645,17 +5645,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5677,17 +5677,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5709,17 +5709,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5741,17 +5741,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5773,17 +5773,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5805,17 +5805,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method image.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5837,17 +5837,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5869,17 +5869,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5901,17 +5901,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5933,17 +5933,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5965,17 +5965,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -5997,17 +5997,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6029,17 +6029,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6061,17 +6061,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6093,17 +6093,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method iconmap.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6125,17 +6125,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6157,17 +6157,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6189,17 +6189,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6221,17 +6221,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6253,17 +6253,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6285,17 +6285,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6317,17 +6317,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6349,17 +6349,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.validateInventoryLinks.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6381,17 +6381,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.addRelatedObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6413,17 +6413,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.findInterfaceForItem.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6445,17 +6445,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6477,17 +6477,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6509,17 +6509,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6541,17 +6541,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6573,17 +6573,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method item.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6605,17 +6605,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6637,17 +6637,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6669,17 +6669,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6701,17 +6701,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6733,17 +6733,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6765,17 +6765,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6797,17 +6797,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.addRelatedObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6829,17 +6829,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.findInterfaceForItem.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6861,17 +6861,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6893,17 +6893,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6925,17 +6925,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6957,17 +6957,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -6989,17 +6989,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7021,17 +7021,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7053,17 +7053,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7085,17 +7085,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7117,17 +7117,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7149,17 +7149,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7181,17 +7181,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7213,17 +7213,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7245,17 +7245,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7277,17 +7277,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7309,17 +7309,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7341,17 +7341,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7373,17 +7373,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7405,17 +7405,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7437,17 +7437,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7469,17 +7469,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7501,17 +7501,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7533,17 +7533,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7565,17 +7565,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.checkCircleSelementsLink.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7597,17 +7597,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7629,17 +7629,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7661,17 +7661,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method map.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7693,17 +7693,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7725,17 +7725,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7757,17 +7757,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7789,17 +7789,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7821,17 +7821,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7853,17 +7853,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7885,17 +7885,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method mediatype.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7917,17 +7917,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7949,17 +7949,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -7981,17 +7981,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8013,17 +8013,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8045,17 +8045,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8077,17 +8077,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8109,17 +8109,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8141,17 +8141,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8173,17 +8173,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8205,17 +8205,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8237,17 +8237,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8269,17 +8269,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.validateUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8301,17 +8301,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8333,17 +8333,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.validateDelete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8365,17 +8365,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8397,17 +8397,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.addDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8429,17 +8429,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.deleteDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8461,17 +8461,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.validateAddTimes.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8493,17 +8493,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.addTimes.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8525,17 +8525,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.getSla.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8557,17 +8557,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.deleteTimes.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8589,17 +8589,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8621,17 +8621,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8653,17 +8653,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8685,17 +8685,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8717,17 +8717,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method service.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8749,17 +8749,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8781,17 +8781,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8813,17 +8813,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8845,17 +8845,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8877,17 +8877,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8909,17 +8909,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8941,17 +8941,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -8973,17 +8973,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screen.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9005,17 +9005,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9037,17 +9037,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9069,17 +9069,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9101,17 +9101,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.updateByPosition.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9133,17 +9133,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9165,17 +9165,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9197,17 +9197,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9229,17 +9229,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9261,17 +9261,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9293,17 +9293,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9325,17 +9325,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9357,17 +9357,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9389,17 +9389,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9421,17 +9421,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9453,17 +9453,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.execute.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9485,17 +9485,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.getScriptsByHosts.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9517,17 +9517,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9549,17 +9549,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9581,17 +9581,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method script.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9613,17 +9613,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9645,17 +9645,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9677,17 +9677,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9709,17 +9709,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9741,17 +9741,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9773,17 +9773,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9805,17 +9805,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9837,17 +9837,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9869,17 +9869,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.massUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9901,17 +9901,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.massRemove.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9933,17 +9933,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9965,17 +9965,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -9997,17 +9997,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10029,17 +10029,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method template.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10061,17 +10061,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10093,17 +10093,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10125,17 +10125,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.copy.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10157,17 +10157,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10189,17 +10189,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10221,17 +10221,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10253,17 +10253,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10285,17 +10285,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10317,17 +10317,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreen.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10349,17 +10349,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreenitem.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10381,17 +10381,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreenitem.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10413,17 +10413,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreenitem.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10445,17 +10445,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method templatescreenitem.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10477,17 +10477,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10509,17 +10509,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10541,17 +10541,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10573,17 +10573,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10605,17 +10605,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10637,17 +10637,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10669,17 +10669,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10701,17 +10701,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.addDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10733,17 +10733,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.deleteDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10765,17 +10765,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10797,17 +10797,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.syncTemplateDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10829,17 +10829,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10861,17 +10861,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10893,17 +10893,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10925,17 +10925,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10957,17 +10957,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -10989,17 +10989,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11021,17 +11021,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11053,17 +11053,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11085,17 +11085,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11117,17 +11117,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11149,17 +11149,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11181,17 +11181,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11213,17 +11213,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11245,17 +11245,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11277,17 +11277,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11309,17 +11309,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11341,17 +11341,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.updateProfile.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11373,17 +11373,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11405,17 +11405,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.addMedia.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11437,17 +11437,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.updateMedia.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11469,17 +11469,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.deleteMedia.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11501,17 +11501,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.deleteMediaReal.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11533,17 +11533,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.checkAuthentication.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11565,17 +11565,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11597,17 +11597,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11629,17 +11629,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11661,17 +11661,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11693,17 +11693,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method user.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11725,17 +11725,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11757,17 +11757,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.getObjects.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11789,17 +11789,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.exists.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11821,17 +11821,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11853,17 +11853,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11885,17 +11885,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.massAdd.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11917,17 +11917,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.massUpdate.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11949,17 +11949,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -11981,17 +11981,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12013,17 +12013,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12045,17 +12045,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12077,17 +12077,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12109,17 +12109,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12141,17 +12141,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12173,17 +12173,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.createGlobal.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12205,17 +12205,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.updateGlobal.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12237,17 +12237,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.deleteGlobal.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12269,17 +12269,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12301,17 +12301,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12333,17 +12333,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12365,17 +12365,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.replaceMacros.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12397,17 +12397,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12429,17 +12429,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12461,17 +12461,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermacro.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12493,17 +12493,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermedia.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12525,17 +12525,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermedia.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12557,17 +12557,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermedia.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12589,17 +12589,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method usermedia.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12621,17 +12621,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12653,17 +12653,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12685,17 +12685,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.update.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12717,17 +12717,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12749,17 +12749,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.isReadable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12781,17 +12781,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.isWritable.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12813,17 +12813,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12845,17 +12845,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.pk.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12877,17 +12877,17 @@ class ZabbixApi
     }
 
     /**
-     * Reqeusts the Zabbix API and returns the response of the API
+     * Requests the Zabbix API and returns the response of the API
      *          method httptest.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
      * documentation at https://www.zabbix.com/documentation/.
      *
-     * The $arrayKeyProperty can be used to get an associatve instead of an
+     * The $arrayKeyProperty can be used to get an associative instead of an
      * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. name, host,
-     * hostid, graphid, screenitemid).
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
      *
      * @param mixed  $params             Zabbix API parameters
      * @param string $arrayKeyProperty   Object property for key of array
@@ -12909,7 +12909,7 @@ class ZabbixApi
     }
 
     /**
-     * Convertes an indexed array to an associative array.
+     * Converts an indexed array to an associative array.
      *
      * @param array $objectArray           indexed array with objects
      * @param string $useObjectProperty    object property to use as array key
@@ -12938,7 +12938,7 @@ class ZabbixApi
      * This method will automatically convert all provided types into a correct
      * array. Which means:
      *
-     *      - arrays will not be converted (indexed & associatve)
+     *      - arrays will not be converted (indexed & associative)
      *      - scalar values will be converted into an one-element array (indexed)
      *      - other values will result in an empty array
      *
