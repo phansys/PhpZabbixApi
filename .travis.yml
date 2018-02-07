@@ -17,8 +17,11 @@ php:
     - 7.2
 
 env:
-    - ZABBIX_MINOR=2.4 ZABBIX_PATCH=2.4.0
-    - ZABBIX_MINOR=2.4 ZABBIX_PATCH=2.4.8
+    - ZABBIX_MINOR=3.0 ZABBIX_PATCH=3.0.14
+
+cache:
+    directories:
+        - $HOME/.composer
 
 before_install:
     - |

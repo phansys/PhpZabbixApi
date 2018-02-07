@@ -526,38 +526,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method action.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function actionExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method action.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -714,70 +682,6 @@ class ZabbixApi
 
         // request
         return $this->request('action.validateOperationConditions', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method action.validateCreate.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function actionValidateCreate($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.validateCreate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.validateCreate', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method action.validateUpdate.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function actionValidateUpdate($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.validateUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.validateUpdate', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -1162,38 +1066,6 @@ class ZabbixApi
 
         // request
         return $this->request('application.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method application.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function applicationExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -1838,38 +1710,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method dhost.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function dhostExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dhost.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dhost.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method dhost.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -1994,38 +1834,6 @@ class ZabbixApi
 
         // request
         return $this->request('discoveryrule.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method discoveryrule.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function discoveryruleExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -2414,38 +2222,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method drule.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function druleExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method drule.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -2762,38 +2538,6 @@ class ZabbixApi
 
         // request
         return $this->request('dservice.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method dservice.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function dserviceExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dservice.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dservice.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -3214,70 +2958,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method graph.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function graphExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method graph.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function graphGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method graph.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -3662,70 +3342,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method graphprototype.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function graphprototypeExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method graphprototype.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function graphprototypeGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method graphprototype.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -3850,70 +3466,6 @@ class ZabbixApi
 
         // request
         return $this->request('host.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method host.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method host.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -4298,70 +3850,6 @@ class ZabbixApi
 
         // request
         return $this->request('hostgroup.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method hostgroup.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostgroupGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method hostgroup.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostgroupExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -5198,38 +4686,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method hostinterface.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostinterfaceExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method hostinterface.checkInput.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -5578,70 +5034,6 @@ class ZabbixApi
 
         // request
         return $this->request('image.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method image.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function imageGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method image.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function imageExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -6158,70 +5550,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method item.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function itemGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method item.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function itemExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method item.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -6638,38 +5966,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method itemprototype.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function itemprototypeExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method itemprototype.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -7054,38 +6350,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method maintenance.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function maintenanceExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method maintenance.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -7306,102 +6570,6 @@ class ZabbixApi
 
         // request
         return $this->request('map.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method map.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method map.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method map.checkInput.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapCheckInput($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.checkInput', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.checkInput', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -8782,38 +7950,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method screen.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function screenExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method screen.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -9678,70 +8814,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method template.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function templateGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method template.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function templateExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.exists', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method template.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10090,38 +9162,6 @@ class ZabbixApi
 
         // request
         return $this->request('templatescreen.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method templatescreen.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function templatescreenExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -10478,6 +9518,134 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method trend.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function trendGet($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('trend.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('trend.get', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method trend.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function trendTableName($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('trend.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('trend.tableName', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method trend.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function trendPk($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('trend.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('trend.pk', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method trend.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function trendPkOption($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('trend.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('trend.pkOption', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method trigger.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10506,70 +9674,6 @@ class ZabbixApi
 
         // request
         return $this->request('trigger.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method trigger.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function triggerGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method trigger.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function triggerExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -11114,6 +10218,70 @@ class ZabbixApi
 
         // request
         return $this->request('triggerprototype.delete', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method triggerprototype.addDependencies.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function triggerprototypeAddDependencies($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('triggerprototype.addDependencies', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('triggerprototype.addDependencies', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method triggerprototype.syncTemplateDependencies.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function triggerprototypeSyncTemplateDependencies($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('triggerprototype.syncTemplateDependencies', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('triggerprototype.syncTemplateDependencies', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -11754,70 +10922,6 @@ class ZabbixApi
 
         // request
         return $this->request('usergroup.get', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.getObjects.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupGetObjects($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.getObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.getObjects', $params, $arrayKeyProperty, $auth);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.exists.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupExists($params = [], $arrayKeyProperty = '')
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.exists', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.exists', $params, $arrayKeyProperty, $auth);
     }
 
     /**
@@ -12618,6 +11722,230 @@ class ZabbixApi
 
         // request
         return $this->request('usermedia.pkOption', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapGet($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.get', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.create.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapCreate($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.create', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.create', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.update.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapUpdate($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.update', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.update', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.delete.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapDelete($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.delete', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.delete', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapTableName($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.tableName', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapPk($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.pk', $params, $arrayKeyProperty, $auth);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method valuemap.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed  $params             Zabbix API parameters
+     * @param string $arrayKeyProperty   Object property for key of array
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function valuemapPkOption($params = [], $arrayKeyProperty = '')
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('valuemap.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('valuemap.pkOption', $params, $arrayKeyProperty, $auth);
     }
 
     /**
