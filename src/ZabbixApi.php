@@ -177,19 +177,15 @@ class ZabbixApi
     /**
      * Sets the default params.
      *
-     * @param mixed $defaultParams  Array with default params
+     * @param array $defaultParams  Array with default params
      *
      * @throws Exception
      *
      * @return ZabbixApi
      */
-    public function setDefaultParams($defaultParams)
+    public function setDefaultParams(array $defaultParams)
     {
-        if (is_array($defaultParams)) {
-            $this->defaultParams = $defaultParams;
-        } else {
-            throw new Exception('The argument defaultParams on setDefaultParams() has to be an array.');
-        }
+        $this->defaultParams = $defaultParams;
 
         return $this;
     }
@@ -214,12 +210,13 @@ class ZabbixApi
      *
      * @param string $method     name of the API method
      * @param mixed $params     additional parameters
-     * @param mixed $resultArrayKey
+     * @param string|null $resultArrayKey
      * @param bool $auth       enable authentication (default TRUE)
+     * @param bool $assoc      return the result as an associative array
      *
      * @return \stdClass    API JSON response
      */
-    public function request($method, $params = null, $resultArrayKey = '', $auth = true)
+    public function request($method, $params = null, $resultArrayKey = null, $auth = true, $assoc = false)
     {
         // sanity check and conversion for params array
         if (!$params) {
@@ -253,37 +250,18 @@ class ZabbixApi
             if ($e->hasResponse()) {
                 $this->response = $e->getResponse();
 
-                throw new Exception($e->getMessage().': '.$this->response->getBody()->getContents(), $e->getCode());
+                throw new Exception(sprintf('%s: %s', $e->getMessage(), $this->response->getBody()->getContents()), $e->getCode());
             }
 
             throw new Exception($e->getMessage(), $e->getCode());
+        } finally {
+            // debug logging
+            if ($this->printCommunication) {
+                echo $this->response."\n";
+            }
         }
 
-        // debug logging
-        if ($this->printCommunication) {
-            echo $this->response."\n";
-        }
-
-        // response verification
-        if (false === $this->response) {
-            throw new Exception('Could not read data from "'.$this->getApiUrl().'"');
-        }
-        // decode response
-        $this->responseDecoded = \GuzzleHttp\json_decode($this->response->getBody());
-
-        // validate response
-        if (!is_object($this->responseDecoded) && !is_array($this->responseDecoded)) {
-            throw new Exception('Could not decode JSON response.');
-        }
-        if (array_key_exists('error', $this->responseDecoded)) {
-            throw new Exception('API error '.$this->responseDecoded->error->code.': '.$this->responseDecoded->error->data);
-        }
-        // return response
-        if ($resultArrayKey && is_array($this->responseDecoded->result)) {
-            return $this->convertToAssociatveArray($this->responseDecoded->result, $resultArrayKey);
-        }
-
-        return $this->responseDecoded->result;
+        return $this->decodeResponse($this->response, $resultArrayKey, $assoc);
     }
 
     /**
@@ -319,15 +297,18 @@ class ZabbixApi
      * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
-     * @param string $arrayKeyProperty   object property for key of array
-     * @param string $tokenCacheDir      path to a directory to store the auth token
+     * @param string|null $arrayKeyProperty   object property for key of array
+     * @param string|null $tokenCacheDir      path to a directory to store the auth token
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    final public function userLogin($params = [], $arrayKeyProperty = '', $tokenCacheDir = '/tmp')
+    final public function userLogin(array $params = [], $arrayKeyProperty = null, $tokenCacheDir = null)
     {
+        if (null === $tokenCacheDir) {
+            $tokenCacheDir = sys_get_temp_dir();
+        }
         // reset auth token
         $this->authToken = '';
 
@@ -381,13 +362,13 @@ class ZabbixApi
      * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
-     * @param string $arrayKeyProperty   object property for key of array
+     * @param string|null $arrayKeyProperty   object property for key of array
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    final public function userLogout($params = [], $arrayKeyProperty = '')
+    final public function userLogout(array $params = [], $arrayKeyProperty = null)
     {
         $params = $this->getRequestParamsArray($params);
         $response = $this->request('user.logout', $params, $arrayKeyProperty);
@@ -409,14 +390,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiTableName($params = [], $arrayKeyProperty = '')
+    public function apiTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -425,7 +407,7 @@ class ZabbixApi
         $auth = !in_array('api.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('api.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('api.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -441,14 +423,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiPk($params = [], $arrayKeyProperty = '')
+    public function apiPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -457,7 +440,7 @@ class ZabbixApi
         $auth = !in_array('api.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('api.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('api.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -473,14 +456,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiPkOption($params = [], $arrayKeyProperty = '')
+    public function apiPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -489,7 +473,7 @@ class ZabbixApi
         $auth = !in_array('api.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('api.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('api.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -505,14 +489,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionGet($params = [], $arrayKeyProperty = '')
+    public function actionGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -521,7 +506,7 @@ class ZabbixApi
         $auth = !in_array('action.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -537,14 +522,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionCreate($params = [], $arrayKeyProperty = '')
+    public function actionCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -553,7 +539,7 @@ class ZabbixApi
         $auth = !in_array('action.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -569,14 +555,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionUpdate($params = [], $arrayKeyProperty = '')
+    public function actionUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -585,7 +572,7 @@ class ZabbixApi
         $auth = !in_array('action.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -601,14 +588,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionDelete($params = [], $arrayKeyProperty = '')
+    public function actionDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -617,7 +605,7 @@ class ZabbixApi
         $auth = !in_array('action.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -633,14 +621,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionValidateOperationsIntegrity($params = [], $arrayKeyProperty = '')
+    public function actionValidateOperationsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -649,7 +638,7 @@ class ZabbixApi
         $auth = !in_array('action.validateOperationsIntegrity', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.validateOperationsIntegrity', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.validateOperationsIntegrity', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -665,14 +654,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionValidateOperationConditions($params = [], $arrayKeyProperty = '')
+    public function actionValidateOperationConditions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -681,7 +671,7 @@ class ZabbixApi
         $auth = !in_array('action.validateOperationConditions', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.validateOperationConditions', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.validateOperationConditions', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -697,14 +687,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionTableName($params = [], $arrayKeyProperty = '')
+    public function actionTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -713,7 +704,7 @@ class ZabbixApi
         $auth = !in_array('action.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -729,14 +720,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionPk($params = [], $arrayKeyProperty = '')
+    public function actionPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -745,7 +737,7 @@ class ZabbixApi
         $auth = !in_array('action.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -761,14 +753,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function actionPkOption($params = [], $arrayKeyProperty = '')
+    public function actionPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -777,7 +770,7 @@ class ZabbixApi
         $auth = !in_array('action.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('action.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('action.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -793,14 +786,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function alertGet($params = [], $arrayKeyProperty = '')
+    public function alertGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -809,7 +803,7 @@ class ZabbixApi
         $auth = !in_array('alert.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('alert.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('alert.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -825,14 +819,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function alertTableName($params = [], $arrayKeyProperty = '')
+    public function alertTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -841,7 +836,7 @@ class ZabbixApi
         $auth = !in_array('alert.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('alert.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('alert.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -857,14 +852,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function alertPk($params = [], $arrayKeyProperty = '')
+    public function alertPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -873,7 +869,7 @@ class ZabbixApi
         $auth = !in_array('alert.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('alert.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('alert.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -889,14 +885,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function alertPkOption($params = [], $arrayKeyProperty = '')
+    public function alertPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -905,7 +902,7 @@ class ZabbixApi
         $auth = !in_array('alert.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('alert.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('alert.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -921,14 +918,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiinfoVersion($params = [], $arrayKeyProperty = '')
+    public function apiinfoVersion($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -937,7 +935,7 @@ class ZabbixApi
         $auth = !in_array('apiinfo.version', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('apiinfo.version', $params, $arrayKeyProperty, $auth);
+        return $this->request('apiinfo.version', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -953,14 +951,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiinfoTableName($params = [], $arrayKeyProperty = '')
+    public function apiinfoTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -969,7 +968,7 @@ class ZabbixApi
         $auth = !in_array('apiinfo.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('apiinfo.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('apiinfo.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -985,14 +984,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiinfoPk($params = [], $arrayKeyProperty = '')
+    public function apiinfoPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1001,7 +1001,7 @@ class ZabbixApi
         $auth = !in_array('apiinfo.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('apiinfo.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('apiinfo.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1017,14 +1017,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function apiinfoPkOption($params = [], $arrayKeyProperty = '')
+    public function apiinfoPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1033,7 +1034,7 @@ class ZabbixApi
         $auth = !in_array('apiinfo.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('apiinfo.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('apiinfo.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1049,14 +1050,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationGet($params = [], $arrayKeyProperty = '')
+    public function applicationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1065,7 +1067,7 @@ class ZabbixApi
         $auth = !in_array('application.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1081,14 +1083,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationCheckInput($params = [], $arrayKeyProperty = '')
+    public function applicationCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1097,7 +1100,7 @@ class ZabbixApi
         $auth = !in_array('application.checkInput', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.checkInput', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1113,14 +1116,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationCreate($params = [], $arrayKeyProperty = '')
+    public function applicationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1129,7 +1133,7 @@ class ZabbixApi
         $auth = !in_array('application.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1145,14 +1149,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationUpdate($params = [], $arrayKeyProperty = '')
+    public function applicationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1161,7 +1166,7 @@ class ZabbixApi
         $auth = !in_array('application.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1177,14 +1182,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationDelete($params = [], $arrayKeyProperty = '')
+    public function applicationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1193,7 +1199,7 @@ class ZabbixApi
         $auth = !in_array('application.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1209,14 +1215,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationMassAdd($params = [], $arrayKeyProperty = '')
+    public function applicationMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1225,7 +1232,7 @@ class ZabbixApi
         $auth = !in_array('application.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1241,14 +1248,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationTableName($params = [], $arrayKeyProperty = '')
+    public function applicationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1257,7 +1265,7 @@ class ZabbixApi
         $auth = !in_array('application.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1273,14 +1281,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationPk($params = [], $arrayKeyProperty = '')
+    public function applicationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1289,7 +1298,7 @@ class ZabbixApi
         $auth = !in_array('application.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1305,14 +1314,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function applicationPkOption($params = [], $arrayKeyProperty = '')
+    public function applicationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1321,7 +1331,7 @@ class ZabbixApi
         $auth = !in_array('application.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('application.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('application.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1337,14 +1347,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function configurationExport($params = [], $arrayKeyProperty = '')
+    public function configurationExport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1353,7 +1364,7 @@ class ZabbixApi
         $auth = !in_array('configuration.export', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('configuration.export', $params, $arrayKeyProperty, $auth);
+        return $this->request('configuration.export', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1369,14 +1380,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function configurationImport($params = [], $arrayKeyProperty = '')
+    public function configurationImport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1385,7 +1397,7 @@ class ZabbixApi
         $auth = !in_array('configuration.import', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('configuration.import', $params, $arrayKeyProperty, $auth);
+        return $this->request('configuration.import', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1401,14 +1413,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function configurationTableName($params = [], $arrayKeyProperty = '')
+    public function configurationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1417,7 +1430,7 @@ class ZabbixApi
         $auth = !in_array('configuration.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('configuration.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('configuration.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1433,14 +1446,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function configurationPk($params = [], $arrayKeyProperty = '')
+    public function configurationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1449,7 +1463,7 @@ class ZabbixApi
         $auth = !in_array('configuration.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('configuration.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('configuration.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1465,14 +1479,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function configurationPkOption($params = [], $arrayKeyProperty = '')
+    public function configurationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1481,7 +1496,7 @@ class ZabbixApi
         $auth = !in_array('configuration.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('configuration.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('configuration.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1497,14 +1512,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckGet($params = [], $arrayKeyProperty = '')
+    public function dcheckGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1513,7 +1529,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1529,14 +1545,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckIsReadable($params = [], $arrayKeyProperty = '')
+    public function dcheckIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1545,7 +1562,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1561,14 +1578,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckIsWritable($params = [], $arrayKeyProperty = '')
+    public function dcheckIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1577,7 +1595,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1593,14 +1611,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckTableName($params = [], $arrayKeyProperty = '')
+    public function dcheckTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1609,7 +1628,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1625,14 +1644,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckPk($params = [], $arrayKeyProperty = '')
+    public function dcheckPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1641,7 +1661,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1657,14 +1677,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dcheckPkOption($params = [], $arrayKeyProperty = '')
+    public function dcheckPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1673,7 +1694,7 @@ class ZabbixApi
         $auth = !in_array('dcheck.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dcheck.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('dcheck.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1689,14 +1710,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dhostGet($params = [], $arrayKeyProperty = '')
+    public function dhostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1705,7 +1727,7 @@ class ZabbixApi
         $auth = !in_array('dhost.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dhost.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('dhost.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1721,14 +1743,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dhostTableName($params = [], $arrayKeyProperty = '')
+    public function dhostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1737,7 +1760,7 @@ class ZabbixApi
         $auth = !in_array('dhost.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dhost.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('dhost.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1753,14 +1776,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dhostPk($params = [], $arrayKeyProperty = '')
+    public function dhostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1769,7 +1793,7 @@ class ZabbixApi
         $auth = !in_array('dhost.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dhost.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('dhost.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1785,14 +1809,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dhostPkOption($params = [], $arrayKeyProperty = '')
+    public function dhostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1801,7 +1826,7 @@ class ZabbixApi
         $auth = !in_array('dhost.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dhost.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('dhost.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1817,14 +1842,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleGet($params = [], $arrayKeyProperty = '')
+    public function discoveryruleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1833,7 +1859,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1849,14 +1875,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleCreate($params = [], $arrayKeyProperty = '')
+    public function discoveryruleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1865,7 +1892,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1881,14 +1908,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleUpdate($params = [], $arrayKeyProperty = '')
+    public function discoveryruleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1897,7 +1925,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1913,14 +1941,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleDelete($params = [], $arrayKeyProperty = '')
+    public function discoveryruleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1929,7 +1958,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1945,14 +1974,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleCopy($params = [], $arrayKeyProperty = '')
+    public function discoveryruleCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1961,7 +1991,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.copy', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.copy', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.copy', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -1977,14 +2007,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function discoveryruleSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -1993,7 +2024,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2009,14 +2040,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleIsReadable($params = [], $arrayKeyProperty = '')
+    public function discoveryruleIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2025,7 +2057,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2041,14 +2073,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleIsWritable($params = [], $arrayKeyProperty = '')
+    public function discoveryruleIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2057,7 +2090,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2073,14 +2106,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleFindInterfaceForItem($params = [], $arrayKeyProperty = '')
+    public function discoveryruleFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2089,7 +2123,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.findInterfaceForItem', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.findInterfaceForItem', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2105,14 +2139,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryruleTableName($params = [], $arrayKeyProperty = '')
+    public function discoveryruleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2121,7 +2156,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2137,14 +2172,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryrulePk($params = [], $arrayKeyProperty = '')
+    public function discoveryrulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2153,7 +2189,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2169,14 +2205,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function discoveryrulePkOption($params = [], $arrayKeyProperty = '')
+    public function discoveryrulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2185,7 +2222,7 @@ class ZabbixApi
         $auth = !in_array('discoveryrule.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('discoveryrule.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('discoveryrule.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2201,14 +2238,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleGet($params = [], $arrayKeyProperty = '')
+    public function druleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2217,7 +2255,7 @@ class ZabbixApi
         $auth = !in_array('drule.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2233,14 +2271,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleCheckInput($params = [], $arrayKeyProperty = '')
+    public function druleCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2249,7 +2288,7 @@ class ZabbixApi
         $auth = !in_array('drule.checkInput', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.checkInput', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2265,14 +2304,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleCreate($params = [], $arrayKeyProperty = '')
+    public function druleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2281,7 +2321,7 @@ class ZabbixApi
         $auth = !in_array('drule.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2297,14 +2337,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleUpdate($params = [], $arrayKeyProperty = '')
+    public function druleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2313,7 +2354,7 @@ class ZabbixApi
         $auth = !in_array('drule.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2329,14 +2370,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleDelete($params = [], $arrayKeyProperty = '')
+    public function druleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2345,7 +2387,7 @@ class ZabbixApi
         $auth = !in_array('drule.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2361,14 +2403,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleIsReadable($params = [], $arrayKeyProperty = '')
+    public function druleIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2377,7 +2420,7 @@ class ZabbixApi
         $auth = !in_array('drule.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2393,14 +2436,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleIsWritable($params = [], $arrayKeyProperty = '')
+    public function druleIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2409,7 +2453,7 @@ class ZabbixApi
         $auth = !in_array('drule.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2425,14 +2469,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function druleTableName($params = [], $arrayKeyProperty = '')
+    public function druleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2441,7 +2486,7 @@ class ZabbixApi
         $auth = !in_array('drule.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2457,14 +2502,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function drulePk($params = [], $arrayKeyProperty = '')
+    public function drulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2473,7 +2519,7 @@ class ZabbixApi
         $auth = !in_array('drule.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2489,14 +2535,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function drulePkOption($params = [], $arrayKeyProperty = '')
+    public function drulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2505,7 +2552,7 @@ class ZabbixApi
         $auth = !in_array('drule.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('drule.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('drule.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2521,14 +2568,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dserviceGet($params = [], $arrayKeyProperty = '')
+    public function dserviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2537,7 +2585,7 @@ class ZabbixApi
         $auth = !in_array('dservice.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dservice.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('dservice.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2553,14 +2601,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dserviceTableName($params = [], $arrayKeyProperty = '')
+    public function dserviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2569,7 +2618,7 @@ class ZabbixApi
         $auth = !in_array('dservice.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dservice.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('dservice.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2585,14 +2634,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dservicePk($params = [], $arrayKeyProperty = '')
+    public function dservicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2601,7 +2651,7 @@ class ZabbixApi
         $auth = !in_array('dservice.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dservice.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('dservice.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2617,14 +2667,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function dservicePkOption($params = [], $arrayKeyProperty = '')
+    public function dservicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2633,7 +2684,7 @@ class ZabbixApi
         $auth = !in_array('dservice.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('dservice.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('dservice.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2649,14 +2700,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function eventGet($params = [], $arrayKeyProperty = '')
+    public function eventGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2665,7 +2717,7 @@ class ZabbixApi
         $auth = !in_array('event.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('event.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('event.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2681,14 +2733,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function eventAcknowledge($params = [], $arrayKeyProperty = '')
+    public function eventAcknowledge($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2697,7 +2750,7 @@ class ZabbixApi
         $auth = !in_array('event.acknowledge', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('event.acknowledge', $params, $arrayKeyProperty, $auth);
+        return $this->request('event.acknowledge', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2713,14 +2766,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function eventTableName($params = [], $arrayKeyProperty = '')
+    public function eventTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2729,7 +2783,7 @@ class ZabbixApi
         $auth = !in_array('event.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('event.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('event.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2745,14 +2799,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function eventPk($params = [], $arrayKeyProperty = '')
+    public function eventPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2761,7 +2816,7 @@ class ZabbixApi
         $auth = !in_array('event.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('event.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('event.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2777,14 +2832,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function eventPkOption($params = [], $arrayKeyProperty = '')
+    public function eventPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2793,7 +2849,7 @@ class ZabbixApi
         $auth = !in_array('event.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('event.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('event.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2809,14 +2865,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphGet($params = [], $arrayKeyProperty = '')
+    public function graphGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2825,7 +2882,7 @@ class ZabbixApi
         $auth = !in_array('graph.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2841,14 +2898,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function graphSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2857,7 +2915,7 @@ class ZabbixApi
         $auth = !in_array('graph.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2873,14 +2931,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphDelete($params = [], $arrayKeyProperty = '')
+    public function graphDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2889,7 +2948,7 @@ class ZabbixApi
         $auth = !in_array('graph.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2905,14 +2964,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphUpdate($params = [], $arrayKeyProperty = '')
+    public function graphUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2921,7 +2981,7 @@ class ZabbixApi
         $auth = !in_array('graph.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2937,14 +2997,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphCreate($params = [], $arrayKeyProperty = '')
+    public function graphCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2953,7 +3014,7 @@ class ZabbixApi
         $auth = !in_array('graph.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2969,14 +3030,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphTableName($params = [], $arrayKeyProperty = '')
+    public function graphTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -2985,7 +3047,7 @@ class ZabbixApi
         $auth = !in_array('graph.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3001,14 +3063,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphPk($params = [], $arrayKeyProperty = '')
+    public function graphPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3017,7 +3080,7 @@ class ZabbixApi
         $auth = !in_array('graph.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3033,14 +3096,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphPkOption($params = [], $arrayKeyProperty = '')
+    public function graphPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3049,7 +3113,7 @@ class ZabbixApi
         $auth = !in_array('graph.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graph.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('graph.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3065,14 +3129,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphitemGet($params = [], $arrayKeyProperty = '')
+    public function graphitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3081,7 +3146,7 @@ class ZabbixApi
         $auth = !in_array('graphitem.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphitem.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphitem.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3097,14 +3162,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphitemTableName($params = [], $arrayKeyProperty = '')
+    public function graphitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3113,7 +3179,7 @@ class ZabbixApi
         $auth = !in_array('graphitem.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphitem.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3129,14 +3195,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphitemPk($params = [], $arrayKeyProperty = '')
+    public function graphitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3145,7 +3212,7 @@ class ZabbixApi
         $auth = !in_array('graphitem.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphitem.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3161,14 +3228,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphitemPkOption($params = [], $arrayKeyProperty = '')
+    public function graphitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3177,7 +3245,7 @@ class ZabbixApi
         $auth = !in_array('graphitem.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphitem.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3193,14 +3261,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeGet($params = [], $arrayKeyProperty = '')
+    public function graphprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3209,7 +3278,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3225,14 +3294,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function graphprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3241,7 +3311,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3257,14 +3327,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeDelete($params = [], $arrayKeyProperty = '')
+    public function graphprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3273,7 +3344,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3289,14 +3360,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeUpdate($params = [], $arrayKeyProperty = '')
+    public function graphprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3305,7 +3377,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3321,14 +3393,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeCreate($params = [], $arrayKeyProperty = '')
+    public function graphprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3337,7 +3410,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3353,14 +3426,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypeTableName($params = [], $arrayKeyProperty = '')
+    public function graphprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3369,7 +3443,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3385,14 +3459,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypePk($params = [], $arrayKeyProperty = '')
+    public function graphprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3401,7 +3476,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3417,14 +3492,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function graphprototypePkOption($params = [], $arrayKeyProperty = '')
+    public function graphprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3433,7 +3509,7 @@ class ZabbixApi
         $auth = !in_array('graphprototype.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('graphprototype.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('graphprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3449,14 +3525,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostGet($params = [], $arrayKeyProperty = '')
+    public function hostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3465,7 +3542,7 @@ class ZabbixApi
         $auth = !in_array('host.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3481,14 +3558,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostCreate($params = [], $arrayKeyProperty = '')
+    public function hostCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3497,7 +3575,7 @@ class ZabbixApi
         $auth = !in_array('host.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3513,14 +3591,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostUpdate($params = [], $arrayKeyProperty = '')
+    public function hostUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3529,7 +3608,7 @@ class ZabbixApi
         $auth = !in_array('host.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3545,14 +3624,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostMassAdd($params = [], $arrayKeyProperty = '')
+    public function hostMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3561,7 +3641,7 @@ class ZabbixApi
         $auth = !in_array('host.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3577,14 +3657,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostMassUpdate($params = [], $arrayKeyProperty = '')
+    public function hostMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3593,7 +3674,7 @@ class ZabbixApi
         $auth = !in_array('host.massUpdate', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.massUpdate', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3609,14 +3690,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostMassRemove($params = [], $arrayKeyProperty = '')
+    public function hostMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3625,7 +3707,7 @@ class ZabbixApi
         $auth = !in_array('host.massRemove', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.massRemove', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3641,14 +3723,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostDelete($params = [], $arrayKeyProperty = '')
+    public function hostDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3657,7 +3740,7 @@ class ZabbixApi
         $auth = !in_array('host.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3673,14 +3756,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostIsReadable($params = [], $arrayKeyProperty = '')
+    public function hostIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3689,7 +3773,7 @@ class ZabbixApi
         $auth = !in_array('host.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3705,14 +3789,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostIsWritable($params = [], $arrayKeyProperty = '')
+    public function hostIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3721,7 +3806,7 @@ class ZabbixApi
         $auth = !in_array('host.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3737,14 +3822,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostTableName($params = [], $arrayKeyProperty = '')
+    public function hostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3753,7 +3839,7 @@ class ZabbixApi
         $auth = !in_array('host.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3769,14 +3855,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostPk($params = [], $arrayKeyProperty = '')
+    public function hostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3785,7 +3872,7 @@ class ZabbixApi
         $auth = !in_array('host.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3801,14 +3888,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostPkOption($params = [], $arrayKeyProperty = '')
+    public function hostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3817,7 +3905,7 @@ class ZabbixApi
         $auth = !in_array('host.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('host.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('host.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3833,14 +3921,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupGet($params = [], $arrayKeyProperty = '')
+    public function hostgroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3849,7 +3938,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3865,14 +3954,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupCreate($params = [], $arrayKeyProperty = '')
+    public function hostgroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3881,7 +3971,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3897,14 +3987,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupUpdate($params = [], $arrayKeyProperty = '')
+    public function hostgroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3913,7 +4004,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3929,14 +4020,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupDelete($params = [], $arrayKeyProperty = '')
+    public function hostgroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3945,7 +4037,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3961,14 +4053,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupMassAdd($params = [], $arrayKeyProperty = '')
+    public function hostgroupMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -3977,7 +4070,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3993,14 +4086,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupMassRemove($params = [], $arrayKeyProperty = '')
+    public function hostgroupMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4009,7 +4103,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.massRemove', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.massRemove', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4025,14 +4119,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupMassUpdate($params = [], $arrayKeyProperty = '')
+    public function hostgroupMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4041,7 +4136,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.massUpdate', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.massUpdate', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4057,14 +4152,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupIsReadable($params = [], $arrayKeyProperty = '')
+    public function hostgroupIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4073,7 +4169,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4089,14 +4185,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupIsWritable($params = [], $arrayKeyProperty = '')
+    public function hostgroupIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4105,7 +4202,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4121,14 +4218,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupTableName($params = [], $arrayKeyProperty = '')
+    public function hostgroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4137,7 +4235,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4153,14 +4251,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupPk($params = [], $arrayKeyProperty = '')
+    public function hostgroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4169,7 +4268,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4185,14 +4284,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostgroupPkOption($params = [], $arrayKeyProperty = '')
+    public function hostgroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4201,7 +4301,7 @@ class ZabbixApi
         $auth = !in_array('hostgroup.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostgroup.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostgroup.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4217,14 +4317,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeGet($params = [], $arrayKeyProperty = '')
+    public function hostprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4233,7 +4334,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4249,14 +4350,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeCreate($params = [], $arrayKeyProperty = '')
+    public function hostprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4265,7 +4367,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4281,14 +4383,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeUpdate($params = [], $arrayKeyProperty = '')
+    public function hostprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4297,7 +4400,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4313,14 +4416,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function hostprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4329,7 +4433,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4345,14 +4449,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeDelete($params = [], $arrayKeyProperty = '')
+    public function hostprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4361,7 +4466,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4377,14 +4482,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeIsReadable($params = [], $arrayKeyProperty = '')
+    public function hostprototypeIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4393,7 +4499,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4409,14 +4515,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeIsWritable($params = [], $arrayKeyProperty = '')
+    public function hostprototypeIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4425,7 +4532,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4441,14 +4548,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypeTableName($params = [], $arrayKeyProperty = '')
+    public function hostprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4457,7 +4565,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4473,14 +4581,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypePk($params = [], $arrayKeyProperty = '')
+    public function hostprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4489,7 +4598,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4505,14 +4614,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostprototypePkOption($params = [], $arrayKeyProperty = '')
+    public function hostprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4521,7 +4631,7 @@ class ZabbixApi
         $auth = !in_array('hostprototype.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostprototype.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4537,14 +4647,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function historyGet($params = [], $arrayKeyProperty = '')
+    public function historyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4553,7 +4664,7 @@ class ZabbixApi
         $auth = !in_array('history.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('history.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('history.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4569,14 +4680,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function historyTableName($params = [], $arrayKeyProperty = '')
+    public function historyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4585,7 +4697,7 @@ class ZabbixApi
         $auth = !in_array('history.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('history.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('history.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4601,14 +4713,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function historyPk($params = [], $arrayKeyProperty = '')
+    public function historyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4617,7 +4730,7 @@ class ZabbixApi
         $auth = !in_array('history.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('history.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('history.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4633,14 +4746,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function historyPkOption($params = [], $arrayKeyProperty = '')
+    public function historyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4649,7 +4763,7 @@ class ZabbixApi
         $auth = !in_array('history.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('history.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('history.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4665,14 +4779,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceGet($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4681,7 +4796,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4697,14 +4812,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceCheckInput($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4713,7 +4829,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.checkInput', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.checkInput', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4729,14 +4845,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceCreate($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4745,7 +4862,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4761,14 +4878,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceUpdate($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4777,7 +4895,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4793,14 +4911,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceDelete($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4809,7 +4928,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4825,14 +4944,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceMassAdd($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4841,7 +4961,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4857,14 +4977,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceMassRemove($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4873,7 +4994,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.massRemove', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.massRemove', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4889,14 +5010,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceReplaceHostInterfaces($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceReplaceHostInterfaces($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4905,7 +5027,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.replaceHostInterfaces', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.replaceHostInterfaces', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.replaceHostInterfaces', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4921,14 +5043,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfaceTableName($params = [], $arrayKeyProperty = '')
+    public function hostinterfaceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4937,7 +5060,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4953,14 +5076,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfacePk($params = [], $arrayKeyProperty = '')
+    public function hostinterfacePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -4969,7 +5093,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -4985,14 +5109,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function hostinterfacePkOption($params = [], $arrayKeyProperty = '')
+    public function hostinterfacePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5001,7 +5126,7 @@ class ZabbixApi
         $auth = !in_array('hostinterface.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('hostinterface.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('hostinterface.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5017,14 +5142,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imageGet($params = [], $arrayKeyProperty = '')
+    public function imageGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5033,7 +5159,7 @@ class ZabbixApi
         $auth = !in_array('image.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5049,14 +5175,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imageCreate($params = [], $arrayKeyProperty = '')
+    public function imageCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5065,7 +5192,7 @@ class ZabbixApi
         $auth = !in_array('image.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5081,14 +5208,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imageUpdate($params = [], $arrayKeyProperty = '')
+    public function imageUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5097,7 +5225,7 @@ class ZabbixApi
         $auth = !in_array('image.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5113,14 +5241,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imageDelete($params = [], $arrayKeyProperty = '')
+    public function imageDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5129,7 +5258,7 @@ class ZabbixApi
         $auth = !in_array('image.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5145,14 +5274,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imageTableName($params = [], $arrayKeyProperty = '')
+    public function imageTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5161,7 +5291,7 @@ class ZabbixApi
         $auth = !in_array('image.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5177,14 +5307,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imagePk($params = [], $arrayKeyProperty = '')
+    public function imagePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5193,7 +5324,7 @@ class ZabbixApi
         $auth = !in_array('image.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5209,14 +5340,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function imagePkOption($params = [], $arrayKeyProperty = '')
+    public function imagePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5225,7 +5357,7 @@ class ZabbixApi
         $auth = !in_array('image.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('image.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('image.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5241,14 +5373,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapGet($params = [], $arrayKeyProperty = '')
+    public function iconmapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5257,7 +5390,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5273,14 +5406,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapCreate($params = [], $arrayKeyProperty = '')
+    public function iconmapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5289,7 +5423,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5305,14 +5439,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapUpdate($params = [], $arrayKeyProperty = '')
+    public function iconmapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5321,7 +5456,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5337,14 +5472,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapDelete($params = [], $arrayKeyProperty = '')
+    public function iconmapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5353,7 +5489,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5369,14 +5505,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapIsReadable($params = [], $arrayKeyProperty = '')
+    public function iconmapIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5385,7 +5522,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5401,14 +5538,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapIsWritable($params = [], $arrayKeyProperty = '')
+    public function iconmapIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5417,7 +5555,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5433,14 +5571,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapTableName($params = [], $arrayKeyProperty = '')
+    public function iconmapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5449,7 +5588,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5465,14 +5604,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapPk($params = [], $arrayKeyProperty = '')
+    public function iconmapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5481,7 +5621,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5497,14 +5637,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function iconmapPkOption($params = [], $arrayKeyProperty = '')
+    public function iconmapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5513,7 +5654,7 @@ class ZabbixApi
         $auth = !in_array('iconmap.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('iconmap.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('iconmap.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5529,14 +5670,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemGet($params = [], $arrayKeyProperty = '')
+    public function itemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5545,7 +5687,7 @@ class ZabbixApi
         $auth = !in_array('item.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5561,14 +5703,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemCreate($params = [], $arrayKeyProperty = '')
+    public function itemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5577,7 +5720,7 @@ class ZabbixApi
         $auth = !in_array('item.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5593,14 +5736,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemUpdate($params = [], $arrayKeyProperty = '')
+    public function itemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5609,7 +5753,7 @@ class ZabbixApi
         $auth = !in_array('item.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5625,14 +5769,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemDelete($params = [], $arrayKeyProperty = '')
+    public function itemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5641,7 +5786,7 @@ class ZabbixApi
         $auth = !in_array('item.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5657,14 +5802,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function itemSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5673,7 +5819,7 @@ class ZabbixApi
         $auth = !in_array('item.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5689,14 +5835,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemValidateInventoryLinks($params = [], $arrayKeyProperty = '')
+    public function itemValidateInventoryLinks($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5705,7 +5852,7 @@ class ZabbixApi
         $auth = !in_array('item.validateInventoryLinks', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.validateInventoryLinks', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.validateInventoryLinks', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5721,14 +5868,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemAddRelatedObjects($params = [], $arrayKeyProperty = '')
+    public function itemAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5737,7 +5885,7 @@ class ZabbixApi
         $auth = !in_array('item.addRelatedObjects', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.addRelatedObjects', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.addRelatedObjects', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5753,14 +5901,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemFindInterfaceForItem($params = [], $arrayKeyProperty = '')
+    public function itemFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5769,7 +5918,7 @@ class ZabbixApi
         $auth = !in_array('item.findInterfaceForItem', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.findInterfaceForItem', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5785,14 +5934,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemIsReadable($params = [], $arrayKeyProperty = '')
+    public function itemIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5801,7 +5951,7 @@ class ZabbixApi
         $auth = !in_array('item.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5817,14 +5967,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemIsWritable($params = [], $arrayKeyProperty = '')
+    public function itemIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5833,7 +5984,7 @@ class ZabbixApi
         $auth = !in_array('item.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5849,14 +6000,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemTableName($params = [], $arrayKeyProperty = '')
+    public function itemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5865,7 +6017,7 @@ class ZabbixApi
         $auth = !in_array('item.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5881,14 +6033,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemPk($params = [], $arrayKeyProperty = '')
+    public function itemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5897,7 +6050,7 @@ class ZabbixApi
         $auth = !in_array('item.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5913,14 +6066,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemPkOption($params = [], $arrayKeyProperty = '')
+    public function itemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5929,7 +6083,7 @@ class ZabbixApi
         $auth = !in_array('item.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('item.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5945,14 +6099,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeGet($params = [], $arrayKeyProperty = '')
+    public function itemprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5961,7 +6116,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5977,14 +6132,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeCreate($params = [], $arrayKeyProperty = '')
+    public function itemprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -5993,7 +6149,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6009,14 +6165,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeUpdate($params = [], $arrayKeyProperty = '')
+    public function itemprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6025,7 +6182,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6041,14 +6198,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeDelete($params = [], $arrayKeyProperty = '')
+    public function itemprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6057,7 +6215,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6073,14 +6231,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function itemprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6089,7 +6248,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6105,14 +6264,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeAddRelatedObjects($params = [], $arrayKeyProperty = '')
+    public function itemprototypeAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6121,7 +6281,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.addRelatedObjects', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.addRelatedObjects', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.addRelatedObjects', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6137,14 +6297,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeFindInterfaceForItem($params = [], $arrayKeyProperty = '')
+    public function itemprototypeFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6153,7 +6314,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.findInterfaceForItem', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.findInterfaceForItem', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6169,14 +6330,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeIsReadable($params = [], $arrayKeyProperty = '')
+    public function itemprototypeIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6185,7 +6347,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6201,14 +6363,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeIsWritable($params = [], $arrayKeyProperty = '')
+    public function itemprototypeIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6217,7 +6380,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6233,14 +6396,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypeTableName($params = [], $arrayKeyProperty = '')
+    public function itemprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6249,7 +6413,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6265,14 +6429,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypePk($params = [], $arrayKeyProperty = '')
+    public function itemprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6281,7 +6446,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6297,14 +6462,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function itemprototypePkOption($params = [], $arrayKeyProperty = '')
+    public function itemprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6313,7 +6479,7 @@ class ZabbixApi
         $auth = !in_array('itemprototype.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('itemprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6329,14 +6495,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenanceGet($params = [], $arrayKeyProperty = '')
+    public function maintenanceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6345,7 +6512,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6361,14 +6528,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenanceCreate($params = [], $arrayKeyProperty = '')
+    public function maintenanceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6377,7 +6545,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6393,14 +6561,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenanceUpdate($params = [], $arrayKeyProperty = '')
+    public function maintenanceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6409,7 +6578,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6425,14 +6594,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenanceDelete($params = [], $arrayKeyProperty = '')
+    public function maintenanceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6441,7 +6611,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6457,14 +6627,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenanceTableName($params = [], $arrayKeyProperty = '')
+    public function maintenanceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6473,7 +6644,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6489,14 +6660,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenancePk($params = [], $arrayKeyProperty = '')
+    public function maintenancePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6505,7 +6677,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6521,14 +6693,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function maintenancePkOption($params = [], $arrayKeyProperty = '')
+    public function maintenancePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6537,7 +6710,7 @@ class ZabbixApi
         $auth = !in_array('maintenance.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('maintenance.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('maintenance.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6553,14 +6726,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapGet($params = [], $arrayKeyProperty = '')
+    public function mapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6569,7 +6743,7 @@ class ZabbixApi
         $auth = !in_array('map.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6585,14 +6759,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapCreate($params = [], $arrayKeyProperty = '')
+    public function mapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6601,7 +6776,7 @@ class ZabbixApi
         $auth = !in_array('map.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6617,14 +6792,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapUpdate($params = [], $arrayKeyProperty = '')
+    public function mapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6633,7 +6809,7 @@ class ZabbixApi
         $auth = !in_array('map.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6649,14 +6825,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapDelete($params = [], $arrayKeyProperty = '')
+    public function mapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6665,7 +6842,7 @@ class ZabbixApi
         $auth = !in_array('map.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6681,14 +6858,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapIsReadable($params = [], $arrayKeyProperty = '')
+    public function mapIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6697,7 +6875,7 @@ class ZabbixApi
         $auth = !in_array('map.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6713,14 +6891,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapIsWritable($params = [], $arrayKeyProperty = '')
+    public function mapIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6729,7 +6908,7 @@ class ZabbixApi
         $auth = !in_array('map.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6745,14 +6924,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapCheckCircleSelementsLink($params = [], $arrayKeyProperty = '')
+    public function mapCheckCircleSelementsLink($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6761,7 +6941,7 @@ class ZabbixApi
         $auth = !in_array('map.checkCircleSelementsLink', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.checkCircleSelementsLink', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.checkCircleSelementsLink', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6777,14 +6957,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapTableName($params = [], $arrayKeyProperty = '')
+    public function mapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6793,7 +6974,7 @@ class ZabbixApi
         $auth = !in_array('map.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6809,14 +6990,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapPk($params = [], $arrayKeyProperty = '')
+    public function mapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6825,7 +7007,7 @@ class ZabbixApi
         $auth = !in_array('map.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6841,14 +7023,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mapPkOption($params = [], $arrayKeyProperty = '')
+    public function mapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6857,7 +7040,7 @@ class ZabbixApi
         $auth = !in_array('map.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('map.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('map.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6873,14 +7056,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypeGet($params = [], $arrayKeyProperty = '')
+    public function mediatypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6889,7 +7073,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6905,14 +7089,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypeCreate($params = [], $arrayKeyProperty = '')
+    public function mediatypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6921,7 +7106,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6937,14 +7122,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypeUpdate($params = [], $arrayKeyProperty = '')
+    public function mediatypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6953,7 +7139,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6969,14 +7155,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypeDelete($params = [], $arrayKeyProperty = '')
+    public function mediatypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -6985,7 +7172,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7001,14 +7188,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypeTableName($params = [], $arrayKeyProperty = '')
+    public function mediatypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7017,7 +7205,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7033,14 +7221,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypePk($params = [], $arrayKeyProperty = '')
+    public function mediatypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7049,7 +7238,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7065,14 +7254,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function mediatypePkOption($params = [], $arrayKeyProperty = '')
+    public function mediatypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7081,7 +7271,7 @@ class ZabbixApi
         $auth = !in_array('mediatype.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('mediatype.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('mediatype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7097,14 +7287,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyGet($params = [], $arrayKeyProperty = '')
+    public function proxyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7113,7 +7304,7 @@ class ZabbixApi
         $auth = !in_array('proxy.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7129,14 +7320,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyCreate($params = [], $arrayKeyProperty = '')
+    public function proxyCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7145,7 +7337,7 @@ class ZabbixApi
         $auth = !in_array('proxy.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7161,14 +7353,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyUpdate($params = [], $arrayKeyProperty = '')
+    public function proxyUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7177,7 +7370,7 @@ class ZabbixApi
         $auth = !in_array('proxy.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7193,14 +7386,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyDelete($params = [], $arrayKeyProperty = '')
+    public function proxyDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7209,7 +7403,7 @@ class ZabbixApi
         $auth = !in_array('proxy.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7225,14 +7419,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyIsReadable($params = [], $arrayKeyProperty = '')
+    public function proxyIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7241,7 +7436,7 @@ class ZabbixApi
         $auth = !in_array('proxy.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7257,14 +7452,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyIsWritable($params = [], $arrayKeyProperty = '')
+    public function proxyIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7273,7 +7469,7 @@ class ZabbixApi
         $auth = !in_array('proxy.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7289,14 +7485,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyTableName($params = [], $arrayKeyProperty = '')
+    public function proxyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7305,7 +7502,7 @@ class ZabbixApi
         $auth = !in_array('proxy.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7321,14 +7518,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyPk($params = [], $arrayKeyProperty = '')
+    public function proxyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7337,7 +7535,7 @@ class ZabbixApi
         $auth = !in_array('proxy.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7353,14 +7551,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function proxyPkOption($params = [], $arrayKeyProperty = '')
+    public function proxyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7369,7 +7568,7 @@ class ZabbixApi
         $auth = !in_array('proxy.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('proxy.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('proxy.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7385,14 +7584,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceGet($params = [], $arrayKeyProperty = '')
+    public function serviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7401,7 +7601,7 @@ class ZabbixApi
         $auth = !in_array('service.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7417,14 +7617,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceCreate($params = [], $arrayKeyProperty = '')
+    public function serviceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7433,7 +7634,7 @@ class ZabbixApi
         $auth = !in_array('service.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7449,14 +7650,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceValidateUpdate($params = [], $arrayKeyProperty = '')
+    public function serviceValidateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7465,7 +7667,7 @@ class ZabbixApi
         $auth = !in_array('service.validateUpdate', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.validateUpdate', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.validateUpdate', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7481,14 +7683,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceUpdate($params = [], $arrayKeyProperty = '')
+    public function serviceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7497,7 +7700,7 @@ class ZabbixApi
         $auth = !in_array('service.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7513,14 +7716,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceValidateDelete($params = [], $arrayKeyProperty = '')
+    public function serviceValidateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7529,7 +7733,7 @@ class ZabbixApi
         $auth = !in_array('service.validateDelete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.validateDelete', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.validateDelete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7545,14 +7749,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceDelete($params = [], $arrayKeyProperty = '')
+    public function serviceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7561,7 +7766,7 @@ class ZabbixApi
         $auth = !in_array('service.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7577,14 +7782,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceAddDependencies($params = [], $arrayKeyProperty = '')
+    public function serviceAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7593,7 +7799,7 @@ class ZabbixApi
         $auth = !in_array('service.addDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.addDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7609,14 +7815,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceDeleteDependencies($params = [], $arrayKeyProperty = '')
+    public function serviceDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7625,7 +7832,7 @@ class ZabbixApi
         $auth = !in_array('service.deleteDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.deleteDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.deleteDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7641,14 +7848,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceValidateAddTimes($params = [], $arrayKeyProperty = '')
+    public function serviceValidateAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7657,7 +7865,7 @@ class ZabbixApi
         $auth = !in_array('service.validateAddTimes', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.validateAddTimes', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.validateAddTimes', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7673,14 +7881,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceAddTimes($params = [], $arrayKeyProperty = '')
+    public function serviceAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7689,7 +7898,7 @@ class ZabbixApi
         $auth = !in_array('service.addTimes', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.addTimes', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.addTimes', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7705,14 +7914,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceGetSla($params = [], $arrayKeyProperty = '')
+    public function serviceGetSla($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7721,7 +7931,7 @@ class ZabbixApi
         $auth = !in_array('service.getSla', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.getSla', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.getSla', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7737,14 +7947,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceDeleteTimes($params = [], $arrayKeyProperty = '')
+    public function serviceDeleteTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7753,7 +7964,7 @@ class ZabbixApi
         $auth = !in_array('service.deleteTimes', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.deleteTimes', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.deleteTimes', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7769,14 +7980,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceIsReadable($params = [], $arrayKeyProperty = '')
+    public function serviceIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7785,7 +7997,7 @@ class ZabbixApi
         $auth = !in_array('service.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7801,14 +8013,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceIsWritable($params = [], $arrayKeyProperty = '')
+    public function serviceIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7817,7 +8030,7 @@ class ZabbixApi
         $auth = !in_array('service.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7833,14 +8046,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function serviceTableName($params = [], $arrayKeyProperty = '')
+    public function serviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7849,7 +8063,7 @@ class ZabbixApi
         $auth = !in_array('service.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7865,14 +8079,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function servicePk($params = [], $arrayKeyProperty = '')
+    public function servicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7881,7 +8096,7 @@ class ZabbixApi
         $auth = !in_array('service.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7897,14 +8112,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function servicePkOption($params = [], $arrayKeyProperty = '')
+    public function servicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7913,7 +8129,7 @@ class ZabbixApi
         $auth = !in_array('service.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('service.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('service.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7929,14 +8145,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenGet($params = [], $arrayKeyProperty = '')
+    public function screenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7945,7 +8162,7 @@ class ZabbixApi
         $auth = !in_array('screen.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7961,14 +8178,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenCreate($params = [], $arrayKeyProperty = '')
+    public function screenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -7977,7 +8195,7 @@ class ZabbixApi
         $auth = !in_array('screen.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7993,14 +8211,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenUpdate($params = [], $arrayKeyProperty = '')
+    public function screenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8009,7 +8228,7 @@ class ZabbixApi
         $auth = !in_array('screen.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8025,14 +8244,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenDelete($params = [], $arrayKeyProperty = '')
+    public function screenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8041,7 +8261,7 @@ class ZabbixApi
         $auth = !in_array('screen.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8057,14 +8277,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenTableName($params = [], $arrayKeyProperty = '')
+    public function screenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8073,7 +8294,7 @@ class ZabbixApi
         $auth = !in_array('screen.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8089,14 +8310,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenPk($params = [], $arrayKeyProperty = '')
+    public function screenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8105,7 +8327,7 @@ class ZabbixApi
         $auth = !in_array('screen.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8121,14 +8343,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenPkOption($params = [], $arrayKeyProperty = '')
+    public function screenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8137,7 +8360,7 @@ class ZabbixApi
         $auth = !in_array('screen.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screen.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('screen.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8153,14 +8376,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemGet($params = [], $arrayKeyProperty = '')
+    public function screenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8169,7 +8393,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8185,14 +8409,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemCreate($params = [], $arrayKeyProperty = '')
+    public function screenitemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8201,7 +8426,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8217,14 +8442,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemUpdate($params = [], $arrayKeyProperty = '')
+    public function screenitemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8233,7 +8459,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8249,14 +8475,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemUpdateByPosition($params = [], $arrayKeyProperty = '')
+    public function screenitemUpdateByPosition($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8265,7 +8492,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.updateByPosition', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.updateByPosition', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.updateByPosition', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8281,14 +8508,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemDelete($params = [], $arrayKeyProperty = '')
+    public function screenitemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8297,7 +8525,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8313,14 +8541,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemIsReadable($params = [], $arrayKeyProperty = '')
+    public function screenitemIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8329,7 +8558,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8345,14 +8574,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemIsWritable($params = [], $arrayKeyProperty = '')
+    public function screenitemIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8361,7 +8591,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8377,14 +8607,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemTableName($params = [], $arrayKeyProperty = '')
+    public function screenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8393,7 +8624,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8409,14 +8640,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemPk($params = [], $arrayKeyProperty = '')
+    public function screenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8425,7 +8657,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8441,14 +8673,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function screenitemPkOption($params = [], $arrayKeyProperty = '')
+    public function screenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8457,7 +8690,7 @@ class ZabbixApi
         $auth = !in_array('screenitem.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('screenitem.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('screenitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8473,14 +8706,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptGet($params = [], $arrayKeyProperty = '')
+    public function scriptGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8489,7 +8723,7 @@ class ZabbixApi
         $auth = !in_array('script.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8505,14 +8739,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptCreate($params = [], $arrayKeyProperty = '')
+    public function scriptCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8521,7 +8756,7 @@ class ZabbixApi
         $auth = !in_array('script.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8537,14 +8772,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptUpdate($params = [], $arrayKeyProperty = '')
+    public function scriptUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8553,7 +8789,7 @@ class ZabbixApi
         $auth = !in_array('script.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8569,14 +8805,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptDelete($params = [], $arrayKeyProperty = '')
+    public function scriptDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8585,7 +8822,7 @@ class ZabbixApi
         $auth = !in_array('script.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8601,14 +8838,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptExecute($params = [], $arrayKeyProperty = '')
+    public function scriptExecute($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8617,7 +8855,7 @@ class ZabbixApi
         $auth = !in_array('script.execute', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.execute', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.execute', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8633,14 +8871,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptGetScriptsByHosts($params = [], $arrayKeyProperty = '')
+    public function scriptGetScriptsByHosts($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8649,7 +8888,7 @@ class ZabbixApi
         $auth = !in_array('script.getScriptsByHosts', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.getScriptsByHosts', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.getScriptsByHosts', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8665,14 +8904,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptTableName($params = [], $arrayKeyProperty = '')
+    public function scriptTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8681,7 +8921,7 @@ class ZabbixApi
         $auth = !in_array('script.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8697,14 +8937,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptPk($params = [], $arrayKeyProperty = '')
+    public function scriptPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8713,7 +8954,7 @@ class ZabbixApi
         $auth = !in_array('script.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8729,14 +8970,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function scriptPkOption($params = [], $arrayKeyProperty = '')
+    public function scriptPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8745,7 +8987,7 @@ class ZabbixApi
         $auth = !in_array('script.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('script.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('script.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8761,14 +9003,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatePkOption($params = [], $arrayKeyProperty = '')
+    public function templatePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8777,7 +9020,7 @@ class ZabbixApi
         $auth = !in_array('template.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8793,14 +9036,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateGet($params = [], $arrayKeyProperty = '')
+    public function templateGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8809,7 +9053,7 @@ class ZabbixApi
         $auth = !in_array('template.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8825,14 +9069,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateCreate($params = [], $arrayKeyProperty = '')
+    public function templateCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8841,7 +9086,7 @@ class ZabbixApi
         $auth = !in_array('template.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8857,14 +9102,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateUpdate($params = [], $arrayKeyProperty = '')
+    public function templateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8873,7 +9119,7 @@ class ZabbixApi
         $auth = !in_array('template.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8889,14 +9135,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateDelete($params = [], $arrayKeyProperty = '')
+    public function templateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8905,7 +9152,7 @@ class ZabbixApi
         $auth = !in_array('template.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8921,14 +9168,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateMassAdd($params = [], $arrayKeyProperty = '')
+    public function templateMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8937,7 +9185,7 @@ class ZabbixApi
         $auth = !in_array('template.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8953,14 +9201,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateMassUpdate($params = [], $arrayKeyProperty = '')
+    public function templateMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -8969,7 +9218,7 @@ class ZabbixApi
         $auth = !in_array('template.massUpdate', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.massUpdate', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -8985,14 +9234,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateMassRemove($params = [], $arrayKeyProperty = '')
+    public function templateMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9001,7 +9251,7 @@ class ZabbixApi
         $auth = !in_array('template.massRemove', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.massRemove', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9017,14 +9267,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateIsReadable($params = [], $arrayKeyProperty = '')
+    public function templateIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9033,7 +9284,7 @@ class ZabbixApi
         $auth = !in_array('template.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9049,14 +9300,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateIsWritable($params = [], $arrayKeyProperty = '')
+    public function templateIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9065,7 +9317,7 @@ class ZabbixApi
         $auth = !in_array('template.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9081,14 +9333,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templateTableName($params = [], $arrayKeyProperty = '')
+    public function templateTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9097,7 +9350,7 @@ class ZabbixApi
         $auth = !in_array('template.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9113,14 +9366,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatePk($params = [], $arrayKeyProperty = '')
+    public function templatePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9129,7 +9383,7 @@ class ZabbixApi
         $auth = !in_array('template.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('template.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('template.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9145,14 +9399,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenGet($params = [], $arrayKeyProperty = '')
+    public function templatescreenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9161,7 +9416,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9177,14 +9432,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenCopy($params = [], $arrayKeyProperty = '')
+    public function templatescreenCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9193,7 +9449,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.copy', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.copy', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.copy', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9209,14 +9465,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenUpdate($params = [], $arrayKeyProperty = '')
+    public function templatescreenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9225,7 +9482,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9241,14 +9498,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenCreate($params = [], $arrayKeyProperty = '')
+    public function templatescreenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9257,7 +9515,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9273,14 +9531,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenDelete($params = [], $arrayKeyProperty = '')
+    public function templatescreenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9289,7 +9548,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9305,14 +9564,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenTableName($params = [], $arrayKeyProperty = '')
+    public function templatescreenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9321,7 +9581,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9337,14 +9597,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenPk($params = [], $arrayKeyProperty = '')
+    public function templatescreenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9353,7 +9614,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9369,14 +9630,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenPkOption($params = [], $arrayKeyProperty = '')
+    public function templatescreenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9385,7 +9647,7 @@ class ZabbixApi
         $auth = !in_array('templatescreen.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreen.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreen.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9401,14 +9663,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenitemGet($params = [], $arrayKeyProperty = '')
+    public function templatescreenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9417,7 +9680,7 @@ class ZabbixApi
         $auth = !in_array('templatescreenitem.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreenitem.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreenitem.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9433,14 +9696,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenitemTableName($params = [], $arrayKeyProperty = '')
+    public function templatescreenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9449,7 +9713,7 @@ class ZabbixApi
         $auth = !in_array('templatescreenitem.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreenitem.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreenitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9465,14 +9729,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenitemPk($params = [], $arrayKeyProperty = '')
+    public function templatescreenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9481,7 +9746,7 @@ class ZabbixApi
         $auth = !in_array('templatescreenitem.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreenitem.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreenitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9497,14 +9762,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function templatescreenitemPkOption($params = [], $arrayKeyProperty = '')
+    public function templatescreenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9513,7 +9779,7 @@ class ZabbixApi
         $auth = !in_array('templatescreenitem.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('templatescreenitem.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('templatescreenitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9529,14 +9795,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function trendGet($params = [], $arrayKeyProperty = '')
+    public function trendGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9545,7 +9812,7 @@ class ZabbixApi
         $auth = !in_array('trend.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trend.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('trend.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9561,14 +9828,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function trendTableName($params = [], $arrayKeyProperty = '')
+    public function trendTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9577,7 +9845,7 @@ class ZabbixApi
         $auth = !in_array('trend.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trend.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('trend.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9593,14 +9861,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function trendPk($params = [], $arrayKeyProperty = '')
+    public function trendPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9609,7 +9878,7 @@ class ZabbixApi
         $auth = !in_array('trend.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trend.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('trend.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9625,14 +9894,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function trendPkOption($params = [], $arrayKeyProperty = '')
+    public function trendPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9641,7 +9911,7 @@ class ZabbixApi
         $auth = !in_array('trend.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trend.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('trend.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9657,14 +9927,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerGet($params = [], $arrayKeyProperty = '')
+    public function triggerGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9673,7 +9944,7 @@ class ZabbixApi
         $auth = !in_array('trigger.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9689,14 +9960,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerCheckInput($params = [], $arrayKeyProperty = '')
+    public function triggerCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9705,7 +9977,7 @@ class ZabbixApi
         $auth = !in_array('trigger.checkInput', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.checkInput', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9721,14 +9993,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerCreate($params = [], $arrayKeyProperty = '')
+    public function triggerCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9737,7 +10010,7 @@ class ZabbixApi
         $auth = !in_array('trigger.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9753,14 +10026,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerUpdate($params = [], $arrayKeyProperty = '')
+    public function triggerUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9769,7 +10043,7 @@ class ZabbixApi
         $auth = !in_array('trigger.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9785,14 +10059,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerDelete($params = [], $arrayKeyProperty = '')
+    public function triggerDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9801,7 +10076,7 @@ class ZabbixApi
         $auth = !in_array('trigger.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9817,14 +10092,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerAddDependencies($params = [], $arrayKeyProperty = '')
+    public function triggerAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9833,7 +10109,7 @@ class ZabbixApi
         $auth = !in_array('trigger.addDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.addDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9849,14 +10125,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerDeleteDependencies($params = [], $arrayKeyProperty = '')
+    public function triggerDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9865,7 +10142,7 @@ class ZabbixApi
         $auth = !in_array('trigger.deleteDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.deleteDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.deleteDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9881,14 +10158,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function triggerSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9897,7 +10175,7 @@ class ZabbixApi
         $auth = !in_array('trigger.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9913,14 +10191,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerSyncTemplateDependencies($params = [], $arrayKeyProperty = '')
+    public function triggerSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9929,7 +10208,7 @@ class ZabbixApi
         $auth = !in_array('trigger.syncTemplateDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.syncTemplateDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.syncTemplateDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9945,14 +10224,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerIsReadable($params = [], $arrayKeyProperty = '')
+    public function triggerIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9961,7 +10241,7 @@ class ZabbixApi
         $auth = !in_array('trigger.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9977,14 +10257,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerIsWritable($params = [], $arrayKeyProperty = '')
+    public function triggerIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -9993,7 +10274,7 @@ class ZabbixApi
         $auth = !in_array('trigger.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10009,14 +10290,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerTableName($params = [], $arrayKeyProperty = '')
+    public function triggerTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10025,7 +10307,7 @@ class ZabbixApi
         $auth = !in_array('trigger.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10041,14 +10323,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerPk($params = [], $arrayKeyProperty = '')
+    public function triggerPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10057,7 +10340,7 @@ class ZabbixApi
         $auth = !in_array('trigger.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10073,14 +10356,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerPkOption($params = [], $arrayKeyProperty = '')
+    public function triggerPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10089,7 +10373,7 @@ class ZabbixApi
         $auth = !in_array('trigger.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('trigger.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10105,14 +10389,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeGet($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10121,7 +10406,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10137,14 +10422,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeCreate($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10153,7 +10439,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10169,14 +10455,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeUpdate($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10185,7 +10472,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10201,14 +10488,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeDelete($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10217,7 +10505,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10233,14 +10521,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeAddDependencies($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10249,7 +10538,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.addDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.addDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10265,14 +10554,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeSyncTemplateDependencies($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10281,7 +10571,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.syncTemplateDependencies', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.syncTemplateDependencies', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.syncTemplateDependencies', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10297,14 +10587,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeSyncTemplates($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10313,7 +10604,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.syncTemplates', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10329,14 +10620,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypeTableName($params = [], $arrayKeyProperty = '')
+    public function triggerprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10345,7 +10637,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10361,14 +10653,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypePk($params = [], $arrayKeyProperty = '')
+    public function triggerprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10377,7 +10670,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10393,14 +10686,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function triggerprototypePkOption($params = [], $arrayKeyProperty = '')
+    public function triggerprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10409,7 +10703,7 @@ class ZabbixApi
         $auth = !in_array('triggerprototype.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('triggerprototype.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('triggerprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10425,14 +10719,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userGet($params = [], $arrayKeyProperty = '')
+    public function userGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10441,7 +10736,7 @@ class ZabbixApi
         $auth = !in_array('user.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10457,14 +10752,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userCreate($params = [], $arrayKeyProperty = '')
+    public function userCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10473,7 +10769,7 @@ class ZabbixApi
         $auth = !in_array('user.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10489,14 +10785,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userUpdate($params = [], $arrayKeyProperty = '')
+    public function userUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10505,7 +10802,7 @@ class ZabbixApi
         $auth = !in_array('user.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10521,14 +10818,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userUpdateProfile($params = [], $arrayKeyProperty = '')
+    public function userUpdateProfile($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10537,7 +10835,7 @@ class ZabbixApi
         $auth = !in_array('user.updateProfile', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.updateProfile', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.updateProfile', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10553,14 +10851,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userDelete($params = [], $arrayKeyProperty = '')
+    public function userDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10569,7 +10868,7 @@ class ZabbixApi
         $auth = !in_array('user.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10585,14 +10884,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userAddMedia($params = [], $arrayKeyProperty = '')
+    public function userAddMedia($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10601,7 +10901,7 @@ class ZabbixApi
         $auth = !in_array('user.addMedia', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.addMedia', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.addMedia', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10617,14 +10917,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userUpdateMedia($params = [], $arrayKeyProperty = '')
+    public function userUpdateMedia($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10633,7 +10934,7 @@ class ZabbixApi
         $auth = !in_array('user.updateMedia', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.updateMedia', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.updateMedia', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10649,14 +10950,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userDeleteMedia($params = [], $arrayKeyProperty = '')
+    public function userDeleteMedia($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10665,7 +10967,7 @@ class ZabbixApi
         $auth = !in_array('user.deleteMedia', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.deleteMedia', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.deleteMedia', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10681,14 +10983,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userDeleteMediaReal($params = [], $arrayKeyProperty = '')
+    public function userDeleteMediaReal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10697,7 +11000,7 @@ class ZabbixApi
         $auth = !in_array('user.deleteMediaReal', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.deleteMediaReal', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.deleteMediaReal', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10713,14 +11016,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userCheckAuthentication($params = [], $arrayKeyProperty = '')
+    public function userCheckAuthentication($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10729,7 +11033,7 @@ class ZabbixApi
         $auth = !in_array('user.checkAuthentication', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.checkAuthentication', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.checkAuthentication', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10745,14 +11049,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userIsReadable($params = [], $arrayKeyProperty = '')
+    public function userIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10761,7 +11066,7 @@ class ZabbixApi
         $auth = !in_array('user.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10777,14 +11082,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userIsWritable($params = [], $arrayKeyProperty = '')
+    public function userIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10793,7 +11099,7 @@ class ZabbixApi
         $auth = !in_array('user.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10809,14 +11115,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userTableName($params = [], $arrayKeyProperty = '')
+    public function userTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10825,7 +11132,7 @@ class ZabbixApi
         $auth = !in_array('user.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10841,14 +11148,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userPk($params = [], $arrayKeyProperty = '')
+    public function userPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10857,7 +11165,7 @@ class ZabbixApi
         $auth = !in_array('user.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10873,14 +11181,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function userPkOption($params = [], $arrayKeyProperty = '')
+    public function userPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10889,7 +11198,7 @@ class ZabbixApi
         $auth = !in_array('user.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('user.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10905,14 +11214,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupGet($params = [], $arrayKeyProperty = '')
+    public function usergroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10921,7 +11231,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10937,14 +11247,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupCreate($params = [], $arrayKeyProperty = '')
+    public function usergroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10953,7 +11264,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10969,14 +11280,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupUpdate($params = [], $arrayKeyProperty = '')
+    public function usergroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -10985,7 +11297,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11001,14 +11313,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupMassAdd($params = [], $arrayKeyProperty = '')
+    public function usergroupMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11017,7 +11330,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.massAdd', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.massAdd', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11033,14 +11346,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupMassUpdate($params = [], $arrayKeyProperty = '')
+    public function usergroupMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11049,7 +11363,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.massUpdate', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.massUpdate', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11065,14 +11379,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupDelete($params = [], $arrayKeyProperty = '')
+    public function usergroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11081,7 +11396,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11097,14 +11412,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupIsReadable($params = [], $arrayKeyProperty = '')
+    public function usergroupIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11113,7 +11429,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11129,14 +11445,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupIsWritable($params = [], $arrayKeyProperty = '')
+    public function usergroupIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11145,7 +11462,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11161,14 +11478,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupTableName($params = [], $arrayKeyProperty = '')
+    public function usergroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11177,7 +11495,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11193,14 +11511,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupPk($params = [], $arrayKeyProperty = '')
+    public function usergroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11209,7 +11528,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11225,14 +11544,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usergroupPkOption($params = [], $arrayKeyProperty = '')
+    public function usergroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11241,7 +11561,7 @@ class ZabbixApi
         $auth = !in_array('usergroup.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usergroup.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('usergroup.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11257,14 +11577,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroGet($params = [], $arrayKeyProperty = '')
+    public function usermacroGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11273,7 +11594,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11289,14 +11610,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroCreateGlobal($params = [], $arrayKeyProperty = '')
+    public function usermacroCreateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11305,7 +11627,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.createGlobal', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.createGlobal', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.createGlobal', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11321,14 +11643,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroUpdateGlobal($params = [], $arrayKeyProperty = '')
+    public function usermacroUpdateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11337,7 +11660,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.updateGlobal', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.updateGlobal', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.updateGlobal', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11353,14 +11676,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroDeleteGlobal($params = [], $arrayKeyProperty = '')
+    public function usermacroDeleteGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11369,7 +11693,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.deleteGlobal', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.deleteGlobal', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.deleteGlobal', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11385,14 +11709,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroCreate($params = [], $arrayKeyProperty = '')
+    public function usermacroCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11401,7 +11726,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11417,14 +11742,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroUpdate($params = [], $arrayKeyProperty = '')
+    public function usermacroUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11433,7 +11759,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11449,14 +11775,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroDelete($params = [], $arrayKeyProperty = '')
+    public function usermacroDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11465,7 +11792,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11481,14 +11808,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroReplaceMacros($params = [], $arrayKeyProperty = '')
+    public function usermacroReplaceMacros($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11497,7 +11825,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.replaceMacros', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.replaceMacros', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.replaceMacros', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11513,14 +11841,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroTableName($params = [], $arrayKeyProperty = '')
+    public function usermacroTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11529,7 +11858,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11545,14 +11874,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroPk($params = [], $arrayKeyProperty = '')
+    public function usermacroPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11561,7 +11891,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11577,14 +11907,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermacroPkOption($params = [], $arrayKeyProperty = '')
+    public function usermacroPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11593,7 +11924,7 @@ class ZabbixApi
         $auth = !in_array('usermacro.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermacro.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermacro.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11609,14 +11940,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermediaGet($params = [], $arrayKeyProperty = '')
+    public function usermediaGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11625,7 +11957,7 @@ class ZabbixApi
         $auth = !in_array('usermedia.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermedia.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermedia.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11641,14 +11973,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermediaTableName($params = [], $arrayKeyProperty = '')
+    public function usermediaTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11657,7 +11990,7 @@ class ZabbixApi
         $auth = !in_array('usermedia.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermedia.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermedia.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11673,14 +12006,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermediaPk($params = [], $arrayKeyProperty = '')
+    public function usermediaPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11689,7 +12023,7 @@ class ZabbixApi
         $auth = !in_array('usermedia.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermedia.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermedia.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11705,14 +12039,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function usermediaPkOption($params = [], $arrayKeyProperty = '')
+    public function usermediaPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11721,7 +12056,7 @@ class ZabbixApi
         $auth = !in_array('usermedia.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('usermedia.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('usermedia.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11737,14 +12072,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapGet($params = [], $arrayKeyProperty = '')
+    public function valuemapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11753,7 +12089,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11769,14 +12105,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapCreate($params = [], $arrayKeyProperty = '')
+    public function valuemapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11785,7 +12122,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11801,14 +12138,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapUpdate($params = [], $arrayKeyProperty = '')
+    public function valuemapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11817,7 +12155,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11833,14 +12171,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapDelete($params = [], $arrayKeyProperty = '')
+    public function valuemapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11849,7 +12188,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11865,14 +12204,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapTableName($params = [], $arrayKeyProperty = '')
+    public function valuemapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11881,7 +12221,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11897,14 +12237,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapPk($params = [], $arrayKeyProperty = '')
+    public function valuemapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11913,7 +12254,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11929,14 +12270,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function valuemapPkOption($params = [], $arrayKeyProperty = '')
+    public function valuemapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11945,7 +12287,7 @@ class ZabbixApi
         $auth = !in_array('valuemap.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('valuemap.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('valuemap.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11961,14 +12303,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestGet($params = [], $arrayKeyProperty = '')
+    public function httptestGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -11977,7 +12320,7 @@ class ZabbixApi
         $auth = !in_array('httptest.get', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.get', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.get', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11993,14 +12336,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestCreate($params = [], $arrayKeyProperty = '')
+    public function httptestCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12009,7 +12353,7 @@ class ZabbixApi
         $auth = !in_array('httptest.create', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.create', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.create', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12025,14 +12369,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestUpdate($params = [], $arrayKeyProperty = '')
+    public function httptestUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12041,7 +12386,7 @@ class ZabbixApi
         $auth = !in_array('httptest.update', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.update', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.update', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12057,14 +12402,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestDelete($params = [], $arrayKeyProperty = '')
+    public function httptestDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12073,7 +12419,7 @@ class ZabbixApi
         $auth = !in_array('httptest.delete', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.delete', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.delete', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12089,14 +12435,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestIsReadable($params = [], $arrayKeyProperty = '')
+    public function httptestIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12105,7 +12452,7 @@ class ZabbixApi
         $auth = !in_array('httptest.isReadable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.isReadable', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12121,14 +12468,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestIsWritable($params = [], $arrayKeyProperty = '')
+    public function httptestIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12137,7 +12485,7 @@ class ZabbixApi
         $auth = !in_array('httptest.isWritable', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.isWritable', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12153,14 +12501,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestTableName($params = [], $arrayKeyProperty = '')
+    public function httptestTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12169,7 +12518,7 @@ class ZabbixApi
         $auth = !in_array('httptest.tableName', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.tableName', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.tableName', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12185,14 +12534,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestPk($params = [], $arrayKeyProperty = '')
+    public function httptestPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12201,7 +12551,7 @@ class ZabbixApi
         $auth = !in_array('httptest.pk', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.pk', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.pk', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12217,14 +12567,15 @@ class ZabbixApi
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function httptestPkOption($params = [], $arrayKeyProperty = '')
+    public function httptestPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -12233,7 +12584,7 @@ class ZabbixApi
         $auth = !in_array('httptest.pkOption', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('httptest.pkOption', $params, $arrayKeyProperty, $auth);
+        return $this->request('httptest.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -12276,7 +12627,7 @@ class ZabbixApi
      * indexed array, the default params will not be merged. This is because
      * there are some API methods, which are expecting a simple JSON array (aka
      * PHP indexed array) instead of an object (aka PHP associative array).
-     * Example for this behaviour are delete operations, which are directly
+     * Example for this behavior are delete operations, which are directly
      * expecting an array of IDs '[ 1,2,3 ]' instead of '{ ids: [ 1,2,3 ] }'.
      *
      * @param mixed $params     params array
@@ -12295,12 +12646,53 @@ class ZabbixApi
             $params = [];
         }
 
+        $paramsCount = count($params);
+
         // if array isn't indexed, merge array with default params
-        if (0 == count($params) || array_keys($params) !== range(0, count($params) - 1)) {
+        if (0 === $paramsCount || array_keys($params) !== range(0, $paramsCount - 1)) {
             $params = array_merge($this->getDefaultParams(), $params);
         }
 
         // return params
         return $params;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @param string|null $resultArrayKey
+     * @param bool $assoc
+     *
+     * @throws Exception
+     *
+     * @return mixed The decoded JSON data
+     */
+    private function decodeResponse(ResponseInterface $response, $resultArrayKey = null, $assoc = false)
+    {
+        $content = $response->getBody();
+
+        if (null === ($this->responseDecoded = \GuzzleHttp\json_decode($content, $assoc)) && JSON_ERROR_NONE !== ($jsonLastError = json_last_error())) {
+            throw new Exception(sprintf('Response body could not be parsed since the JSON structure could not be decoded, %s (%d): %s', json_last_error_msg(), $jsonLastError, $content), $jsonLastError);
+        }
+
+        if ($assoc) {
+            if (isset($this->responseDecoded['error'])) {
+                throw new Exception(sprintf('API error %s: %s', $this->responseDecoded['error']['code'], $this->responseDecoded['error']['data']));
+            }
+            if ($resultArrayKey) {
+                return $this->convertToAssociatveArray($this->responseDecoded['result'], $resultArrayKey);
+            }
+
+            return $this->responseDecoded['result'];
+        }
+
+        if (property_exists($this->responseDecoded, 'error') && $error = $this->responseDecoded->error) {
+            throw new Exception(sprintf('API error %s: %s', $error->code, $error->data));
+        }
+
+        if ($resultArrayKey && is_array($this->responseDecoded->result)) {
+            return $this->convertToAssociatveArray($this->responseDecoded->result, $resultArrayKey);
+        }
+
+        return $this->responseDecoded->result;
     }
 }

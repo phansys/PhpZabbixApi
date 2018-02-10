@@ -177,19 +177,15 @@ class <CLASSNAME_CONCRETE>
     /**
      * Sets the default params.
      *
-     * @param mixed $defaultParams  Array with default params
+     * @param array $defaultParams  Array with default params
      *
      * @throws Exception
      *
      * @return <CLASSNAME_CONCRETE>
      */
-    public function setDefaultParams($defaultParams)
+    public function setDefaultParams(array $defaultParams)
     {
-        if (is_array($defaultParams)) {
-            $this->defaultParams = $defaultParams;
-        } else {
-            throw new Exception('The argument defaultParams on setDefaultParams() has to be an array.');
-        }
+        $this->defaultParams = $defaultParams;
 
         return $this;
     }
@@ -214,12 +210,13 @@ class <CLASSNAME_CONCRETE>
      *
      * @param string $method     name of the API method
      * @param mixed $params     additional parameters
-     * @param mixed $resultArrayKey
+     * @param string|null $resultArrayKey
      * @param bool $auth       enable authentication (default TRUE)
+     * @param bool $assoc      return the result as an associative array
      *
      * @return \stdClass    API JSON response
      */
-    public function request($method, $params = null, $resultArrayKey = '', $auth = true)
+    public function request($method, $params = null, $resultArrayKey = null, $auth = true, $assoc = false)
     {
         // sanity check and conversion for params array
         if (!$params) {
@@ -253,37 +250,18 @@ class <CLASSNAME_CONCRETE>
             if ($e->hasResponse()) {
                 $this->response = $e->getResponse();
 
-                throw new Exception($e->getMessage().': '.$this->response->getBody()->getContents(), $e->getCode());
+                throw new Exception(sprintf('%s: %s', $e->getMessage(), $this->response->getBody()->getContents()), $e->getCode());
             }
 
             throw new Exception($e->getMessage(), $e->getCode());
+        } finally {
+            // debug logging
+            if ($this->printCommunication) {
+                echo $this->response."\n";
+            }
         }
 
-        // debug logging
-        if ($this->printCommunication) {
-            echo $this->response."\n";
-        }
-
-        // response verification
-        if (false === $this->response) {
-            throw new Exception('Could not read data from "'.$this->getApiUrl().'"');
-        }
-        // decode response
-        $this->responseDecoded = \GuzzleHttp\json_decode($this->response->getBody());
-
-        // validate response
-        if (!is_object($this->responseDecoded) && !is_array($this->responseDecoded)) {
-            throw new Exception('Could not decode JSON response.');
-        }
-        if (array_key_exists('error', $this->responseDecoded)) {
-            throw new Exception('API error '.$this->responseDecoded->error->code.': '.$this->responseDecoded->error->data);
-        }
-        // return response
-        if ($resultArrayKey && is_array($this->responseDecoded->result)) {
-            return $this->convertToAssociatveArray($this->responseDecoded->result, $resultArrayKey);
-        }
-
-        return $this->responseDecoded->result;
+        return $this->decodeResponse($this->response, $resultArrayKey, $assoc);
     }
 
     /**
@@ -319,15 +297,18 @@ class <CLASSNAME_CONCRETE>
      * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
-     * @param string $arrayKeyProperty   object property for key of array
-     * @param string $tokenCacheDir      path to a directory to store the auth token
+     * @param string|null $arrayKeyProperty   object property for key of array
+     * @param string|null $tokenCacheDir      path to a directory to store the auth token
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    final public function userLogin($params = [], $arrayKeyProperty = '', $tokenCacheDir = '/tmp')
+    final public function userLogin(array $params = [], $arrayKeyProperty = null, $tokenCacheDir = null)
     {
+        if (null === $tokenCacheDir) {
+            $tokenCacheDir = sys_get_temp_dir();
+        }
         // reset auth token
         $this->authToken = '';
 
@@ -381,13 +362,13 @@ class <CLASSNAME_CONCRETE>
      * "hostid", "graphid", "screenitemid").
      *
      * @param array $params             parameters to pass through
-     * @param string $arrayKeyProperty   object property for key of array
+     * @param string|null $arrayKeyProperty   object property for key of array
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    final public function userLogout($params = [], $arrayKeyProperty = '')
+    final public function userLogout(array $params = [], $arrayKeyProperty = null)
     {
         $params = $this->getRequestParamsArray($params);
         $response = $this->request('user.logout', $params, $arrayKeyProperty);
@@ -409,14 +390,15 @@ class <CLASSNAME_CONCRETE>
      * is any property of the returned JSON objects (e.g. "name", "host",
      * "hostid", "graphid", "screenitemid").
      *
-     * @param mixed  $params             Zabbix API parameters
-     * @param string $arrayKeyProperty   Object property for key of array
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
      *
      * @throws  Exception
      *
      * @return \stdClass
      */
-    public function <PHP_METHOD>($params = [], $arrayKeyProperty = '')
+    public function <PHP_METHOD>($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
@@ -425,7 +407,7 @@ class <CLASSNAME_CONCRETE>
         $auth = !in_array('<API_METHOD>', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('<API_METHOD>', $params, $arrayKeyProperty, $auth);
+        return $this->request('<API_METHOD>', $params, $arrayKeyProperty, $auth, $assoc);
     }
 <!END_API_METHOD>
     /**
@@ -468,7 +450,7 @@ class <CLASSNAME_CONCRETE>
      * indexed array, the default params will not be merged. This is because
      * there are some API methods, which are expecting a simple JSON array (aka
      * PHP indexed array) instead of an object (aka PHP associative array).
-     * Example for this behaviour are delete operations, which are directly
+     * Example for this behavior are delete operations, which are directly
      * expecting an array of IDs '[ 1,2,3 ]' instead of '{ ids: [ 1,2,3 ] }'.
      *
      * @param mixed $params     params array
@@ -487,12 +469,53 @@ class <CLASSNAME_CONCRETE>
             $params = [];
         }
 
+        $paramsCount = count($params);
+
         // if array isn't indexed, merge array with default params
-        if (0 == count($params) || array_keys($params) !== range(0, count($params) - 1)) {
+        if (0 === $paramsCount || array_keys($params) !== range(0, $paramsCount - 1)) {
             $params = array_merge($this->getDefaultParams(), $params);
         }
 
         // return params
         return $params;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @param string|null $resultArrayKey
+     * @param bool $assoc
+     *
+     * @throws Exception
+     *
+     * @return mixed The decoded JSON data
+     */
+    private function decodeResponse(ResponseInterface $response, $resultArrayKey = null, $assoc = false)
+    {
+        $content = $response->getBody();
+
+        if (null === ($this->responseDecoded = \GuzzleHttp\json_decode($content, $assoc)) && JSON_ERROR_NONE !== ($jsonLastError = json_last_error())) {
+            throw new Exception(sprintf('Response body could not be parsed since the JSON structure could not be decoded, %s (%d): %s', json_last_error_msg(), $jsonLastError, $content), $jsonLastError);
+        }
+
+        if ($assoc) {
+            if (isset($this->responseDecoded['error'])) {
+                throw new Exception(sprintf('API error %s: %s', $this->responseDecoded['error']['code'], $this->responseDecoded['error']['data']));
+            }
+            if ($resultArrayKey) {
+                return $this->convertToAssociatveArray($this->responseDecoded['result'], $resultArrayKey);
+            }
+
+            return $this->responseDecoded['result'];
+        }
+
+        if (property_exists($this->responseDecoded, 'error') && $error = $this->responseDecoded->error) {
+            throw new Exception(sprintf('API error %s: %s', $error->code, $error->data));
+        }
+
+        if ($resultArrayKey && is_array($this->responseDecoded->result)) {
+            return $this->convertToAssociatveArray($this->responseDecoded->result, $resultArrayKey);
+        }
+
+        return $this->responseDecoded->result;
     }
 }
