@@ -22,6 +22,1841 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ZabbixApi
 {
+
+    public const ZABBIX_VERSION = '3.0.14';
+
+    public const ZABBIX_API_VERSION = '3.0.14';
+
+    public const ZABBIX_EXPORT_VERSION = '3.0';
+
+    public const ZABBIX_DB_VERSION = 3000000;
+
+    public const ZABBIX_COPYRIGHT_FROM = '2001';
+
+    public const ZABBIX_COPYRIGHT_TO = '2017';
+
+    public const ZBX_LOGIN_ATTEMPTS = 5;
+
+    public const ZBX_LOGIN_BLOCK = 30;
+
+    public const ZBX_MIN_PERIOD = 60;
+
+    public const ZBX_MAX_PERIOD = 63072000;
+
+    public const ZBX_MAX_DATE = 2147483647;
+
+    public const ZBX_PERIOD_DEFAULT = 3600;
+
+    public const ZBX_HISTORY_PERIOD = 86400;
+
+    public const ZBX_WIDGET_ROWS = 20;
+
+    public const ZBX_GRAPH_FONT_NAME = 'DejaVuSans';
+
+    public const ZBX_GRAPH_LEGEND_HEIGHT = 120;
+
+    public const ZBX_SCRIPT_TIMEOUT = 60;
+
+    public const GRAPH_YAXIS_SIDE_DEFAULT = 0;
+
+    public const ZBX_MAX_IMAGE_SIZE = 1048576;
+
+    public const ZBX_UNITS_ROUNDOFF_THRESHOLD = 0.01;
+
+    public const ZBX_UNITS_ROUNDOFF_UPPER_LIMIT = 2;
+
+    public const ZBX_UNITS_ROUNDOFF_MIDDLE_LIMIT = 4;
+
+    public const ZBX_UNITS_ROUNDOFF_LOWER_LIMIT = 6;
+
+    public const ZBX_PRECISION_10 = 10;
+
+    public const ZBX_DEFAULT_INTERVAL = '1-7,00:00-24:00';
+
+    public const ZBX_SCRIPT_TYPE_CUSTOM_SCRIPT = 0;
+
+    public const ZBX_SCRIPT_TYPE_IPMI = 1;
+
+    public const ZBX_SCRIPT_TYPE_SSH = 2;
+
+    public const ZBX_SCRIPT_TYPE_TELNET = 3;
+
+    public const ZBX_SCRIPT_TYPE_GLOBAL_SCRIPT = 4;
+
+    public const ZBX_SCRIPT_EXECUTE_ON_AGENT = 0;
+
+    public const ZBX_SCRIPT_EXECUTE_ON_SERVER = 1;
+
+    public const ZBX_FLAG_DISCOVERY_NORMAL = 0x0;
+
+    public const ZBX_FLAG_DISCOVERY_RULE = 0x1;
+
+    public const ZBX_FLAG_DISCOVERY_PROTOTYPE = 0x2;
+
+    public const ZBX_FLAG_DISCOVERY_CREATED = 0x4;
+
+    public const EXTACK_OPTION_ALL = 0;
+
+    public const EXTACK_OPTION_UNACK = 1;
+
+    public const EXTACK_OPTION_BOTH = 2;
+
+    public const TRIGGERS_OPTION_RECENT_PROBLEM = 1;
+
+    public const TRIGGERS_OPTION_ALL = 2;
+
+    public const TRIGGERS_OPTION_IN_PROBLEM = 3;
+
+    public const ZBX_ACK_STS_ANY = 1;
+
+    public const ZBX_ACK_STS_WITH_UNACK = 2;
+
+    public const ZBX_ACK_STS_WITH_LAST_UNACK = 3;
+
+    public const EVENTS_OPTION_NOEVENT = 1;
+
+    public const EVENTS_OPTION_ALL = 2;
+
+    public const EVENTS_OPTION_NOT_ACK = 3;
+
+    public const ZBX_FONT_NAME = 'DejaVuSans';
+
+    public const ZBX_AUTH_INTERNAL = 0;
+
+    public const ZBX_AUTH_LDAP = 1;
+
+    public const ZBX_AUTH_HTTP = 2;
+
+    public const ZBX_DB_DB2 = 'IBM_DB2';
+
+    public const ZBX_DB_MYSQL = 'MYSQL';
+
+    public const ZBX_DB_ORACLE = 'ORACLE';
+
+    public const ZBX_DB_POSTGRESQL = 'POSTGRESQL';
+
+    public const ZBX_DB_SQLITE3 = 'SQLITE3';
+
+    public const ZBX_DB_MAX_ID = '9223372036854775807';
+
+    public const ZBX_DB_MAX_INSERTS = 10000;
+
+    public const ZBX_SHOW_TECHNICAL_ERRORS = false;
+
+    public const PAGE_TYPE_HTML = 0;
+
+    public const PAGE_TYPE_IMAGE = 1;
+
+    public const PAGE_TYPE_XML = 2;
+
+    public const PAGE_TYPE_JS = 3;
+
+    public const PAGE_TYPE_CSS = 4;
+
+    public const PAGE_TYPE_HTML_BLOCK = 5;
+
+    public const PAGE_TYPE_JSON = 6;
+
+    public const PAGE_TYPE_JSON_RPC = 7;
+
+    public const PAGE_TYPE_TEXT_FILE = 8;
+
+    public const PAGE_TYPE_TEXT = 9;
+
+    public const PAGE_TYPE_CSV = 10;
+
+    public const PAGE_TYPE_TEXT_RETURN_JSON = 11;
+
+    public const ZBX_SESSION_ACTIVE = 0;
+
+    public const ZBX_SESSION_PASSIVE = 1;
+
+    public const ZBX_DROPDOWN_FIRST_NONE = 0;
+
+    public const ZBX_DROPDOWN_FIRST_ALL = 1;
+
+    public const T_ZBX_STR = 0;
+
+    public const T_ZBX_INT = 1;
+
+    public const T_ZBX_DBL = 2;
+
+    public const T_ZBX_CLR = 5;
+
+    public const T_ZBX_DBL_BIG = 9;
+
+    public const T_ZBX_DBL_STR = 10;
+
+    public const T_ZBX_TP = 11;
+
+    public const O_MAND = 0;
+
+    public const O_OPT = 1;
+
+    public const O_NO = 2;
+
+    public const P_SYS = 1;
+
+    public const P_UNSET_EMPTY = 2;
+
+    public const P_CRLF = 4;
+
+    public const P_ACT = 16;
+
+    public const P_NZERO = 32;
+
+    public const P_NO_TRIM = 64;
+
+    public const ZBX_URI_VALID_SCHEMES = 'http,https,ftp,file,mailto,tel,ssh';
+
+    public const VALIDATE_URI_SCHEMES = true;
+
+    public const IMAGE_FORMAT_PNG = 'PNG';
+
+    public const IMAGE_FORMAT_JPEG = 'JPEG';
+
+    public const IMAGE_FORMAT_TEXT = 'JPEG';
+
+    public const IMAGE_TYPE_ICON = 1;
+
+    public const IMAGE_TYPE_BACKGROUND = 2;
+
+    public const ITEM_CONVERT_WITH_UNITS = 0;
+
+    public const ITEM_CONVERT_NO_UNITS = 1;
+
+    public const ZBX_SORT_UP = 'ASC';
+
+    public const ZBX_SORT_DOWN = 'DESC';
+
+    public const AUDIT_ACTION_ADD = 0;
+
+    public const AUDIT_ACTION_UPDATE = 1;
+
+    public const AUDIT_ACTION_DELETE = 2;
+
+    public const AUDIT_ACTION_LOGIN = 3;
+
+    public const AUDIT_ACTION_LOGOUT = 4;
+
+    public const AUDIT_ACTION_ENABLE = 5;
+
+    public const AUDIT_ACTION_DISABLE = 6;
+
+    public const AUDIT_RESOURCE_USER = 0;
+
+    public const AUDIT_RESOURCE_ZABBIX_CONFIG = 2;
+
+    public const AUDIT_RESOURCE_MEDIA_TYPE = 3;
+
+    public const AUDIT_RESOURCE_HOST = 4;
+
+    public const AUDIT_RESOURCE_ACTION = 5;
+
+    public const AUDIT_RESOURCE_GRAPH = 6;
+
+    public const AUDIT_RESOURCE_GRAPH_ELEMENT = 7;
+
+    public const AUDIT_RESOURCE_USER_GROUP = 11;
+
+    public const AUDIT_RESOURCE_APPLICATION = 12;
+
+    public const AUDIT_RESOURCE_TRIGGER = 13;
+
+    public const AUDIT_RESOURCE_HOST_GROUP = 14;
+
+    public const AUDIT_RESOURCE_ITEM = 15;
+
+    public const AUDIT_RESOURCE_IMAGE = 16;
+
+    public const AUDIT_RESOURCE_VALUE_MAP = 17;
+
+    public const AUDIT_RESOURCE_IT_SERVICE = 18;
+
+    public const AUDIT_RESOURCE_MAP = 19;
+
+    public const AUDIT_RESOURCE_SCREEN = 20;
+
+    public const AUDIT_RESOURCE_SCENARIO = 22;
+
+    public const AUDIT_RESOURCE_DISCOVERY_RULE = 23;
+
+    public const AUDIT_RESOURCE_SLIDESHOW = 24;
+
+    public const AUDIT_RESOURCE_SCRIPT = 25;
+
+    public const AUDIT_RESOURCE_PROXY = 26;
+
+    public const AUDIT_RESOURCE_MAINTENANCE = 27;
+
+    public const AUDIT_RESOURCE_REGEXP = 28;
+
+    public const AUDIT_RESOURCE_MACRO = 29;
+
+    public const AUDIT_RESOURCE_TEMPLATE = 30;
+
+    public const AUDIT_RESOURCE_TRIGGER_PROTOTYPE = 31;
+
+    public const CONDITION_TYPE_HOST_GROUP = 0;
+
+    public const CONDITION_TYPE_HOST = 1;
+
+    public const CONDITION_TYPE_TRIGGER = 2;
+
+    public const CONDITION_TYPE_TRIGGER_NAME = 3;
+
+    public const CONDITION_TYPE_TRIGGER_SEVERITY = 4;
+
+    public const CONDITION_TYPE_TRIGGER_VALUE = 5;
+
+    public const CONDITION_TYPE_TIME_PERIOD = 6;
+
+    public const CONDITION_TYPE_DHOST_IP = 7;
+
+    public const CONDITION_TYPE_DSERVICE_TYPE = 8;
+
+    public const CONDITION_TYPE_DSERVICE_PORT = 9;
+
+    public const CONDITION_TYPE_DSTATUS = 10;
+
+    public const CONDITION_TYPE_DUPTIME = 11;
+
+    public const CONDITION_TYPE_DVALUE = 12;
+
+    public const CONDITION_TYPE_TEMPLATE = 13;
+
+    public const CONDITION_TYPE_EVENT_ACKNOWLEDGED = 14;
+
+    public const CONDITION_TYPE_APPLICATION = 15;
+
+    public const CONDITION_TYPE_MAINTENANCE = 16;
+
+    public const CONDITION_TYPE_DRULE = 18;
+
+    public const CONDITION_TYPE_DCHECK = 19;
+
+    public const CONDITION_TYPE_PROXY = 20;
+
+    public const CONDITION_TYPE_DOBJECT = 21;
+
+    public const CONDITION_TYPE_HOST_NAME = 22;
+
+    public const CONDITION_TYPE_EVENT_TYPE = 23;
+
+    public const CONDITION_TYPE_HOST_METADATA = 24;
+
+    public const CONDITION_OPERATOR_EQUAL = 0;
+
+    public const CONDITION_OPERATOR_NOT_EQUAL = 1;
+
+    public const CONDITION_OPERATOR_LIKE = 2;
+
+    public const CONDITION_OPERATOR_NOT_LIKE = 3;
+
+    public const CONDITION_OPERATOR_IN = 4;
+
+    public const CONDITION_OPERATOR_MORE_EQUAL = 5;
+
+    public const CONDITION_OPERATOR_LESS_EQUAL = 6;
+
+    public const CONDITION_OPERATOR_NOT_IN = 7;
+
+    public const CONDITION_OPERATOR_REGEXP = 8;
+
+    public const EVENT_TYPE_ITEM_NOTSUPPORTED = 0;
+
+    public const EVENT_TYPE_ITEM_NORMAL = 1;
+
+    public const EVENT_TYPE_LLDRULE_NOTSUPPORTED = 2;
+
+    public const EVENT_TYPE_LLDRULE_NORMAL = 3;
+
+    public const EVENT_TYPE_TRIGGER_UNKNOWN = 4;
+
+    public const EVENT_TYPE_TRIGGER_NORMAL = 5;
+
+    public const HOST_STATUS_MONITORED = 0;
+
+    public const HOST_STATUS_NOT_MONITORED = 1;
+
+    public const HOST_STATUS_TEMPLATE = 3;
+
+    public const HOST_STATUS_PROXY_ACTIVE = 5;
+
+    public const HOST_STATUS_PROXY_PASSIVE = 6;
+
+    public const HOST_ENCRYPTION_NONE = 1;
+
+    public const HOST_ENCRYPTION_PSK = 2;
+
+    public const HOST_ENCRYPTION_CERTIFICATE = 4;
+
+    public const PSK_MIN_LEN = 32;
+
+    public const HOST_MAINTENANCE_STATUS_OFF = 0;
+
+    public const HOST_MAINTENANCE_STATUS_ON = 1;
+
+    public const INTERFACE_SECONDARY = 0;
+
+    public const INTERFACE_PRIMARY = 1;
+
+    public const INTERFACE_USE_DNS = 0;
+
+    public const INTERFACE_USE_IP = 1;
+
+    public const INTERFACE_TYPE_ANY = -1;
+
+    public const INTERFACE_TYPE_UNKNOWN = 0;
+
+    public const INTERFACE_TYPE_AGENT = 1;
+
+    public const INTERFACE_TYPE_SNMP = 2;
+
+    public const INTERFACE_TYPE_IPMI = 3;
+
+    public const INTERFACE_TYPE_JMX = 4;
+
+    public const SNMP_BULK_DISABLED = 0;
+
+    public const SNMP_BULK_ENABLED = 1;
+
+    public const MAINTENANCE_STATUS_ACTIVE = 0;
+
+    public const MAINTENANCE_STATUS_APPROACH = 1;
+
+    public const MAINTENANCE_STATUS_EXPIRED = 2;
+
+    public const HOST_AVAILABLE_UNKNOWN = 0;
+
+    public const HOST_AVAILABLE_TRUE = 1;
+
+    public const HOST_AVAILABLE_FALSE = 2;
+
+    public const MAINTENANCE_TYPE_NORMAL = 0;
+
+    public const MAINTENANCE_TYPE_NODATA = 1;
+
+    public const TIMEPERIOD_TYPE_ONETIME = 0;
+
+    public const TIMEPERIOD_TYPE_HOURLY = 1;
+
+    public const TIMEPERIOD_TYPE_DAILY = 2;
+
+    public const TIMEPERIOD_TYPE_WEEKLY = 3;
+
+    public const TIMEPERIOD_TYPE_MONTHLY = 4;
+
+    public const TIMEPERIOD_TYPE_YEARLY = 5;
+
+    public const REPORT_PERIOD_TODAY = 0;
+
+    public const REPORT_PERIOD_YESTERDAY = 1;
+
+    public const REPORT_PERIOD_CURRENT_WEEK = 2;
+
+    public const REPORT_PERIOD_CURRENT_MONTH = 3;
+
+    public const REPORT_PERIOD_CURRENT_YEAR = 4;
+
+    public const REPORT_PERIOD_LAST_WEEK = 5;
+
+    public const REPORT_PERIOD_LAST_MONTH = 6;
+
+    public const REPORT_PERIOD_LAST_YEAR = 7;
+
+    public const SYSMAP_LABEL_ADVANCED_OFF = 0;
+
+    public const SYSMAP_LABEL_ADVANCED_ON = 1;
+
+    public const MAP_LABEL_TYPE_LABEL = 0;
+
+    public const MAP_LABEL_TYPE_IP = 1;
+
+    public const MAP_LABEL_TYPE_NAME = 2;
+
+    public const MAP_LABEL_TYPE_STATUS = 3;
+
+    public const MAP_LABEL_TYPE_NOTHING = 4;
+
+    public const MAP_LABEL_TYPE_CUSTOM = 5;
+
+    public const MAP_LABEL_LOC_DEFAULT = -1;
+
+    public const MAP_LABEL_LOC_BOTTOM = 0;
+
+    public const MAP_LABEL_LOC_LEFT = 1;
+
+    public const MAP_LABEL_LOC_RIGHT = 2;
+
+    public const MAP_LABEL_LOC_TOP = 3;
+
+    public const SYSMAP_ELEMENT_TYPE_HOST = 0;
+
+    public const SYSMAP_ELEMENT_TYPE_MAP = 1;
+
+    public const SYSMAP_ELEMENT_TYPE_TRIGGER = 2;
+
+    public const SYSMAP_ELEMENT_TYPE_HOST_GROUP = 3;
+
+    public const SYSMAP_ELEMENT_TYPE_IMAGE = 4;
+
+    public const SYSMAP_ELEMENT_SUBTYPE_HOST_GROUP = 0;
+
+    public const SYSMAP_ELEMENT_SUBTYPE_HOST_GROUP_ELEMENTS = 1;
+
+    public const SYSMAP_ELEMENT_AREA_TYPE_FIT = 0;
+
+    public const SYSMAP_ELEMENT_AREA_TYPE_CUSTOM = 1;
+
+    public const SYSMAP_ELEMENT_AREA_VIEWTYPE_GRID = 0;
+
+    public const SYSMAP_ELEMENT_ICON_ON = 0;
+
+    public const SYSMAP_ELEMENT_ICON_OFF = 1;
+
+    public const SYSMAP_ELEMENT_ICON_MAINTENANCE = 3;
+
+    public const SYSMAP_ELEMENT_ICON_DISABLED = 4;
+
+    public const SYSMAP_HIGHLIGHT_OFF = 0;
+
+    public const SYSMAP_HIGHLIGHT_ON = 1;
+
+    public const SYSMAP_GRID_SHOW_ON = 1;
+
+    public const SYSMAP_GRID_SHOW_OFF = 0;
+
+    public const SYSMAP_EXPAND_MACROS_OFF = 0;
+
+    public const SYSMAP_EXPAND_MACROS_ON = 1;
+
+    public const SYSMAP_GRID_ALIGN_ON = 1;
+
+    public const SYSMAP_GRID_ALIGN_OFF = 0;
+
+    public const PUBLIC_SHARING = 0;
+
+    public const PRIVATE_SHARING = 1;
+
+    public const ZBX_ITEM_DELAY_DEFAULT = 30;
+
+    public const ITEM_TYPE_ZABBIX = 0;
+
+    public const ITEM_TYPE_SNMPV1 = 1;
+
+    public const ITEM_TYPE_TRAPPER = 2;
+
+    public const ITEM_TYPE_SIMPLE = 3;
+
+    public const ITEM_TYPE_SNMPV2C = 4;
+
+    public const ITEM_TYPE_INTERNAL = 5;
+
+    public const ITEM_TYPE_SNMPV3 = 6;
+
+    public const ITEM_TYPE_ZABBIX_ACTIVE = 7;
+
+    public const ITEM_TYPE_AGGREGATE = 8;
+
+    public const ITEM_TYPE_HTTPTEST = 9;
+
+    public const ITEM_TYPE_EXTERNAL = 10;
+
+    public const ITEM_TYPE_DB_MONITOR = 11;
+
+    public const ITEM_TYPE_IPMI = 12;
+
+    public const ITEM_TYPE_SSH = 13;
+
+    public const ITEM_TYPE_TELNET = 14;
+
+    public const ITEM_TYPE_CALCULATED = 15;
+
+    public const ITEM_TYPE_JMX = 16;
+
+    public const ITEM_TYPE_SNMPTRAP = 17;
+
+    public const ITEM_VALUE_TYPE_FLOAT = 0;
+
+    public const ITEM_VALUE_TYPE_STR = 1;
+
+    public const ITEM_VALUE_TYPE_LOG = 2;
+
+    public const ITEM_VALUE_TYPE_UINT64 = 3;
+
+    public const ITEM_VALUE_TYPE_TEXT = 4;
+
+    public const ITEM_DATA_TYPE_DECIMAL = 0;
+
+    public const ITEM_DATA_TYPE_OCTAL = 1;
+
+    public const ITEM_DATA_TYPE_HEXADECIMAL = 2;
+
+    public const ITEM_DATA_TYPE_BOOLEAN = 3;
+
+    public const ZBX_DEFAULT_KEY_DB_MONITOR = 'db.odbc.select[<unique short description>,<dsn>]';
+
+    public const ZBX_DEFAULT_KEY_DB_MONITOR_DISCOVERY = 'db.odbc.discovery[<unique short description>,<dsn>]';
+
+    public const ZBX_DEFAULT_KEY_SSH = 'ssh.run[<unique short description>,<ip>,<port>,<encoding>]';
+
+    public const ZBX_DEFAULT_KEY_TELNET = 'telnet.run[<unique short description>,<ip>,<port>,<encoding>]';
+
+    public const ZBX_DEFAULT_KEY_JMX = 'jmx[<object name>,<attribute name>]';
+
+    public const SYSMAP_ELEMENT_USE_ICONMAP_ON = 1;
+
+    public const SYSMAP_ELEMENT_USE_ICONMAP_OFF = 0;
+
+    public const ZBX_ICON_PREVIEW_HEIGHT = 24;
+
+    public const ZBX_ICON_PREVIEW_WIDTH = 24;
+
+    public const ITEM_STATUS_ACTIVE = 0;
+
+    public const ITEM_STATUS_DISABLED = 1;
+
+    public const ITEM_STATUS_NOTSUPPORTED = 3;
+
+    public const ITEM_STATE_NORMAL = 0;
+
+    public const ITEM_STATE_NOTSUPPORTED = 1;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_NOAUTHNOPRIV = 0;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_AUTHNOPRIV = 1;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_AUTHPRIV = 2;
+
+    public const ITEM_AUTHTYPE_PASSWORD = 0;
+
+    public const ITEM_AUTHTYPE_PUBLICKEY = 1;
+
+    public const ITEM_AUTHPROTOCOL_MD5 = 0;
+
+    public const ITEM_AUTHPROTOCOL_SHA = 1;
+
+    public const ITEM_PRIVPROTOCOL_DES = 0;
+
+    public const ITEM_PRIVPROTOCOL_AES = 1;
+
+    public const ITEM_LOGTYPE_INFORMATION = 1;
+
+    public const ITEM_LOGTYPE_WARNING = 2;
+
+    public const ITEM_LOGTYPE_ERROR = 4;
+
+    public const ITEM_LOGTYPE_FAILURE_AUDIT = 7;
+
+    public const ITEM_LOGTYPE_SUCCESS_AUDIT = 8;
+
+    public const ITEM_LOGTYPE_CRITICAL = 9;
+
+    public const ITEM_LOGTYPE_VERBOSE = 10;
+
+    public const ITEM_DELAY_FLEX_TYPE_FLEXIBLE = 0;
+
+    public const ITEM_DELAY_FLEX_TYPE_SCHEDULING = 1;
+
+    public const GRAPH_ITEM_DRAWTYPE_LINE = 0;
+
+    public const GRAPH_ITEM_DRAWTYPE_FILLED_REGION = 1;
+
+    public const GRAPH_ITEM_DRAWTYPE_BOLD_LINE = 2;
+
+    public const GRAPH_ITEM_DRAWTYPE_DOT = 3;
+
+    public const GRAPH_ITEM_DRAWTYPE_DASHED_LINE = 4;
+
+    public const GRAPH_ITEM_DRAWTYPE_GRADIENT_LINE = 5;
+
+    public const GRAPH_ITEM_DRAWTYPE_BOLD_DOT = 6;
+
+    public const MAP_LINK_DRAWTYPE_LINE = 0;
+
+    public const MAP_LINK_DRAWTYPE_BOLD_LINE = 2;
+
+    public const MAP_LINK_DRAWTYPE_DOT = 3;
+
+    public const MAP_LINK_DRAWTYPE_DASHED_LINE = 4;
+
+    public const SERVICE_ALGORITHM_NONE = 0;
+
+    public const SERVICE_ALGORITHM_MAX = 1;
+
+    public const SERVICE_ALGORITHM_MIN = 2;
+
+    public const SERVICE_SLA = 99.05;
+
+    public const SERVICE_SHOW_SLA_OFF = 0;
+
+    public const SERVICE_SHOW_SLA_ON = 1;
+
+    public const SERVICE_STATUS_OK = 0;
+
+    public const TRIGGER_MULT_EVENT_DISABLED = 0;
+
+    public const TRIGGER_MULT_EVENT_ENABLED = 1;
+
+    public const TRIGGER_STATUS_ENABLED = 0;
+
+    public const TRIGGER_STATUS_DISABLED = 1;
+
+    public const TRIGGER_VALUE_FALSE = 0;
+
+    public const TRIGGER_VALUE_TRUE = 1;
+
+    public const TRIGGER_STATE_NORMAL = 0;
+
+    public const TRIGGER_STATE_UNKNOWN = 1;
+
+    public const TRIGGER_SEVERITY_NOT_CLASSIFIED = 0;
+
+    public const TRIGGER_SEVERITY_INFORMATION = 1;
+
+    public const TRIGGER_SEVERITY_WARNING = 2;
+
+    public const TRIGGER_SEVERITY_AVERAGE = 3;
+
+    public const TRIGGER_SEVERITY_HIGH = 4;
+
+    public const TRIGGER_SEVERITY_DISASTER = 5;
+
+    public const TRIGGER_SEVERITY_COUNT = 6;
+
+    public const ALERT_MAX_RETRIES = 3;
+
+    public const ALERT_STATUS_NOT_SENT = 0;
+
+    public const ALERT_STATUS_SENT = 1;
+
+    public const ALERT_STATUS_FAILED = 2;
+
+    public const ALERT_TYPE_MESSAGE = 0;
+
+    public const ALERT_TYPE_COMMAND = 1;
+
+    public const MEDIA_STATUS_ACTIVE = 0;
+
+    public const MEDIA_STATUS_DISABLED = 1;
+
+    public const MEDIA_TYPE_STATUS_ACTIVE = 0;
+
+    public const MEDIA_TYPE_STATUS_DISABLED = 1;
+
+    public const MEDIA_TYPE_EMAIL = 0;
+
+    public const MEDIA_TYPE_EXEC = 1;
+
+    public const MEDIA_TYPE_SMS = 2;
+
+    public const MEDIA_TYPE_JABBER = 3;
+
+    public const MEDIA_TYPE_EZ_TEXTING = 100;
+
+    public const SMTP_CONNECTION_SECURITY_NONE = 0;
+
+    public const SMTP_CONNECTION_SECURITY_STARTTLS = 1;
+
+    public const SMTP_CONNECTION_SECURITY_SSL_TLS = 2;
+
+    public const SMTP_AUTHENTICATION_NONE = 0;
+
+    public const SMTP_AUTHENTICATION_NORMAL = 1;
+
+    public const EZ_TEXTING_LIMIT_USA = 0;
+
+    public const EZ_TEXTING_LIMIT_CANADA = 1;
+
+    public const ACTION_DEFAULT_SUBJ_TRIGGER = '{TRIGGER.STATUS}: {TRIGGER.NAME}';
+
+    public const ACTION_DEFAULT_SUBJ_AUTOREG = 'Auto registration: {HOST.HOST}';
+
+    public const ACTION_DEFAULT_SUBJ_DISCOVERY = 'Discovery: {DISCOVERY.DEVICE.STATUS} {DISCOVERY.DEVICE.IPADDRESS}';
+
+    public const ACTION_DEFAULT_MSG_AUTOREG = "Host name: {HOST.HOST}\nHost IP: {HOST.IP}\nAgent port: {HOST.PORT}";
+
+    public const ACTION_STATUS_ENABLED = 0;
+
+    public const ACTION_STATUS_DISABLED = 1;
+
+    public const OPERATION_TYPE_MESSAGE = 0;
+
+    public const OPERATION_TYPE_COMMAND = 1;
+
+    public const OPERATION_TYPE_HOST_ADD = 2;
+
+    public const OPERATION_TYPE_HOST_REMOVE = 3;
+
+    public const OPERATION_TYPE_GROUP_ADD = 4;
+
+    public const OPERATION_TYPE_GROUP_REMOVE = 5;
+
+    public const OPERATION_TYPE_TEMPLATE_ADD = 6;
+
+    public const OPERATION_TYPE_TEMPLATE_REMOVE = 7;
+
+    public const OPERATION_TYPE_HOST_ENABLE = 8;
+
+    public const OPERATION_TYPE_HOST_DISABLE = 9;
+
+    public const OPERATION_TYPE_HOST_INVENTORY = 10;
+
+    public const CONDITION_EVAL_TYPE_AND_OR = 0;
+
+    public const CONDITION_EVAL_TYPE_AND = 1;
+
+    public const CONDITION_EVAL_TYPE_OR = 2;
+
+    public const CONDITION_EVAL_TYPE_EXPRESSION = 3;
+
+    public const SCREEN_RESOURCE_GRAPH = 0;
+
+    public const SCREEN_RESOURCE_SIMPLE_GRAPH = 1;
+
+    public const SCREEN_RESOURCE_MAP = 2;
+
+    public const SCREEN_RESOURCE_PLAIN_TEXT = 3;
+
+    public const SCREEN_RESOURCE_HOSTS_INFO = 4;
+
+    public const SCREEN_RESOURCE_TRIGGERS_INFO = 5;
+
+    public const SCREEN_RESOURCE_SERVER_INFO = 6;
+
+    public const SCREEN_RESOURCE_CLOCK = 7;
+
+    public const SCREEN_RESOURCE_SCREEN = 8;
+
+    public const SCREEN_RESOURCE_TRIGGERS_OVERVIEW = 9;
+
+    public const SCREEN_RESOURCE_DATA_OVERVIEW = 10;
+
+    public const SCREEN_RESOURCE_URL = 11;
+
+    public const SCREEN_RESOURCE_ACTIONS = 12;
+
+    public const SCREEN_RESOURCE_EVENTS = 13;
+
+    public const SCREEN_RESOURCE_HOSTGROUP_TRIGGERS = 14;
+
+    public const SCREEN_RESOURCE_SYSTEM_STATUS = 15;
+
+    public const SCREEN_RESOURCE_HOST_TRIGGERS = 16;
+
+    public const SCREEN_RESOURCE_HISTORY = 17;
+
+    public const SCREEN_RESOURCE_CHART = 18;
+
+    public const SCREEN_RESOURCE_LLD_SIMPLE_GRAPH = 19;
+
+    public const SCREEN_RESOURCE_LLD_GRAPH = 20;
+
+    public const SCREEN_RESOURCE_HTTPTEST_DETAILS = 21;
+
+    public const SCREEN_RESOURCE_DISCOVERY = 22;
+
+    public const SCREEN_RESOURCE_HTTPTEST = 23;
+
+    public const SCREEN_SORT_TRIGGERS_DATE_DESC = 0;
+
+    public const SCREEN_SORT_TRIGGERS_SEVERITY_DESC = 1;
+
+    public const SCREEN_SORT_TRIGGERS_HOST_NAME_ASC = 2;
+
+    public const SCREEN_SORT_TRIGGERS_TIME_ASC = 3;
+
+    public const SCREEN_SORT_TRIGGERS_TIME_DESC = 4;
+
+    public const SCREEN_SORT_TRIGGERS_TYPE_ASC = 5;
+
+    public const SCREEN_SORT_TRIGGERS_TYPE_DESC = 6;
+
+    public const SCREEN_SORT_TRIGGERS_STATUS_ASC = 7;
+
+    public const SCREEN_SORT_TRIGGERS_STATUS_DESC = 8;
+
+    public const SCREEN_SORT_TRIGGERS_RECIPIENT_ASC = 11;
+
+    public const SCREEN_SORT_TRIGGERS_RECIPIENT_DESC = 12;
+
+    public const SCREEN_MODE_PREVIEW = 0;
+
+    public const SCREEN_MODE_EDIT = 1;
+
+    public const SCREEN_MODE_SLIDESHOW = 2;
+
+    public const SCREEN_MODE_JS = 3;
+
+    public const SCREEN_SIMPLE_ITEM = 0;
+
+    public const SCREEN_DYNAMIC_ITEM = 1;
+
+    public const SCREEN_REFRESH_TIMEOUT = 30;
+
+    public const SCREEN_REFRESH_RESPONSIVENESS = 10;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_MIN = 1;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_DEFAULT = 3;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_MAX = 100;
+
+    public const SCREEN_MIN_SIZE = 1;
+
+    public const SCREEN_MAX_SIZE = 100;
+
+    public const DEFAULT_LATEST_ISSUES_CNT = 20;
+
+    public const HALIGN_DEFAULT = 0;
+
+    public const HALIGN_CENTER = 0;
+
+    public const HALIGN_LEFT = 1;
+
+    public const HALIGN_RIGHT = 2;
+
+    public const VALIGN_DEFAULT = 0;
+
+    public const VALIGN_MIDDLE = 0;
+
+    public const VALIGN_TOP = 1;
+
+    public const VALIGN_BOTTOM = 2;
+
+    public const STYLE_HORIZONTAL = 0;
+
+    public const STYLE_VERTICAL = 1;
+
+    public const STYLE_LEFT = 0;
+
+    public const STYLE_TOP = 1;
+
+    public const TIME_TYPE_LOCAL = 0;
+
+    public const TIME_TYPE_SERVER = 1;
+
+    public const TIME_TYPE_HOST = 2;
+
+    public const FILTER_TASK_SHOW = 0;
+
+    public const FILTER_TASK_HIDE = 1;
+
+    public const FILTER_TASK_MARK = 2;
+
+    public const FILTER_TASK_INVERT_MARK = 3;
+
+    public const MARK_COLOR_RED = 1;
+
+    public const MARK_COLOR_GREEN = 2;
+
+    public const MARK_COLOR_BLUE = 3;
+
+    public const PROFILE_TYPE_ID = 1;
+
+    public const PROFILE_TYPE_INT = 2;
+
+    public const PROFILE_TYPE_STR = 3;
+
+    public const CALC_FNC_MIN = 1;
+
+    public const CALC_FNC_AVG = 2;
+
+    public const CALC_FNC_MAX = 4;
+
+    public const CALC_FNC_ALL = 7;
+
+    public const CALC_FNC_LST = 9;
+
+    public const SERVICE_TIME_TYPE_UPTIME = 0;
+
+    public const SERVICE_TIME_TYPE_DOWNTIME = 1;
+
+    public const SERVICE_TIME_TYPE_ONETIME_DOWNTIME = 2;
+
+    public const USER_TYPE_ZABBIX_USER = 1;
+
+    public const USER_TYPE_ZABBIX_ADMIN = 2;
+
+    public const USER_TYPE_SUPER_ADMIN = 3;
+
+    public const ZBX_NOT_INTERNAL_GROUP = 0;
+
+    public const ZBX_INTERNAL_GROUP = 1;
+
+    public const GROUP_STATUS_DISABLED = 1;
+
+    public const GROUP_STATUS_ENABLED = 0;
+
+    public const LINE_TYPE_NORMAL = 0;
+
+    public const LINE_TYPE_BOLD = 1;
+
+    public const GROUP_GUI_ACCESS_SYSTEM = 0;
+
+    public const GROUP_GUI_ACCESS_INTERNAL = 1;
+
+    public const GROUP_GUI_ACCESS_DISABLED = 2;
+
+    public const ACCESS_DENY_OBJECT = 0;
+
+    public const ACCESS_DENY_PAGE = 1;
+
+    public const GROUP_DEBUG_MODE_DISABLED = 0;
+
+    public const GROUP_DEBUG_MODE_ENABLED = 1;
+
+    public const PERM_READ_WRITE = 3;
+
+    public const PERM_READ = 2;
+
+    public const PERM_DENY = 0;
+
+    public const PARAM_TYPE_TIME = 0;
+
+    public const PARAM_TYPE_COUNTS = 1;
+
+    public const ZBX_DEFAULT_AGENT = 'Zabbix';
+
+    public const ZBX_AGENT_OTHER = -1;
+
+    public const HTTPTEST_AUTH_NONE = 0;
+
+    public const HTTPTEST_AUTH_BASIC = 1;
+
+    public const HTTPTEST_AUTH_NTLM = 2;
+
+    public const HTTPTEST_STATUS_ACTIVE = 0;
+
+    public const HTTPTEST_STATUS_DISABLED = 1;
+
+    public const HTTPSTEP_ITEM_TYPE_RSPCODE = 0;
+
+    public const HTTPSTEP_ITEM_TYPE_TIME = 1;
+
+    public const HTTPSTEP_ITEM_TYPE_IN = 2;
+
+    public const HTTPSTEP_ITEM_TYPE_LASTSTEP = 3;
+
+    public const HTTPSTEP_ITEM_TYPE_LASTERROR = 4;
+
+    public const HTTPTEST_STEP_RETRIEVE_MODE_CONTENT = 0;
+
+    public const HTTPTEST_STEP_RETRIEVE_MODE_HEADERS = 1;
+
+    public const HTTPTEST_STEP_FOLLOW_REDIRECTS_OFF = 0;
+
+    public const HTTPTEST_STEP_FOLLOW_REDIRECTS_ON = 1;
+
+    public const HTTPTEST_VERIFY_PEER_OFF = 0;
+
+    public const HTTPTEST_VERIFY_PEER_ON = 1;
+
+    public const HTTPTEST_VERIFY_HOST_OFF = 0;
+
+    public const HTTPTEST_VERIFY_HOST_ON = 1;
+
+    public const EVENT_ACK_DISABLED = '0';
+
+    public const EVENT_ACK_ENABLED = '1';
+
+    public const EVENT_NOT_ACKNOWLEDGED = '0';
+
+    public const EVENT_ACKNOWLEDGED = '1';
+
+    public const ZBX_ACKNOWLEDGE_SELECTED = 0;
+
+    public const ZBX_ACKNOWLEDGE_PROBLEM = 1;
+
+    public const ZBX_ACKNOWLEDGE_ALL = 2;
+
+    public const EVENT_SOURCE_TRIGGERS = 0;
+
+    public const EVENT_SOURCE_DISCOVERY = 1;
+
+    public const EVENT_SOURCE_AUTO_REGISTRATION = 2;
+
+    public const EVENT_SOURCE_INTERNAL = 3;
+
+    public const EVENT_OBJECT_TRIGGER = 0;
+
+    public const EVENT_OBJECT_DHOST = 1;
+
+    public const EVENT_OBJECT_DSERVICE = 2;
+
+    public const EVENT_OBJECT_AUTOREGHOST = 3;
+
+    public const EVENT_OBJECT_ITEM = 4;
+
+    public const EVENT_OBJECT_LLDRULE = 5;
+
+    public const GRAPH_YAXIS_TYPE_CALCULATED = 0;
+
+    public const GRAPH_YAXIS_TYPE_FIXED = 1;
+
+    public const GRAPH_YAXIS_TYPE_ITEM_VALUE = 2;
+
+    public const GRAPH_YAXIS_SIDE_LEFT = 0;
+
+    public const GRAPH_YAXIS_SIDE_RIGHT = 1;
+
+    public const GRAPH_ITEM_SIMPLE = 0;
+
+    public const GRAPH_ITEM_SUM = 2;
+
+    public const GRAPH_TYPE_NORMAL = 0;
+
+    public const GRAPH_TYPE_STACKED = 1;
+
+    public const GRAPH_TYPE_PIE = 2;
+
+    public const GRAPH_TYPE_EXPLODED = 3;
+
+    public const GRAPH_TYPE_3D = 4;
+
+    public const GRAPH_TYPE_3D_EXPLODED = 5;
+
+    public const GRAPH_TYPE_BAR = 6;
+
+    public const GRAPH_TYPE_COLUMN = 7;
+
+    public const GRAPH_TYPE_BAR_STACKED = 8;
+
+    public const GRAPH_TYPE_COLUMN_STACKED = 9;
+
+    public const BR_DISTRIBUTION_MULTIPLE_PERIODS = 1;
+
+    public const BR_DISTRIBUTION_MULTIPLE_ITEMS = 2;
+
+    public const BR_COMPARE_VALUE_MULTIPLE_PERIODS = 3;
+
+    public const GRAPH_3D_ANGLE = 70;
+
+    public const GRAPH_STACKED_ALFA = 15;
+
+    public const GRAPH_ZERO_LINE_COLOR_LEFT = 'AAAAAA';
+
+    public const GRAPH_ZERO_LINE_COLOR_RIGHT = '888888';
+
+    public const GRAPH_TRIGGER_LINE_OPPOSITE_COLOR = '000000';
+
+    public const ZBX_MAX_TREND_DIFF = 3600;
+
+    public const ZBX_GRAPH_MAX_SKIP_CELL = 16;
+
+    public const ZBX_GRAPH_MAX_SKIP_DELAY = 4;
+
+    public const DOBJECT_STATUS_UP = 0;
+
+    public const DOBJECT_STATUS_DOWN = 1;
+
+    public const DOBJECT_STATUS_DISCOVER = 2;
+
+    public const DOBJECT_STATUS_LOST = 3;
+
+    public const DRULE_STATUS_ACTIVE = 0;
+
+    public const DRULE_STATUS_DISABLED = 1;
+
+    public const DSVC_STATUS_ACTIVE = 0;
+
+    public const DSVC_STATUS_DISABLED = 1;
+
+    public const SVC_SSH = 0;
+
+    public const SVC_LDAP = 1;
+
+    public const SVC_SMTP = 2;
+
+    public const SVC_FTP = 3;
+
+    public const SVC_HTTP = 4;
+
+    public const SVC_POP = 5;
+
+    public const SVC_NNTP = 6;
+
+    public const SVC_IMAP = 7;
+
+    public const SVC_TCP = 8;
+
+    public const SVC_AGENT = 9;
+
+    public const SVC_SNMPv1 = 10;
+
+    public const SVC_SNMPv2c = 11;
+
+    public const SVC_ICMPPING = 12;
+
+    public const SVC_SNMPv3 = 13;
+
+    public const SVC_HTTPS = 14;
+
+    public const SVC_TELNET = 15;
+
+    public const DHOST_STATUS_ACTIVE = 0;
+
+    public const DHOST_STATUS_DISABLED = 1;
+
+    public const IM_FORCED = 0;
+
+    public const IM_ESTABLISHED = 1;
+
+    public const IM_TREE = 2;
+
+    public const EXPRESSION_TYPE_INCLUDED = 0;
+
+    public const EXPRESSION_TYPE_ANY_INCLUDED = 1;
+
+    public const EXPRESSION_TYPE_NOT_INCLUDED = 2;
+
+    public const EXPRESSION_TYPE_TRUE = 3;
+
+    public const EXPRESSION_TYPE_FALSE = 4;
+
+    public const HOST_INVENTORY_DISABLED = -1;
+
+    public const HOST_INVENTORY_MANUAL = 0;
+
+    public const HOST_INVENTORY_AUTOMATIC = 1;
+
+    public const EXPRESSION_HOST_UNKNOWN = '#ERROR_HOST#';
+
+    public const EXPRESSION_HOST_ITEM_UNKNOWN = '#ERROR_ITEM#';
+
+    public const EXPRESSION_NOT_A_MACRO_ERROR = '#ERROR_MACRO#';
+
+    public const EXPRESSION_FUNCTION_UNKNOWN = '#ERROR_FUNCTION#';
+
+    public const EXPRESSION_UNSUPPORTED_VALUE_TYPE = '#ERROR_VALUE_TYPE#';
+
+    public const SPACE = '&nbsp;';
+
+    public const NAME_DELIMITER = ': ';
+
+    public const UNKNOWN_VALUE = '';
+
+    public const ZBX_BYTE_SUFFIXES = 'KMGT';
+
+    public const ZBX_TIME_SUFFIXES = 'smhdw';
+
+    public const ZBX_PREG_PRINT = '^\x00-\x1F';
+
+    public const ZBX_PREG_MACRO_NAME = '([A-Z0-9\._]+)';
+
+    public const ZBX_PREG_MACRO_NAME_LLD = '([A-Z0-9\._]+)';
+
+    public const ZBX_PREG_INTERNAL_NAMES = '([0-9a-zA-Z_\. \-]+)';
+
+    public const ZBX_PREG_NUMBER = '([\-+]?[0-9]+[.]?[0-9]*['.self::ZBX_BYTE_SUFFIXES.self::ZBX_TIME_SUFFIXES.']?)';
+
+    public const ZBX_PREG_INT = '([\-+]?[0-9]+['.self::ZBX_BYTE_SUFFIXES.self::ZBX_TIME_SUFFIXES.']?)';
+
+    public const ZBX_PREG_DEF_FONT_STRING = '/^[0-9\.:% ]+$/';
+
+    public const ZBX_PREG_DNS_FORMAT = '([0-9a-zA-Z_\.\-$]|\{\$?'.self::ZBX_PREG_MACRO_NAME.'\})*';
+
+    public const ZBX_PREG_HOST_FORMAT = self::ZBX_PREG_INTERNAL_NAMES;
+
+    public const ZBX_PREG_MACRO_NAME_FORMAT = '(\{[A-Z\.]+\})';
+
+    public const ZBX_PREG_EXPRESSION_LLD_MACROS = '(\{\#'.self::ZBX_PREG_MACRO_NAME_LLD.'\})';
+
+    public const ZBX_USER_ONLINE_TIME = 600;
+
+    public const ZBX_GUEST_USER = 'guest';
+
+    public const IPMI_AUTHTYPE_DEFAULT = -1;
+
+    public const IPMI_AUTHTYPE_NONE = 0;
+
+    public const IPMI_AUTHTYPE_MD2 = 1;
+
+    public const IPMI_AUTHTYPE_MD5 = 2;
+
+    public const IPMI_AUTHTYPE_STRAIGHT = 4;
+
+    public const IPMI_AUTHTYPE_OEM = 5;
+
+    public const IPMI_AUTHTYPE_RMCP_PLUS = 6;
+
+    public const IPMI_PRIVILEGE_CALLBACK = 1;
+
+    public const IPMI_PRIVILEGE_USER = 2;
+
+    public const IPMI_PRIVILEGE_OPERATOR = 3;
+
+    public const IPMI_PRIVILEGE_ADMIN = 4;
+
+    public const IPMI_PRIVILEGE_OEM = 5;
+
+    public const ZBX_HAVE_IPV6 = 1;
+
+    public const ZBX_DISCOVERER_IPRANGE_LIMIT = 65536;
+
+    public const ZBX_SOCKET_TIMEOUT = 3;
+
+    public const ZBX_SOCKET_BYTES_LIMIT = 1048576;
+
+    public const SERVER_CHECK_INTERVAL = 10;
+
+    public const DATE_TIME_FORMAT_SECONDS_XML = 'Y-m-d\TH:i:s\Z';
+
+    public const XML_TAG_MACRO = 'macro';
+
+    public const XML_TAG_HOST = 'host';
+
+    public const XML_TAG_HOSTINVENTORY = 'host_inventory';
+
+    public const XML_TAG_ITEM = 'item';
+
+    public const XML_TAG_TRIGGER = 'trigger';
+
+    public const XML_TAG_GRAPH = 'graph';
+
+    public const XML_TAG_GRAPH_ELEMENT = 'graph_element';
+
+    public const XML_TAG_DEPENDENCY = 'dependency';
+
+    public const ZBX_DEFAULT_IMPORT_HOST_GROUP = 'Imported hosts';
+
+    public const LIBXML_IMPORT_FLAGS = LIBXML_NONET;
+
+    public const XML_STRING = 0x01;
+
+    public const XML_ARRAY = 0x02;
+
+    public const XML_INDEXED_ARRAY = 0x04;
+
+    public const XML_REQUIRED = 0x08;
+
+    public const ZBX_API_ERROR_INTERNAL = 111;
+
+    public const ZBX_API_ERROR_PARAMETERS = 100;
+
+    public const ZBX_API_ERROR_PERMISSIONS = 120;
+
+    public const ZBX_API_ERROR_NO_AUTH = 200;
+
+    public const ZBX_API_ERROR_NO_METHOD = 300;
+
+    public const API_OUTPUT_EXTEND = 'extend';
+
+    public const API_OUTPUT_COUNT = 'count';
+
+    public const SEC_PER_MIN = 60;
+
+    public const SEC_PER_HOUR = 3600;
+
+    public const SEC_PER_DAY = 86400;
+
+    public const SEC_PER_WEEK = 604800;
+
+    public const SEC_PER_MONTH = 2592000;
+
+    public const SEC_PER_YEAR = 31536000;
+
+    public const ZBX_JAN_2038 = 2145916800;
+
+    public const DAY_IN_YEAR = 365;
+
+    public const ZBX_MIN_PORT_NUMBER = 0;
+
+    public const ZBX_MAX_PORT_NUMBER = 65535;
+
+    public const ZBX_TEXTAREA_MACRO_WIDTH = 200;
+
+    public const ZBX_TEXTAREA_MACRO_VALUE_WIDTH = 250;
+
+    public const ZBX_TEXTAREA_COLOR_WIDTH = 96;
+
+    public const ZBX_TEXTAREA_FILTER_SMALL_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_FILTER_STANDARD_WIDTH = 300;
+
+    public const ZBX_TEXTAREA_FILTER_BIG_WIDTH = 524;
+
+    public const ZBX_TEXTAREA_TINY_WIDTH = 75;
+
+    public const ZBX_TEXTAREA_SMALL_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_MEDIUM_WIDTH = 270;
+
+    public const ZBX_TEXTAREA_STANDARD_WIDTH = 453;
+
+    public const ZBX_TEXTAREA_BIG_WIDTH = 540;
+
+    public const ZBX_TEXTAREA_NUMERIC_STANDARD_WIDTH = 75;
+
+    public const ZBX_TEXTAREA_NUMERIC_BIG_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_2DIGITS_WIDTH = 35;
+
+    public const ZBX_TEXTAREA_4DIGITS_WIDTH = 50;
+
+    public const ZBX_TEXTAREA_INTERFACE_IP_WIDTH = 225;
+
+    public const ZBX_TEXTAREA_INTERFACE_DNS_WIDTH = 175;
+
+    public const ZBX_TEXTAREA_INTERFACE_PORT_WIDTH = 100;
+
+    public const ZBX_TEXTAREA_STANDARD_ROWS = 7;
+
+    public const ZBX_HOST_INTERFACE_WIDTH = 750;
+
+    public const ZBX_OVERVIEW_HELP_MIN_WIDTH = 125;
+
+    public const WIDGET_DISCOVERY_STATUS = 'dscvry';
+
+    public const WIDGET_FAVOURITE_GRAPHS = 'favgrph';
+
+    public const WIDGET_FAVOURITE_MAPS = 'favmap';
+
+    public const WIDGET_FAVOURITE_SCREENS = 'favscr';
+
+    public const WIDGET_HOST_STATUS = 'hoststat';
+
+    public const WIDGET_LAST_ISSUES = 'lastiss';
+
+    public const WIDGET_SYSTEM_STATUS = 'syssum';
+
+    public const WIDGET_WEB_OVERVIEW = 'webovr';
+
+    public const WIDGET_ZABBIX_STATUS = 'stszbx';
+
+    public const WIDGET_HAT_TRIGGERDETAILS = 'hat_triggerdetails';
+
+    public const WIDGET_HAT_EVENTDETAILS = 'hat_eventdetails';
+
+    public const WIDGET_HAT_EVENTACK = 'hat_eventack';
+
+    public const WIDGET_HAT_EVENTACTIONMSGS = 'hat_eventactionmsgs';
+
+    public const WIDGET_HAT_EVENTACTIONMCMDS = 'hat_eventactionmcmds';
+
+    public const WIDGET_HAT_EVENTLIST = 'hat_eventlist';
+
+    public const WIDGET_SEARCH_HOSTS = 'search_hosts';
+
+    public const WIDGET_SEARCH_HOSTGROUP = 'search_hostgroup';
+
+    public const WIDGET_SEARCH_TEMPLATES = 'search_templates';
+
+    public const WIDGET_SLIDESHOW = 'hat_slides';
+
+    public const DB_ID = "({}>=0&&bccomp({},\"9223372036854775807\")<=0)&&";
+
+    public const NOT_EMPTY = "({}!='')&&";
+
+    public const NOT_ZERO = "({}!=0)&&";
+
+    public const ZBX_VALID_OK = 0;
+
+    public const ZBX_VALID_ERROR = 1;
+
+    public const ZBX_VALID_WARNING = 2;
+
+    public const THEME_DEFAULT = 'default';
+
+    public const ZBX_DEFAULT_THEME = 'blue-theme';
+
+    public const ZABBIX_HOMEPAGE = 'http://www.zabbix.com';
+
+    public const ZBX_DEFAULT_URL = 'zabbix.php?action=dashboard.view';
+
+    public const TIMESTAMP_FORMAT = 'YmdHis';
+
+    public const TIMESTAMP_FORMAT_ZERO_TIME = 'Ymd0000';
+
+    public const DATE_FORMAT_CONTEXT = 'Date format (see http://php.net/date)';
+
+    public const AVAILABILITY_REPORT_BY_HOST = 0;
+
+    public const AVAILABILITY_REPORT_BY_TEMPLATE = 1;
+
+    public const QUEUE_OVERVIEW = 0;
+
+    public const QUEUE_OVERVIEW_BY_PROXY = 1;
+
+    public const QUEUE_DETAILS = 2;
+
+    public const QUEUE_DETAIL_ITEM_COUNT = 500;
+
+    public const COPY_TYPE_TO_HOST = 0;
+
+    public const COPY_TYPE_TO_TEMPLATE = 2;
+
+    public const COPY_TYPE_TO_HOST_GROUP = 1;
+
+    public const HISTORY_GRAPH = 'showgraph';
+
+    public const HISTORY_BATCH_GRAPH = 'batchgraph';
+
+    public const HISTORY_VALUES = 'showvalues';
+
+    public const HISTORY_LATEST = 'showlatest';
+
+    public const MAP_DEFAULT_ICON = 'Server_(96)';
+
+    public const ZBX_STYLE_ACTION_BUTTONS = 'action-buttons';
+
+    public const ZBX_STYLE_ACTIVE_INDIC = 'active-indic';
+
+    public const ZBX_STYLE_ACTIVE_BG = 'active-bg';
+
+    public const ZBX_STYLE_ADM_IMG = 'adm-img';
+
+    public const ZBX_STYLE_ARTICLE = 'article';
+
+    public const ZBX_STYLE_AVERAGE_BG = 'average-bg';
+
+    public const ZBX_STYLE_ARROW_DOWN = 'arrow-down';
+
+    public const ZBX_STYLE_ARROW_LEFT = 'arrow-left';
+
+    public const ZBX_STYLE_ARROW_RIGHT = 'arrow-right';
+
+    public const ZBX_STYLE_ARROW_UP = 'arrow-up';
+
+    public const ZBX_STYLE_BLUE = 'blue';
+
+    public const ZBX_STYLE_BTN_ADD_FAV = 'btn-add-fav';
+
+    public const ZBX_STYLE_BTN_ALT = 'btn-alt';
+
+    public const ZBX_STYLE_BTN_CONF = 'btn-conf';
+
+    public const ZBX_STYLE_BTN_DEBUG = 'btn-debug';
+
+    public const ZBX_STYLE_BTN_GREY = 'btn-grey';
+
+    public const ZBX_STYLE_BTN_INFO = 'btn-info';
+
+    public const ZBX_STYLE_BTN_LINK = 'btn-link';
+
+    public const ZBX_STYLE_BTN_MAX = 'btn-max';
+
+    public const ZBX_STYLE_BTN_MIN = 'btn-min';
+
+    public const ZBX_STYLE_BTN_REMOVE_FAV = 'btn-remove-fav';
+
+    public const ZBX_STYLE_BTN_RESET = 'btn-reset';
+
+    public const ZBX_STYLE_BTN_SEARCH = 'btn-search';
+
+    public const ZBX_STYLE_BTN_WIDGET_ACTION = 'btn-widget-action';
+
+    public const ZBX_STYLE_BTN_WIDGET_COLLAPSE = 'btn-widget-collapse';
+
+    public const ZBX_STYLE_BTN_WIDGET_EXPAND = 'btn-widget-expand';
+
+    public const ZBX_STYLE_BOTTOM = 'bottom';
+
+    public const ZBX_STYLE_BROWSER_LOGO_CHROME = 'browser-logo-chrome';
+
+    public const ZBX_STYLE_BROWSER_LOGO_FF = 'browser-logo-ff';
+
+    public const ZBX_STYLE_BROWSER_LOGO_IE = 'browser-logo-ie';
+
+    public const ZBX_STYLE_BROWSER_LOGO_OPERA = 'browser-logo-opera';
+
+    public const ZBX_STYLE_BROWSER_LOGO_SAFARI = 'browser-logo-safari';
+
+    public const ZBX_STYLE_BROWSER_WARNING_CONTAINER = 'browser-warning-container';
+
+    public const ZBX_STYLE_BROWSER_WARNING_FOOTER = 'browser-warning-footer';
+
+    public const ZBX_STYLE_CELL = 'cell';
+
+    public const ZBX_STYLE_CELL_WIDTH = 'cell-width';
+
+    public const ZBX_STYLE_CENTER = 'center';
+
+    public const ZBX_STYLE_CLOCK = 'clock';
+
+    public const ZBX_STYLE_CLOCK_FACE = 'clock-face';
+
+    public const ZBX_STYLE_CLOCK_HAND = 'clock-hand';
+
+    public const ZBX_STYLE_CLOCK_HAND_SEC = 'clock-hand-sec';
+
+    public const ZBX_STYLE_CLOCK_LINES = 'clock-lines';
+
+    public const ZBX_STYLE_COLOR_PICKER = 'color-picker';
+
+    public const ZBX_STYLE_CURSOR_MOVE = 'cursor-move';
+
+    public const ZBX_STYLE_CURSOR_POINTER = 'cursor-pointer';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_HEAD = 'dashbrd-widget-head';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_FOOT = 'dashbrd-widget-foot';
+
+    public const ZBX_STYLE_DASHED_BORDER = 'dashed-border';
+
+    public const ZBX_STYLE_DEBUG_OUTPUT = 'debug-output';
+
+    public const ZBX_STYLE_DISABLED = 'disabled';
+
+    public const ZBX_STYLE_DISASTER_BG = 'disaster-bg';
+
+    public const ZBX_STYLE_DRAG_ICON = 'drag-icon';
+
+    public const ZBX_STYLE_DRAG_DROP_AREA = 'drag-drop-area';
+
+    public const ZBX_STYLE_TABLE_FORMS_SEPARATOR = 'table-forms-separator';
+
+    public const ZBX_STYLE_FILTER_CONTAINER = 'filter-container';
+
+    public const ZBX_STYLE_FILTER_BTN_CONTAINER = 'filter-btn-container';
+
+    public const ZBX_STYLE_FILTER_FORMS = 'filter-forms';
+
+    public const ZBX_STYLE_FILTER_TRIGGER = 'filter-trigger';
+
+    public const ZBX_STYLE_FILTER_ACTIVE = 'filter-active';
+
+    public const ZBX_STYLE_FLOAT_LEFT = 'float-left';
+
+    public const ZBX_STYLE_FORM_INPUT_MARGIN = 'form-input-margin';
+
+    public const ZBX_STYLE_FORM_NEW_GROUP = 'form-new-group';
+
+    public const ZBX_STYLE_FOOTER = 'footer';
+
+    public const ZBX_STYLE_GREEN = 'green';
+
+    public const ZBX_STYLE_GREEN_BG = 'green-bg';
+
+    public const ZBX_STYLE_GREY = 'grey';
+
+    public const ZBX_STYLE_HEADER_LOGO = 'header-logo';
+
+    public const ZBX_STYLE_HEADER_TITLE = 'header-title';
+
+    public const ZBX_STYLE_HIDDEN = 'hidden';
+
+    public const ZBX_STYLE_HIGH_BG = 'high-bg';
+
+    public const ZBX_STYLE_HOR_LIST = 'hor-list';
+
+    public const ZBX_STYLE_ICON_ACKN = 'icon-ackn';
+
+    public const ZBX_STYLE_ICON_CAL = 'icon-cal';
+
+    public const ZBX_STYLE_ICON_DEPEND_DOWN = 'icon-depend-down';
+
+    public const ZBX_STYLE_ICON_DEPEND_UP = 'icon-depend-up';
+
+    public const ZBX_STYLE_ICON_MAINT = 'icon-maint';
+
+    public const ZBX_STYLE_ICON_WZRD_ACTION = 'icon-wzrd-action';
+
+    public const ZBX_STYLE_INACTIVE_BG = 'inactive-bg';
+
+    public const ZBX_STYLE_INFO_BG = 'info-bg';
+
+    public const ZBX_STYLE_INPUT_COLOR_PICKER = 'input-color-picker';
+
+    public const ZBX_STYLE_LEFT = 'left';
+
+    public const ZBX_STYLE_LINK_ACTION = 'link-action';
+
+    public const ZBX_STYLE_LINK_ALT = 'link-alt';
+
+    public const ZBX_STYLE_LIST_HOR_CHECK_RADIO = 'list-hor-check-radio';
+
+    public const ZBX_STYLE_LIST_HOR_MIN_WIDTH = 'list-hor-min-width';
+
+    public const ZBX_STYLE_LIST_CHECK_RADIO = 'list-check-radio';
+
+    public const ZBX_STYLE_LIST_TABLE = 'list-table';
+
+    public const ZBX_STYLE_LOCAL_CLOCK = 'local-clock';
+
+    public const ZBX_STYLE_LOG_NA_BG = 'log-na-bg';
+
+    public const ZBX_STYLE_LOG_INFO_BG = 'log-info-bg';
+
+    public const ZBX_STYLE_LOG_WARNING_BG = 'log-warning-bg';
+
+    public const ZBX_STYLE_LOG_HIGH_BG = 'log-high-bg';
+
+    public const ZBX_STYLE_LOG_DISASTER_BG = 'log-disaster-bg';
+
+    public const ZBX_STYLE_LOGO = 'logo';
+
+    public const ZBX_STYLE_MAP_AREA = 'map-area';
+
+    public const ZBX_STYLE_MIDDLE = 'middle';
+
+    public const ZBX_STYLE_MSG_GOOD = 'msg-good';
+
+    public const ZBX_STYLE_MSG_BAD = 'msg-bad';
+
+    public const ZBX_STYLE_MSG_BAD_GLOBAL = 'msg-bad-global';
+
+    public const ZBX_STYLE_MSG_DETAILS = 'msg-details';
+
+    public const ZBX_STYLE_MSG_DETAILS_BORDER = 'msg-details-border';
+
+    public const ZBX_STYLE_NA_BG = 'na-bg';
+
+    public const ZBX_STYLE_NAV = 'nav';
+
+    public const ZBX_STYLE_NORMAL_BG = 'normal-bg';
+
+    public const ZBX_STYLE_NOTIF_BODY = 'notif-body';
+
+    public const ZBX_STYLE_NOTIF_INDIC = 'notif-indic';
+
+    public const ZBX_STYLE_NOTIF_INDIC_CONTAINER = 'notif-indic-container';
+
+    public const ZBX_STYLE_NOTHING_TO_SHOW = 'nothing-to-show';
+
+    public const ZBX_STYLE_NOWRAP = 'nowrap';
+
+    public const ZBX_STYLE_ORANGE = 'orange';
+
+    public const ZBX_STYLE_OVERLAY_CLOSE_BTN = 'overlay-close-btn';
+
+    public const ZBX_STYLE_OVERLAY_DESCR = 'overlay-descr';
+
+    public const ZBX_STYLE_OVERLAY_DESCR_URL = 'overlay-descr-url';
+
+    public const ZBX_STYLE_OVERFLOW_ELLIPSIS = 'overflow-ellipsis';
+
+    public const ZBX_STYLE_OBJECT_GROUP = 'object-group';
+
+    public const ZBX_STYLE_PAGING_BTN_CONTAINER = 'paging-btn-container';
+
+    public const ZBX_STYLE_PAGING_SELECTED = 'paging-selected';
+
+    public const ZBX_STYLE_PRELOADER = 'preloader';
+
+    public const ZBX_STYLE_PROGRESS_BAR_BG = 'progress-bar-bg';
+
+    public const ZBX_STYLE_PROGRESS_BAR_CONTAINER = 'progress-bar-container';
+
+    public const ZBX_STYLE_PROGRESS_BAR_LABEL = 'progress-bar-label';
+
+    public const ZBX_STYLE_RADIO_SEGMENTED = 'radio-segmented';
+
+    public const ZBX_STYLE_RED = 'red';
+
+    public const ZBX_STYLE_RED_BG = 'red-bg';
+
+    public const ZBX_STYLE_REL_CONTAINER = 'rel-container';
+
+    public const ZBX_STYLE_RIGHT = 'right';
+
+    public const ZBX_STYLE_ROW = 'row';
+
+    public const ZBX_STYLE_SCREEN_TABLE = 'screen-table';
+
+    public const ZBX_STYLE_SEARCH = 'search';
+
+    public const ZBX_STYLE_SELECTED = 'selected';
+
+    public const ZBX_STYLE_SELECTED_ITEM_COUNT = 'selected-item-count';
+
+    public const ZBX_STYLE_SERVER_NAME = 'server-name';
+
+    public const ZBX_STYLE_SETUP_CONTAINER = 'setup-container';
+
+    public const ZBX_STYLE_SETUP_FOOTER = 'setup-footer';
+
+    public const ZBX_STYLE_SETUP_LEFT = 'setup-left';
+
+    public const ZBX_STYLE_SETUP_LEFT_CURRENT = 'setup-left-current';
+
+    public const ZBX_STYLE_SETUP_RIGHT = 'setup-right';
+
+    public const ZBX_STYLE_SETUP_RIGHT_BODY = 'setup-right-body';
+
+    public const ZBX_STYLE_SETUP_TITLE = 'setup-title';
+
+    public const ZBX_STYLE_SIGNIN_CONTAINER = 'signin-container';
+
+    public const ZBX_STYLE_SIGNIN_LINKS = 'signin-links';
+
+    public const ZBX_STYLE_SIGNIN_LOGO = 'signin-logo';
+
+    public const ZBX_STYLE_SIGN_IN_TXT = 'sign-in-txt';
+
+    public const ZBX_STYLE_STATUS_CONTAINER = 'status-container';
+
+    public const ZBX_STYLE_STATUS_GREEN = 'status-green';
+
+    public const ZBX_STYLE_STATUS_GREY = 'status-grey';
+
+    public const ZBX_STYLE_STATUS_RED = 'status-red';
+
+    public const ZBX_STYLE_STATUS_YELLOW = 'status-yellow';
+
+    public const ZBX_STYLE_SUBFILTER_ENABLED = 'subfilter-enabled';
+
+    public const ZBX_STYLE_TABLE = 'table';
+
+    public const ZBX_STYLE_TABLE_FORMS = 'table-forms';
+
+    public const ZBX_STYLE_TABLE_FORMS_CONTAINER = 'table-forms-container';
+
+    public const ZBX_STYLE_TABLE_FORMS_TD_LEFT = 'table-forms-td-left';
+
+    public const ZBX_STYLE_TABLE_FORMS_TD_RIGHT = 'table-forms-td-right';
+
+    public const ZBX_STYLE_TABLE_PAGING = 'table-paging';
+
+    public const ZBX_STYLE_TABLE_STATS = 'table-stats';
+
+    public const ZBX_STYLE_TABS_NAV = 'tabs-nav';
+
+    public const ZBX_STYLE_TFOOT_BUTTONS = 'tfoot-buttons';
+
+    public const ZBX_STYLE_TD_DRAG_ICON = 'td-drag-icon';
+
+    public const ZBX_STYLE_TIME_ZONE = 'time-zone';
+
+    public const ZBX_STYLE_TOP = 'top';
+
+    public const ZBX_STYLE_TOP_NAV = 'top-nav';
+
+    public const ZBX_STYLE_TOP_NAV_CONTAINER = 'top-nav-container';
+
+    public const ZBX_STYLE_TOP_NAV_HELP = 'top-nav-help';
+
+    public const ZBX_STYLE_TOP_NAV_ICONS = 'top-nav-icons';
+
+    public const ZBX_STYLE_TOP_NAV_PROFILE = 'top-nav-profile';
+
+    public const ZBX_STYLE_TOP_NAV_SIGNOUT = 'top-nav-signout';
+
+    public const ZBX_STYLE_TOP_NAV_ZBBSHARE = 'top-nav-zbbshare';
+
+    public const ZBX_STYLE_TOP_SUBNAV = 'top-subnav';
+
+    public const ZBX_STYLE_TOP_SUBNAV_CONTAINER = 'top-subnav-container';
+
+    public const ZBX_STYLE_TREEVIEW = 'treeview';
+
+    public const ZBX_STYLE_TREEVIEW_PLUS = 'treeview-plus';
+
+    public const ZBX_STYLE_UPPERCASE = 'uppercase';
+
+    public const ZBX_STYLE_WARNING_BG = 'warning-bg';
+
+    public const ZBX_STYLE_YELLOW = 'yellow';
+
+    public const MACRO_TYPE_INHERITED = 0x01;
+
+    public const MACRO_TYPE_HOSTMACRO = 0x02;
+
+    public const MACRO_TYPE_BOTH = 0x03;
+
+    public const X_FRAME_OPTIONS = 'SAMEORIGIN';
+
     /**
      * @var array
      */
