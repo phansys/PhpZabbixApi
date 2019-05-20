@@ -22,6 +22,9 @@ use Psr\Http\Message\ResponseInterface;
  */
 class <CLASSNAME_CONCRETE>
 {
+<!START_API_CONSTANT>
+    public const <PHP_CONST_NAME> = <PHP_CONST_VALUE>;
+<!END_API_CONSTANT>
     /**
      * @var array
      */

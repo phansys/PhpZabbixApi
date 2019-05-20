@@ -73,4 +73,4 @@ define('PATH_BUILD', __DIR__.'/../src');
  * to update this constant!
  */
 
-define('PATH_ZABBIX', '/opt/zabbix/frontend');
+define('PATH_ZABBIX', '/opt/zabbix/zabbix-4.4.0/frontends/php');

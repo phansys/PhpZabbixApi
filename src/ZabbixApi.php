@@ -22,6 +22,2737 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ZabbixApi
 {
+
+    public const ZABBIX_VERSION = '4.4.0';
+
+    public const ZABBIX_API_VERSION = '4.4.0';
+
+    public const ZABBIX_EXPORT_VERSION = '4.4';
+
+    public const ZABBIX_DB_VERSION = 4040000;
+
+    public const ZABBIX_COPYRIGHT_FROM = '2001';
+
+    public const ZABBIX_COPYRIGHT_TO = '2019';
+
+    public const ZBX_LOGIN_ATTEMPTS = 5;
+
+    public const ZBX_LOGIN_BLOCK = 30;
+
+    public const ZBX_SESSION_NAME = 'zbx_sessionid';
+
+    public const ZBX_KIBIBYTE = '1024';
+
+    public const ZBX_MEBIBYTE = '1048576';
+
+    public const ZBX_GIBIBYTE = '1073741824';
+
+    public const ZBX_MIN_PERIOD = 60;
+
+    public const ZBX_MAX_PERIOD = 63158400;
+
+    public const ZBX_MIN_INT32 = -2147483648;
+
+    public const ZBX_MAX_INT32 = 2147483647;
+
+    public const ZBX_MIN_INT64 = '-9223372036854775808';
+
+    public const ZBX_MAX_INT64 = '9223372036854775807';
+
+    public const ZBX_MAX_UINT64 = '18446744073709551615';
+
+    public const ZBX_MAX_DATE = 2147483647;
+
+    public const ZBX_PERIOD_DEFAULT_FROM = 'now-1h';
+
+    public const ZBX_PERIOD_DEFAULT_TO = 'now';
+
+    public const ZBX_MIN_TIMESHIFT = -788400000;
+
+    public const ZBX_MAX_TIMESHIFT = 788400000;
+
+    public const ZBX_FULL_DATE_TIME = 'Y-m-d H:i:s';
+
+    public const ZBX_DATE_TIME = 'Y-m-d H:i';
+
+    public const ZBX_HISTORY_PERIOD = 86400;
+
+    public const ZBX_HISTORY_SOURCE_ELASTIC = 'elastic';
+
+    public const ZBX_HISTORY_SOURCE_SQL = 'sql';
+
+    public const ELASTICSEARCH_RESPONSE_PLAIN = 0;
+
+    public const ELASTICSEARCH_RESPONSE_AGGREGATION = 1;
+
+    public const ELASTICSEARCH_RESPONSE_DOCUMENTS = 2;
+
+    public const ZBX_GRAPH_FONT_NAME = 'DejaVuSans';
+
+    public const ZBX_GRAPH_LEGEND_HEIGHT = 120;
+
+    public const ZBX_SCRIPT_TIMEOUT = 60;
+
+    public const GRAPH_YAXIS_SIDE_DEFAULT = 0;
+
+    public const ZBX_MAX_IMAGE_SIZE = self::ZBX_MEBIBYTE;
+
+    public const ZBX_UNITS_ROUNDOFF_THRESHOLD = 0.01;
+
+    public const ZBX_UNITS_ROUNDOFF_UPPER_LIMIT = 2;
+
+    public const ZBX_UNITS_ROUNDOFF_MIDDLE_LIMIT = 4;
+
+    public const ZBX_UNITS_ROUNDOFF_LOWER_LIMIT = 6;
+
+    public const ZBX_PRECISION_10 = 10;
+
+    public const ZBX_DEFAULT_INTERVAL = '1-7,00:00-24:00';
+
+    public const ZBX_SCRIPT_TYPE_CUSTOM_SCRIPT = 0;
+
+    public const ZBX_SCRIPT_TYPE_IPMI = 1;
+
+    public const ZBX_SCRIPT_TYPE_SSH = 2;
+
+    public const ZBX_SCRIPT_TYPE_TELNET = 3;
+
+    public const ZBX_SCRIPT_TYPE_GLOBAL_SCRIPT = 4;
+
+    public const ZBX_SCRIPT_EXECUTE_ON_AGENT = 0;
+
+    public const ZBX_SCRIPT_EXECUTE_ON_SERVER = 1;
+
+    public const ZBX_SCRIPT_EXECUTE_ON_PROXY = 2;
+
+    public const ZBX_FLAG_DISCOVERY_NORMAL = 0x0;
+
+    public const ZBX_FLAG_DISCOVERY_RULE = 0x1;
+
+    public const ZBX_FLAG_DISCOVERY_PROTOTYPE = 0x2;
+
+    public const ZBX_FLAG_DISCOVERY_CREATED = 0x4;
+
+    public const EXTACK_OPTION_ALL = 0;
+
+    public const EXTACK_OPTION_UNACK = 1;
+
+    public const EXTACK_OPTION_BOTH = 2;
+
+    public const WIDGET_PROBLEMS_BY_SV_SHOW_GROUPS = 0;
+
+    public const WIDGET_PROBLEMS_BY_SV_SHOW_TOTALS = 1;
+
+    public const TRIGGERS_OPTION_RECENT_PROBLEM = 1;
+
+    public const TRIGGERS_OPTION_ALL = 2;
+
+    public const TRIGGERS_OPTION_IN_PROBLEM = 3;
+
+    public const ZBX_FONT_NAME = 'DejaVuSans';
+
+    public const ZBX_AUTH_INTERNAL = 0;
+
+    public const ZBX_AUTH_LDAP = 1;
+
+    public const ZBX_AUTH_HTTP_DISABLED = 0;
+
+    public const ZBX_AUTH_HTTP_ENABLED = 1;
+
+    public const ZBX_AUTH_LDAP_DISABLED = 0;
+
+    public const ZBX_AUTH_LDAP_ENABLED = 1;
+
+    public const ZBX_AUTH_FORM_ZABBIX = 0;
+
+    public const ZBX_AUTH_FORM_HTTP = 1;
+
+    public const ZBX_AUTH_CASE_INSENSITIVE = 0;
+
+    public const ZBX_AUTH_CASE_SENSITIVE = 1;
+
+    public const ZBX_DB_DB2 = 'IBM_DB2';
+
+    public const ZBX_DB_MYSQL = 'MYSQL';
+
+    public const ZBX_DB_ORACLE = 'ORACLE';
+
+    public const ZBX_DB_POSTGRESQL = 'POSTGRESQL';
+
+    public const ZBX_DB_MAX_ID = '9223372036854775807';
+
+    public const ZBX_DB_MAX_INSERTS = 10000;
+
+    public const ZBX_SHOW_TECHNICAL_ERRORS = false;
+
+    public const PAGE_TYPE_HTML = 0;
+
+    public const PAGE_TYPE_IMAGE = 1;
+
+    public const PAGE_TYPE_XML = 2;
+
+    public const PAGE_TYPE_JS = 3;
+
+    public const PAGE_TYPE_CSS = 4;
+
+    public const PAGE_TYPE_HTML_BLOCK = 5;
+
+    public const PAGE_TYPE_JSON = 6;
+
+    public const PAGE_TYPE_JSON_RPC = 7;
+
+    public const PAGE_TYPE_TEXT_FILE = 8;
+
+    public const PAGE_TYPE_TEXT = 9;
+
+    public const PAGE_TYPE_CSV = 10;
+
+    public const PAGE_TYPE_TEXT_RETURN_JSON = 11;
+
+    public const ZBX_SESSION_ACTIVE = 0;
+
+    public const ZBX_SESSION_PASSIVE = 1;
+
+    public const ZBX_DROPDOWN_FIRST_NONE = 0;
+
+    public const ZBX_DROPDOWN_FIRST_ALL = 1;
+
+    public const T_ZBX_STR = 0;
+
+    public const T_ZBX_INT = 1;
+
+    public const T_ZBX_DBL = 2;
+
+    public const T_ZBX_RANGE_TIME = 3;
+
+    public const T_ZBX_CLR = 5;
+
+    public const T_ZBX_DBL_BIG = 9;
+
+    public const T_ZBX_DBL_STR = 10;
+
+    public const T_ZBX_TP = 11;
+
+    public const T_ZBX_TU = 12;
+
+    public const T_ZBX_ABS_TIME = 13;
+
+    public const O_MAND = 0;
+
+    public const O_OPT = 1;
+
+    public const O_NO = 2;
+
+    public const P_SYS = 0x0001;
+
+    public const P_UNSET_EMPTY = 0x0002;
+
+    public const P_CRLF = 0x0004;
+
+    public const P_ACT = 0x0010;
+
+    public const P_NZERO = 0x0020;
+
+    public const P_NO_TRIM = 0x0040;
+
+    public const P_ALLOW_USER_MACRO = 0x0080;
+
+    public const P_ALLOW_LLD_MACRO = 0x0100;
+
+    public const ZBX_URI_VALID_SCHEMES = 'http,https,ftp,file,mailto,tel,ssh';
+
+    public const VALIDATE_URI_SCHEMES = true;
+
+    public const IMAGE_FORMAT_PNG = 'PNG';
+
+    public const IMAGE_FORMAT_JPEG = 'JPEG';
+
+    public const IMAGE_FORMAT_TEXT = 'JPEG';
+
+    public const IMAGE_FORMAT_GIF = 'GIF';
+
+    public const IMAGE_TYPE_ICON = 1;
+
+    public const IMAGE_TYPE_BACKGROUND = 2;
+
+    public const ITEM_CONVERT_WITH_UNITS = 0;
+
+    public const ITEM_CONVERT_NO_UNITS = 1;
+
+    public const ZBX_SORT_UP = 'ASC';
+
+    public const ZBX_SORT_DOWN = 'DESC';
+
+    public const ZBX_TAG_COUNT_DEFAULT = 3;
+
+    public const ZBX_TCP_HEADER_DATA = "ZBXD";
+
+    public const ZBX_TCP_HEADER_VERSION = "\1";
+
+    public const ZBX_TCP_HEADER = self::ZBX_TCP_HEADER_DATA.self::ZBX_TCP_HEADER_VERSION;
+
+    public const ZBX_TCP_HEADER_LEN = 5;
+
+    public const ZBX_TCP_DATALEN_LEN = 8;
+
+    public const AUDIT_ACTION_ADD = 0;
+
+    public const AUDIT_ACTION_UPDATE = 1;
+
+    public const AUDIT_ACTION_DELETE = 2;
+
+    public const AUDIT_ACTION_LOGIN = 3;
+
+    public const AUDIT_ACTION_LOGOUT = 4;
+
+    public const AUDIT_ACTION_ENABLE = 5;
+
+    public const AUDIT_ACTION_DISABLE = 6;
+
+    public const AUDIT_RESOURCE_USER = 0;
+
+    public const AUDIT_RESOURCE_ZABBIX_CONFIG = 2;
+
+    public const AUDIT_RESOURCE_MEDIA_TYPE = 3;
+
+    public const AUDIT_RESOURCE_HOST = 4;
+
+    public const AUDIT_RESOURCE_ACTION = 5;
+
+    public const AUDIT_RESOURCE_GRAPH = 6;
+
+    public const AUDIT_RESOURCE_GRAPH_ELEMENT = 7;
+
+    public const AUDIT_RESOURCE_USER_GROUP = 11;
+
+    public const AUDIT_RESOURCE_APPLICATION = 12;
+
+    public const AUDIT_RESOURCE_TRIGGER = 13;
+
+    public const AUDIT_RESOURCE_HOST_GROUP = 14;
+
+    public const AUDIT_RESOURCE_ITEM = 15;
+
+    public const AUDIT_RESOURCE_IMAGE = 16;
+
+    public const AUDIT_RESOURCE_VALUE_MAP = 17;
+
+    public const AUDIT_RESOURCE_IT_SERVICE = 18;
+
+    public const AUDIT_RESOURCE_MAP = 19;
+
+    public const AUDIT_RESOURCE_SCREEN = 20;
+
+    public const AUDIT_RESOURCE_SCENARIO = 22;
+
+    public const AUDIT_RESOURCE_DISCOVERY_RULE = 23;
+
+    public const AUDIT_RESOURCE_SLIDESHOW = 24;
+
+    public const AUDIT_RESOURCE_SCRIPT = 25;
+
+    public const AUDIT_RESOURCE_PROXY = 26;
+
+    public const AUDIT_RESOURCE_MAINTENANCE = 27;
+
+    public const AUDIT_RESOURCE_REGEXP = 28;
+
+    public const AUDIT_RESOURCE_MACRO = 29;
+
+    public const AUDIT_RESOURCE_TEMPLATE = 30;
+
+    public const AUDIT_RESOURCE_TRIGGER_PROTOTYPE = 31;
+
+    public const AUDIT_RESOURCE_ICON_MAP = 32;
+
+    public const AUDIT_RESOURCE_DASHBOARD = 33;
+
+    public const AUDIT_RESOURCE_CORRELATION = 34;
+
+    public const AUDIT_RESOURCE_GRAPH_PROTOTYPE = 35;
+
+    public const AUDIT_RESOURCE_ITEM_PROTOTYPE = 36;
+
+    public const AUDIT_RESOURCE_HOST_PROTOTYPE = 37;
+
+    public const AUDIT_RESOURCE_AUTOREGISTRATION = 38;
+
+    public const CONDITION_TYPE_HOST_GROUP = 0;
+
+    public const CONDITION_TYPE_HOST = 1;
+
+    public const CONDITION_TYPE_TRIGGER = 2;
+
+    public const CONDITION_TYPE_TRIGGER_NAME = 3;
+
+    public const CONDITION_TYPE_TRIGGER_SEVERITY = 4;
+
+    public const CONDITION_TYPE_TIME_PERIOD = 6;
+
+    public const CONDITION_TYPE_DHOST_IP = 7;
+
+    public const CONDITION_TYPE_DSERVICE_TYPE = 8;
+
+    public const CONDITION_TYPE_DSERVICE_PORT = 9;
+
+    public const CONDITION_TYPE_DSTATUS = 10;
+
+    public const CONDITION_TYPE_DUPTIME = 11;
+
+    public const CONDITION_TYPE_DVALUE = 12;
+
+    public const CONDITION_TYPE_TEMPLATE = 13;
+
+    public const CONDITION_TYPE_EVENT_ACKNOWLEDGED = 14;
+
+    public const CONDITION_TYPE_APPLICATION = 15;
+
+    public const CONDITION_TYPE_SUPPRESSED = 16;
+
+    public const CONDITION_TYPE_DRULE = 18;
+
+    public const CONDITION_TYPE_DCHECK = 19;
+
+    public const CONDITION_TYPE_PROXY = 20;
+
+    public const CONDITION_TYPE_DOBJECT = 21;
+
+    public const CONDITION_TYPE_HOST_NAME = 22;
+
+    public const CONDITION_TYPE_EVENT_TYPE = 23;
+
+    public const CONDITION_TYPE_HOST_METADATA = 24;
+
+    public const CONDITION_TYPE_EVENT_TAG = 25;
+
+    public const CONDITION_TYPE_EVENT_TAG_VALUE = 26;
+
+    public const CONDITION_OPERATOR_EQUAL = 0;
+
+    public const CONDITION_OPERATOR_NOT_EQUAL = 1;
+
+    public const CONDITION_OPERATOR_LIKE = 2;
+
+    public const CONDITION_OPERATOR_NOT_LIKE = 3;
+
+    public const CONDITION_OPERATOR_IN = 4;
+
+    public const CONDITION_OPERATOR_MORE_EQUAL = 5;
+
+    public const CONDITION_OPERATOR_LESS_EQUAL = 6;
+
+    public const CONDITION_OPERATOR_NOT_IN = 7;
+
+    public const CONDITION_OPERATOR_REGEXP = 8;
+
+    public const CONDITION_OPERATOR_NOT_REGEXP = 9;
+
+    public const CONDITION_OPERATOR_YES = 10;
+
+    public const CONDITION_OPERATOR_NO = 11;
+
+    public const ZBX_CORRELATION_ENABLED = 0;
+
+    public const ZBX_CORRELATION_DISABLED = 1;
+
+    public const ZBX_CORR_CONDITION_OLD_EVENT_TAG = 0;
+
+    public const ZBX_CORR_CONDITION_NEW_EVENT_TAG = 1;
+
+    public const ZBX_CORR_CONDITION_NEW_EVENT_HOSTGROUP = 2;
+
+    public const ZBX_CORR_CONDITION_EVENT_TAG_PAIR = 3;
+
+    public const ZBX_CORR_CONDITION_OLD_EVENT_TAG_VALUE = 4;
+
+    public const ZBX_CORR_CONDITION_NEW_EVENT_TAG_VALUE = 5;
+
+    public const ZBX_CORR_OPERATION_CLOSE_OLD = 0;
+
+    public const ZBX_CORR_OPERATION_CLOSE_NEW = 1;
+
+    public const EVENT_TYPE_ITEM_NOTSUPPORTED = 0;
+
+    public const EVENT_TYPE_LLDRULE_NOTSUPPORTED = 2;
+
+    public const EVENT_TYPE_TRIGGER_UNKNOWN = 4;
+
+    public const HOST_STATUS_MONITORED = 0;
+
+    public const HOST_STATUS_NOT_MONITORED = 1;
+
+    public const HOST_STATUS_TEMPLATE = 3;
+
+    public const HOST_STATUS_PROXY_ACTIVE = 5;
+
+    public const HOST_STATUS_PROXY_PASSIVE = 6;
+
+    public const HOST_ENCRYPTION_NONE = 1;
+
+    public const HOST_ENCRYPTION_PSK = 2;
+
+    public const HOST_ENCRYPTION_CERTIFICATE = 4;
+
+    public const HOST_COMPRESSION_ON = 1;
+
+    public const PSK_MIN_LEN = 32;
+
+    public const HOST_MAINTENANCE_STATUS_OFF = 0;
+
+    public const HOST_MAINTENANCE_STATUS_ON = 1;
+
+    public const INTERFACE_SECONDARY = 0;
+
+    public const INTERFACE_PRIMARY = 1;
+
+    public const INTERFACE_USE_DNS = 0;
+
+    public const INTERFACE_USE_IP = 1;
+
+    public const INTERFACE_TYPE_ANY = -1;
+
+    public const INTERFACE_TYPE_UNKNOWN = 0;
+
+    public const INTERFACE_TYPE_AGENT = 1;
+
+    public const INTERFACE_TYPE_SNMP = 2;
+
+    public const INTERFACE_TYPE_IPMI = 3;
+
+    public const INTERFACE_TYPE_JMX = 4;
+
+    public const SNMP_BULK_DISABLED = 0;
+
+    public const SNMP_BULK_ENABLED = 1;
+
+    public const MAINTENANCE_STATUS_ACTIVE = 0;
+
+    public const MAINTENANCE_STATUS_APPROACH = 1;
+
+    public const MAINTENANCE_STATUS_EXPIRED = 2;
+
+    public const HOST_AVAILABLE_UNKNOWN = 0;
+
+    public const HOST_AVAILABLE_TRUE = 1;
+
+    public const HOST_AVAILABLE_FALSE = 2;
+
+    public const MAINTENANCE_TAG_EVAL_TYPE_AND_OR = 0;
+
+    public const MAINTENANCE_TAG_EVAL_TYPE_OR = 2;
+
+    public const MAINTENANCE_TAG_OPERATOR_EQUAL = 0;
+
+    public const MAINTENANCE_TAG_OPERATOR_LIKE = 2;
+
+    public const MAINTENANCE_TYPE_NORMAL = 0;
+
+    public const MAINTENANCE_TYPE_NODATA = 1;
+
+    public const TIMEPERIOD_TYPE_ONETIME = 0;
+
+    public const TIMEPERIOD_TYPE_HOURLY = 1;
+
+    public const TIMEPERIOD_TYPE_DAILY = 2;
+
+    public const TIMEPERIOD_TYPE_WEEKLY = 3;
+
+    public const TIMEPERIOD_TYPE_MONTHLY = 4;
+
+    public const TIMEPERIOD_TYPE_YEARLY = 5;
+
+    public const REPORT_PERIOD_TODAY = 0;
+
+    public const REPORT_PERIOD_YESTERDAY = 1;
+
+    public const REPORT_PERIOD_CURRENT_WEEK = 2;
+
+    public const REPORT_PERIOD_CURRENT_MONTH = 3;
+
+    public const REPORT_PERIOD_CURRENT_YEAR = 4;
+
+    public const REPORT_PERIOD_LAST_WEEK = 5;
+
+    public const REPORT_PERIOD_LAST_MONTH = 6;
+
+    public const REPORT_PERIOD_LAST_YEAR = 7;
+
+    public const SYSMAP_LABEL_ADVANCED_OFF = 0;
+
+    public const SYSMAP_LABEL_ADVANCED_ON = 1;
+
+    public const SYSMAP_PROBLEMS_NUMBER = 0;
+
+    public const SYSMAP_SINGLE_PROBLEM = 1;
+
+    public const SYSMAP_PROBLEMS_NUMBER_CRITICAL = 2;
+
+    public const MAP_LABEL_TYPE_LABEL = 0;
+
+    public const MAP_LABEL_TYPE_IP = 1;
+
+    public const MAP_LABEL_TYPE_NAME = 2;
+
+    public const MAP_LABEL_TYPE_STATUS = 3;
+
+    public const MAP_LABEL_TYPE_NOTHING = 4;
+
+    public const MAP_LABEL_TYPE_CUSTOM = 5;
+
+    public const MAP_LABEL_LOC_DEFAULT = -1;
+
+    public const MAP_LABEL_LOC_BOTTOM = 0;
+
+    public const MAP_LABEL_LOC_LEFT = 1;
+
+    public const MAP_LABEL_LOC_RIGHT = 2;
+
+    public const MAP_LABEL_LOC_TOP = 3;
+
+    public const SYSMAP_ELEMENT_TYPE_HOST = 0;
+
+    public const SYSMAP_ELEMENT_TYPE_MAP = 1;
+
+    public const SYSMAP_ELEMENT_TYPE_TRIGGER = 2;
+
+    public const SYSMAP_ELEMENT_TYPE_HOST_GROUP = 3;
+
+    public const SYSMAP_ELEMENT_TYPE_IMAGE = 4;
+
+    public const SYSMAP_ELEMENT_SUBTYPE_HOST_GROUP = 0;
+
+    public const SYSMAP_ELEMENT_SUBTYPE_HOST_GROUP_ELEMENTS = 1;
+
+    public const SYSMAP_ELEMENT_AREA_TYPE_FIT = 0;
+
+    public const SYSMAP_ELEMENT_AREA_TYPE_CUSTOM = 1;
+
+    public const SYSMAP_ELEMENT_AREA_VIEWTYPE_GRID = 0;
+
+    public const SYSMAP_ELEMENT_ICON_ON = 0;
+
+    public const SYSMAP_ELEMENT_ICON_OFF = 1;
+
+    public const SYSMAP_ELEMENT_ICON_MAINTENANCE = 3;
+
+    public const SYSMAP_ELEMENT_ICON_DISABLED = 4;
+
+    public const SYSMAP_SHAPE_TYPE_RECTANGLE = 0;
+
+    public const SYSMAP_SHAPE_TYPE_ELLIPSE = 1;
+
+    public const SYSMAP_SHAPE_TYPE_LINE = 2;
+
+    public const SYSMAP_SHAPE_BORDER_TYPE_NONE = 0;
+
+    public const SYSMAP_SHAPE_BORDER_TYPE_SOLID = 1;
+
+    public const SYSMAP_SHAPE_BORDER_TYPE_DOTTED = 2;
+
+    public const SYSMAP_SHAPE_BORDER_TYPE_DASHED = 3;
+
+    public const SYSMAP_SHAPE_LABEL_HALIGN_CENTER = 0;
+
+    public const SYSMAP_SHAPE_LABEL_HALIGN_LEFT = 1;
+
+    public const SYSMAP_SHAPE_LABEL_HALIGN_RIGHT = 2;
+
+    public const SYSMAP_SHAPE_LABEL_VALIGN_MIDDLE = 0;
+
+    public const SYSMAP_SHAPE_LABEL_VALIGN_TOP = 1;
+
+    public const SYSMAP_SHAPE_LABEL_VALIGN_BOTTOM = 2;
+
+    public const SYSMAP_HIGHLIGHT_OFF = 0;
+
+    public const SYSMAP_HIGHLIGHT_ON = 1;
+
+    public const SYSMAP_GRID_SHOW_ON = 1;
+
+    public const SYSMAP_GRID_SHOW_OFF = 0;
+
+    public const SYSMAP_EXPAND_MACROS_OFF = 0;
+
+    public const SYSMAP_EXPAND_MACROS_ON = 1;
+
+    public const SYSMAP_GRID_ALIGN_ON = 1;
+
+    public const SYSMAP_GRID_ALIGN_OFF = 0;
+
+    public const PUBLIC_SHARING = 0;
+
+    public const PRIVATE_SHARING = 1;
+
+    public const ZBX_ITEM_DELAY_DEFAULT = '1m';
+
+    public const ZBX_ITEM_FLEXIBLE_DELAY_DEFAULT = '50s';
+
+    public const ZBX_ITEM_SCHEDULING_DEFAULT = 'wd1-5h9-18';
+
+    public const ITEM_TYPE_ZABBIX = 0;
+
+    public const ITEM_TYPE_SNMPV1 = 1;
+
+    public const ITEM_TYPE_TRAPPER = 2;
+
+    public const ITEM_TYPE_SIMPLE = 3;
+
+    public const ITEM_TYPE_SNMPV2C = 4;
+
+    public const ITEM_TYPE_INTERNAL = 5;
+
+    public const ITEM_TYPE_SNMPV3 = 6;
+
+    public const ITEM_TYPE_ZABBIX_ACTIVE = 7;
+
+    public const ITEM_TYPE_AGGREGATE = 8;
+
+    public const ITEM_TYPE_HTTPTEST = 9;
+
+    public const ITEM_TYPE_EXTERNAL = 10;
+
+    public const ITEM_TYPE_DB_MONITOR = 11;
+
+    public const ITEM_TYPE_IPMI = 12;
+
+    public const ITEM_TYPE_SSH = 13;
+
+    public const ITEM_TYPE_TELNET = 14;
+
+    public const ITEM_TYPE_CALCULATED = 15;
+
+    public const ITEM_TYPE_JMX = 16;
+
+    public const ITEM_TYPE_SNMPTRAP = 17;
+
+    public const ITEM_TYPE_DEPENDENT = 18;
+
+    public const ITEM_TYPE_HTTPAGENT = 19;
+
+    public const ZBX_DEPENDENT_ITEM_MAX_LEVELS = 3;
+
+    public const ZBX_DEPENDENT_ITEM_MAX_COUNT = 29999;
+
+    public const ITEM_VALUE_TYPE_FLOAT = 0;
+
+    public const ITEM_VALUE_TYPE_STR = 1;
+
+    public const ITEM_VALUE_TYPE_LOG = 2;
+
+    public const ITEM_VALUE_TYPE_UINT64 = 3;
+
+    public const ITEM_VALUE_TYPE_TEXT = 4;
+
+    public const ITEM_DATA_TYPE_DECIMAL = 0;
+
+    public const ITEM_DATA_TYPE_OCTAL = 1;
+
+    public const ITEM_DATA_TYPE_HEXADECIMAL = 2;
+
+    public const ITEM_DATA_TYPE_BOOLEAN = 3;
+
+    public const ZBX_DEFAULT_KEY_DB_MONITOR = 'db.odbc.select[<unique short description>,dsn]';
+
+    public const ZBX_DEFAULT_KEY_DB_MONITOR_DISCOVERY = 'db.odbc.discovery[<unique short description>,dsn]';
+
+    public const ZBX_DEFAULT_KEY_SSH = 'ssh.run[<unique short description>,<ip>,<port>,<encoding>]';
+
+    public const ZBX_DEFAULT_KEY_TELNET = 'telnet.run[<unique short description>,<ip>,<port>,<encoding>]';
+
+    public const ZBX_DEFAULT_JMX_ENDPOINT = 'service:jmx:rmi:///jndi/rmi://{HOST.CONN}:{HOST.PORT}/jmxrmi';
+
+    public const SYSMAP_ELEMENT_USE_ICONMAP_ON = 1;
+
+    public const SYSMAP_ELEMENT_USE_ICONMAP_OFF = 0;
+
+    public const ZBX_ICON_PREVIEW_HEIGHT = 24;
+
+    public const ZBX_ICON_PREVIEW_WIDTH = 24;
+
+    public const ITEM_STATUS_ACTIVE = 0;
+
+    public const ITEM_STATUS_DISABLED = 1;
+
+    public const ITEM_STATUS_NOTSUPPORTED = 3;
+
+    public const ITEM_STATE_NORMAL = 0;
+
+    public const ITEM_STATE_NOTSUPPORTED = 1;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_NOAUTHNOPRIV = 0;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_AUTHNOPRIV = 1;
+
+    public const ITEM_SNMPV3_SECURITYLEVEL_AUTHPRIV = 2;
+
+    public const ITEM_AUTHTYPE_PASSWORD = 0;
+
+    public const ITEM_AUTHTYPE_PUBLICKEY = 1;
+
+    public const ITEM_AUTHPROTOCOL_MD5 = 0;
+
+    public const ITEM_AUTHPROTOCOL_SHA = 1;
+
+    public const ITEM_PRIVPROTOCOL_DES = 0;
+
+    public const ITEM_PRIVPROTOCOL_AES = 1;
+
+    public const ITEM_LOGTYPE_INFORMATION = 1;
+
+    public const ITEM_LOGTYPE_WARNING = 2;
+
+    public const ITEM_LOGTYPE_ERROR = 4;
+
+    public const ITEM_LOGTYPE_FAILURE_AUDIT = 7;
+
+    public const ITEM_LOGTYPE_SUCCESS_AUDIT = 8;
+
+    public const ITEM_LOGTYPE_CRITICAL = 9;
+
+    public const ITEM_LOGTYPE_VERBOSE = 10;
+
+    public const ITEM_DELAY_FLEXIBLE = 0;
+
+    public const ITEM_DELAY_SCHEDULING = 1;
+
+    public const ZBX_PREPROC_MULTIPLIER = 1;
+
+    public const ZBX_PREPROC_RTRIM = 2;
+
+    public const ZBX_PREPROC_LTRIM = 3;
+
+    public const ZBX_PREPROC_TRIM = 4;
+
+    public const ZBX_PREPROC_REGSUB = 5;
+
+    public const ZBX_PREPROC_BOOL2DEC = 6;
+
+    public const ZBX_PREPROC_OCT2DEC = 7;
+
+    public const ZBX_PREPROC_HEX2DEC = 8;
+
+    public const ZBX_PREPROC_DELTA_VALUE = 9;
+
+    public const ZBX_PREPROC_DELTA_SPEED = 10;
+
+    public const ZBX_PREPROC_XPATH = 11;
+
+    public const ZBX_PREPROC_JSONPATH = 12;
+
+    public const ZBX_PREPROC_VALIDATE_RANGE = 13;
+
+    public const ZBX_PREPROC_VALIDATE_REGEX = 14;
+
+    public const ZBX_PREPROC_VALIDATE_NOT_REGEX = 15;
+
+    public const ZBX_PREPROC_ERROR_FIELD_JSON = 16;
+
+    public const ZBX_PREPROC_ERROR_FIELD_XML = 17;
+
+    public const ZBX_PREPROC_ERROR_FIELD_REGEX = 18;
+
+    public const ZBX_PREPROC_THROTTLE_VALUE = 19;
+
+    public const ZBX_PREPROC_THROTTLE_TIMED_VALUE = 20;
+
+    public const ZBX_PREPROC_SCRIPT = 21;
+
+    public const ZBX_PREPROC_PROMETHEUS_PATTERN = 22;
+
+    public const ZBX_PREPROC_PROMETHEUS_TO_JSON = 23;
+
+    public const ZBX_PREPROC_CSV_TO_JSON = 24;
+
+    public const ZBX_PREPROC_FAIL_DEFAULT = 0;
+
+    public const ZBX_PREPROC_FAIL_DISCARD_VALUE = 1;
+
+    public const ZBX_PREPROC_FAIL_SET_VALUE = 2;
+
+    public const ZBX_PREPROC_FAIL_SET_ERROR = 3;
+
+    public const ZBX_PREPROC_CSV_NO_HEADER = 0;
+
+    public const ZBX_PREPROC_CSV_HEADER = 1;
+
+    public const GRAPH_ITEM_DRAWTYPE_LINE = 0;
+
+    public const GRAPH_ITEM_DRAWTYPE_FILLED_REGION = 1;
+
+    public const GRAPH_ITEM_DRAWTYPE_BOLD_LINE = 2;
+
+    public const GRAPH_ITEM_DRAWTYPE_DOT = 3;
+
+    public const GRAPH_ITEM_DRAWTYPE_DASHED_LINE = 4;
+
+    public const GRAPH_ITEM_DRAWTYPE_GRADIENT_LINE = 5;
+
+    public const GRAPH_ITEM_DRAWTYPE_BOLD_DOT = 6;
+
+    public const MAP_LINK_DRAWTYPE_LINE = 0;
+
+    public const MAP_LINK_DRAWTYPE_BOLD_LINE = 2;
+
+    public const MAP_LINK_DRAWTYPE_DOT = 3;
+
+    public const MAP_LINK_DRAWTYPE_DASHED_LINE = 4;
+
+    public const SERVICE_ALGORITHM_NONE = 0;
+
+    public const SERVICE_ALGORITHM_MAX = 1;
+
+    public const SERVICE_ALGORITHM_MIN = 2;
+
+    public const SERVICE_SLA = '99.9000';
+
+    public const SERVICE_SHOW_SLA_OFF = 0;
+
+    public const SERVICE_SHOW_SLA_ON = 1;
+
+    public const SERVICE_STATUS_OK = 0;
+
+    public const TRIGGER_MULT_EVENT_DISABLED = 0;
+
+    public const TRIGGER_MULT_EVENT_ENABLED = 1;
+
+    public const ZBX_TRIGGER_CORRELATION_NONE = 0;
+
+    public const ZBX_TRIGGER_CORRELATION_TAG = 1;
+
+    public const ZBX_TRIGGER_MANUAL_CLOSE_NOT_ALLOWED = 0;
+
+    public const ZBX_TRIGGER_MANUAL_CLOSE_ALLOWED = 1;
+
+    public const ZBX_RECOVERY_MODE_EXPRESSION = 0;
+
+    public const ZBX_RECOVERY_MODE_RECOVERY_EXPRESSION = 1;
+
+    public const ZBX_RECOVERY_MODE_NONE = 2;
+
+    public const TRIGGER_STATUS_ENABLED = 0;
+
+    public const TRIGGER_STATUS_DISABLED = 1;
+
+    public const TRIGGER_VALUE_FALSE = 0;
+
+    public const TRIGGER_VALUE_TRUE = 1;
+
+    public const TRIGGER_STATE_NORMAL = 0;
+
+    public const TRIGGER_STATE_UNKNOWN = 1;
+
+    public const TRIGGER_SEVERITY_NOT_CLASSIFIED = 0;
+
+    public const TRIGGER_SEVERITY_INFORMATION = 1;
+
+    public const TRIGGER_SEVERITY_WARNING = 2;
+
+    public const TRIGGER_SEVERITY_AVERAGE = 3;
+
+    public const TRIGGER_SEVERITY_HIGH = 4;
+
+    public const TRIGGER_SEVERITY_DISASTER = 5;
+
+    public const TRIGGER_SEVERITY_COUNT = 6;
+
+    public const EVENT_CUSTOM_COLOR_DISABLED = 0;
+
+    public const EVENT_CUSTOM_COLOR_ENABLED = 1;
+
+    public const ALERT_STATUS_NOT_SENT = 0;
+
+    public const ALERT_STATUS_SENT = 1;
+
+    public const ALERT_STATUS_FAILED = 2;
+
+    public const ALERT_STATUS_NEW = 3;
+
+    public const ALERT_TYPE_MESSAGE = 0;
+
+    public const ALERT_TYPE_COMMAND = 1;
+
+    public const MEDIA_STATUS_ACTIVE = 0;
+
+    public const MEDIA_STATUS_DISABLED = 1;
+
+    public const MEDIA_TYPE_STATUS_ACTIVE = 0;
+
+    public const MEDIA_TYPE_STATUS_DISABLED = 1;
+
+    public const ZBX_MEDIA_TYPE_TAGS_DISABLED = 0;
+
+    public const ZBX_MEDIA_TYPE_TAGS_ENABLED = 1;
+
+    public const ZBX_EVENT_MENU_HIDE = 0;
+
+    public const ZBX_EVENT_MENU_SHOW = 1;
+
+    public const MEDIA_TYPE_EMAIL = 0;
+
+    public const MEDIA_TYPE_EXEC = 1;
+
+    public const MEDIA_TYPE_SMS = 2;
+
+    public const MEDIA_TYPE_WEBHOOK = 4;
+
+    public const SMTP_CONNECTION_SECURITY_NONE = 0;
+
+    public const SMTP_CONNECTION_SECURITY_STARTTLS = 1;
+
+    public const SMTP_CONNECTION_SECURITY_SSL_TLS = 2;
+
+    public const SMTP_AUTHENTICATION_NONE = 0;
+
+    public const SMTP_AUTHENTICATION_NORMAL = 1;
+
+    public const SMTP_MESSAGE_FORMAT_PLAIN_TEXT = 0;
+
+    public const SMTP_MESSAGE_FORMAT_HTML = 1;
+
+    public const ACTION_DEFAULT_SUBJ_AUTOREG = 'Auto registration: {HOST.HOST}';
+
+    public const ACTION_DEFAULT_SUBJ_DISCOVERY = 'Discovery: {DISCOVERY.DEVICE.STATUS} {DISCOVERY.DEVICE.IPADDRESS}';
+
+    public const ACTION_DEFAULT_SUBJ_ACKNOWLEDGE = 'Updated problem: {EVENT.NAME}';
+
+    public const ACTION_DEFAULT_SUBJ_PROBLEM = 'Problem: {EVENT.NAME}';
+
+    public const ACTION_DEFAULT_SUBJ_RECOVERY = 'Resolved: {EVENT.NAME}';
+
+    public const ACTION_DEFAULT_MSG_AUTOREG = "Host name: {HOST.HOST}\nHost IP: {HOST.IP}\nAgent port: {HOST.PORT}";
+
+    public const ACTION_STATUS_ENABLED = 0;
+
+    public const ACTION_STATUS_DISABLED = 1;
+
+    public const ACTION_PAUSE_SUPPRESSED_FALSE = 0;
+
+    public const ACTION_PAUSE_SUPPRESSED_TRUE = 1;
+
+    public const OPERATION_TYPE_MESSAGE = 0;
+
+    public const OPERATION_TYPE_COMMAND = 1;
+
+    public const OPERATION_TYPE_HOST_ADD = 2;
+
+    public const OPERATION_TYPE_HOST_REMOVE = 3;
+
+    public const OPERATION_TYPE_GROUP_ADD = 4;
+
+    public const OPERATION_TYPE_GROUP_REMOVE = 5;
+
+    public const OPERATION_TYPE_TEMPLATE_ADD = 6;
+
+    public const OPERATION_TYPE_TEMPLATE_REMOVE = 7;
+
+    public const OPERATION_TYPE_HOST_ENABLE = 8;
+
+    public const OPERATION_TYPE_HOST_DISABLE = 9;
+
+    public const OPERATION_TYPE_HOST_INVENTORY = 10;
+
+    public const OPERATION_TYPE_RECOVERY_MESSAGE = 11;
+
+    public const OPERATION_TYPE_ACK_MESSAGE = 12;
+
+    public const ACTION_OPERATION = 0;
+
+    public const ACTION_RECOVERY_OPERATION = 1;
+
+    public const ACTION_ACKNOWLEDGE_OPERATION = 2;
+
+    public const CONDITION_EVAL_TYPE_AND_OR = 0;
+
+    public const CONDITION_EVAL_TYPE_AND = 1;
+
+    public const CONDITION_EVAL_TYPE_OR = 2;
+
+    public const CONDITION_EVAL_TYPE_EXPRESSION = 3;
+
+    public const SCREEN_RESOURCE_GRAPH = 0;
+
+    public const SCREEN_RESOURCE_SIMPLE_GRAPH = 1;
+
+    public const SCREEN_RESOURCE_MAP = 2;
+
+    public const SCREEN_RESOURCE_PLAIN_TEXT = 3;
+
+    public const SCREEN_RESOURCE_HOST_INFO = 4;
+
+    public const SCREEN_RESOURCE_TRIGGER_INFO = 5;
+
+    public const SCREEN_RESOURCE_SERVER_INFO = 6;
+
+    public const SCREEN_RESOURCE_CLOCK = 7;
+
+    public const SCREEN_RESOURCE_SCREEN = 8;
+
+    public const SCREEN_RESOURCE_TRIGGER_OVERVIEW = 9;
+
+    public const SCREEN_RESOURCE_DATA_OVERVIEW = 10;
+
+    public const SCREEN_RESOURCE_URL = 11;
+
+    public const SCREEN_RESOURCE_ACTIONS = 12;
+
+    public const SCREEN_RESOURCE_EVENTS = 13;
+
+    public const SCREEN_RESOURCE_HOSTGROUP_TRIGGERS = 14;
+
+    public const SCREEN_RESOURCE_SYSTEM_STATUS = 15;
+
+    public const SCREEN_RESOURCE_HOST_TRIGGERS = 16;
+
+    public const SCREEN_RESOURCE_HISTORY = 17;
+
+    public const SCREEN_RESOURCE_CHART = 18;
+
+    public const SCREEN_RESOURCE_LLD_SIMPLE_GRAPH = 19;
+
+    public const SCREEN_RESOURCE_LLD_GRAPH = 20;
+
+    public const SCREEN_RESOURCE_HTTPTEST_DETAILS = 21;
+
+    public const SCREEN_RESOURCE_DISCOVERY = 22;
+
+    public const SCREEN_RESOURCE_HTTPTEST = 23;
+
+    public const SCREEN_RESOURCE_PROBLEM = 24;
+
+    public const SCREEN_SORT_TRIGGERS_DATE_DESC = 0;
+
+    public const SCREEN_SORT_TRIGGERS_SEVERITY_DESC = 1;
+
+    public const SCREEN_SORT_TRIGGERS_HOST_NAME_ASC = 2;
+
+    public const SCREEN_SORT_TRIGGERS_TIME_ASC = 3;
+
+    public const SCREEN_SORT_TRIGGERS_TIME_DESC = 4;
+
+    public const SCREEN_SORT_TRIGGERS_TYPE_ASC = 5;
+
+    public const SCREEN_SORT_TRIGGERS_TYPE_DESC = 6;
+
+    public const SCREEN_SORT_TRIGGERS_STATUS_ASC = 7;
+
+    public const SCREEN_SORT_TRIGGERS_STATUS_DESC = 8;
+
+    public const SCREEN_SORT_TRIGGERS_RECIPIENT_ASC = 11;
+
+    public const SCREEN_SORT_TRIGGERS_RECIPIENT_DESC = 12;
+
+    public const SCREEN_SORT_TRIGGERS_SEVERITY_ASC = 13;
+
+    public const SCREEN_SORT_TRIGGERS_HOST_NAME_DESC = 14;
+
+    public const SCREEN_SORT_TRIGGERS_NAME_ASC = 15;
+
+    public const SCREEN_SORT_TRIGGERS_NAME_DESC = 16;
+
+    public const SCREEN_MODE_PREVIEW = 0;
+
+    public const SCREEN_MODE_EDIT = 1;
+
+    public const SCREEN_MODE_SLIDESHOW = 2;
+
+    public const SCREEN_MODE_JS = 3;
+
+    public const SCREEN_SIMPLE_ITEM = 0;
+
+    public const SCREEN_DYNAMIC_ITEM = 1;
+
+    public const SCREEN_REFRESH_RESPONSIVENESS = 10;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_MIN = 1;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_DEFAULT = 3;
+
+    public const SCREEN_SURROGATE_MAX_COLUMNS_MAX = 100;
+
+    public const SCREEN_MIN_SIZE = 1;
+
+    public const SCREEN_MAX_SIZE = 100;
+
+    public const ZBX_DEFAULT_WIDGET_LINES = 25;
+
+    public const ZBX_MIN_WIDGET_LINES = 1;
+
+    public const ZBX_MAX_WIDGET_LINES = 100;
+
+    public const DASHBOARD_MAX_COLUMNS = 24;
+
+    public const DASHBOARD_MAX_ROWS = 64;
+
+    public const DASHBOARD_WIDGET_MIN_ROWS = 2;
+
+    public const DASHBOARD_WIDGET_MAX_ROWS = 32;
+
+    public const HALIGN_DEFAULT = 0;
+
+    public const HALIGN_CENTER = 0;
+
+    public const HALIGN_LEFT = 1;
+
+    public const HALIGN_RIGHT = 2;
+
+    public const VALIGN_DEFAULT = 0;
+
+    public const VALIGN_MIDDLE = 0;
+
+    public const VALIGN_TOP = 1;
+
+    public const VALIGN_BOTTOM = 2;
+
+    public const STYLE_HORIZONTAL = 0;
+
+    public const STYLE_VERTICAL = 1;
+
+    public const STYLE_LEFT = 0;
+
+    public const STYLE_TOP = 1;
+
+    public const TIME_TYPE_LOCAL = 0;
+
+    public const TIME_TYPE_SERVER = 1;
+
+    public const TIME_TYPE_HOST = 2;
+
+    public const FILTER_TASK_SHOW = 0;
+
+    public const FILTER_TASK_HIDE = 1;
+
+    public const FILTER_TASK_MARK = 2;
+
+    public const FILTER_TASK_INVERT_MARK = 3;
+
+    public const MARK_COLOR_RED = 1;
+
+    public const MARK_COLOR_GREEN = 2;
+
+    public const MARK_COLOR_BLUE = 3;
+
+    public const PROFILE_TYPE_ID = 1;
+
+    public const PROFILE_TYPE_INT = 2;
+
+    public const PROFILE_TYPE_STR = 3;
+
+    public const CALC_FNC_MIN = 1;
+
+    public const CALC_FNC_AVG = 2;
+
+    public const CALC_FNC_MAX = 4;
+
+    public const CALC_FNC_ALL = 7;
+
+    public const CALC_FNC_LST = 9;
+
+    public const SERVICE_TIME_TYPE_UPTIME = 0;
+
+    public const SERVICE_TIME_TYPE_DOWNTIME = 1;
+
+    public const SERVICE_TIME_TYPE_ONETIME_DOWNTIME = 2;
+
+    public const ZBX_DISCOVERY_UNSPEC = 0;
+
+    public const ZBX_DISCOVERY_DNS = 1;
+
+    public const ZBX_DISCOVERY_IP = 2;
+
+    public const ZBX_DISCOVERY_VALUE = 3;
+
+    public const USER_TYPE_ZABBIX_USER = 1;
+
+    public const USER_TYPE_ZABBIX_ADMIN = 2;
+
+    public const USER_TYPE_SUPER_ADMIN = 3;
+
+    public const ZBX_NOT_INTERNAL_GROUP = 0;
+
+    public const ZBX_INTERNAL_GROUP = 1;
+
+    public const GROUP_STATUS_DISABLED = 1;
+
+    public const GROUP_STATUS_ENABLED = 0;
+
+    public const LINE_TYPE_NORMAL = 0;
+
+    public const LINE_TYPE_BOLD = 1;
+
+    public const GROUP_GUI_ACCESS_SYSTEM = 0;
+
+    public const GROUP_GUI_ACCESS_INTERNAL = 1;
+
+    public const GROUP_GUI_ACCESS_LDAP = 2;
+
+    public const GROUP_GUI_ACCESS_DISABLED = 3;
+
+    public const ACCESS_DENY_OBJECT = 0;
+
+    public const ACCESS_DENY_PAGE = 1;
+
+    public const GROUP_DEBUG_MODE_DISABLED = 0;
+
+    public const GROUP_DEBUG_MODE_ENABLED = 1;
+
+    public const PERM_READ_WRITE = 3;
+
+    public const PERM_READ = 2;
+
+    public const PERM_DENY = 0;
+
+    public const PERM_NONE = -1;
+
+    public const PARAM_TYPE_TIME = 0;
+
+    public const PARAM_TYPE_COUNTS = 1;
+
+    public const ZBX_DEFAULT_AGENT = 'Zabbix';
+
+    public const ZBX_AGENT_OTHER = -1;
+
+    public const HTTPTEST_AUTH_NONE = 0;
+
+    public const HTTPTEST_AUTH_BASIC = 1;
+
+    public const HTTPTEST_AUTH_NTLM = 2;
+
+    public const HTTPTEST_AUTH_KERBEROS = 3;
+
+    public const HTTPTEST_STATUS_ACTIVE = 0;
+
+    public const HTTPTEST_STATUS_DISABLED = 1;
+
+    public const ZBX_HTTPFIELD_HEADER = 0;
+
+    public const ZBX_HTTPFIELD_VARIABLE = 1;
+
+    public const ZBX_HTTPFIELD_POST_FIELD = 2;
+
+    public const ZBX_HTTPFIELD_QUERY_FIELD = 3;
+
+    public const ZBX_POSTTYPE_RAW = 0;
+
+    public const ZBX_POSTTYPE_FORM = 1;
+
+    public const ZBX_POSTTYPE_JSON = 2;
+
+    public const ZBX_POSTTYPE_XML = 3;
+
+    public const HTTPCHECK_STORE_RAW = 0;
+
+    public const HTTPCHECK_STORE_JSON = 1;
+
+    public const HTTPCHECK_ALLOW_TRAPS_OFF = 0;
+
+    public const HTTPCHECK_ALLOW_TRAPS_ON = 1;
+
+    public const HTTPCHECK_REQUEST_GET = 0;
+
+    public const HTTPCHECK_REQUEST_POST = 1;
+
+    public const HTTPCHECK_REQUEST_PUT = 2;
+
+    public const HTTPCHECK_REQUEST_HEAD = 3;
+
+    public const HTTPSTEP_ITEM_TYPE_RSPCODE = 0;
+
+    public const HTTPSTEP_ITEM_TYPE_TIME = 1;
+
+    public const HTTPSTEP_ITEM_TYPE_IN = 2;
+
+    public const HTTPSTEP_ITEM_TYPE_LASTSTEP = 3;
+
+    public const HTTPSTEP_ITEM_TYPE_LASTERROR = 4;
+
+    public const HTTPTEST_STEP_RETRIEVE_MODE_CONTENT = 0;
+
+    public const HTTPTEST_STEP_RETRIEVE_MODE_HEADERS = 1;
+
+    public const HTTPTEST_STEP_RETRIEVE_MODE_BOTH = 2;
+
+    public const HTTPTEST_STEP_FOLLOW_REDIRECTS_OFF = 0;
+
+    public const HTTPTEST_STEP_FOLLOW_REDIRECTS_ON = 1;
+
+    public const HTTPTEST_VERIFY_PEER_OFF = 0;
+
+    public const HTTPTEST_VERIFY_PEER_ON = 1;
+
+    public const HTTPTEST_VERIFY_HOST_OFF = 0;
+
+    public const HTTPTEST_VERIFY_HOST_ON = 1;
+
+    public const EVENT_NOT_ACKNOWLEDGED = '0';
+
+    public const EVENT_ACKNOWLEDGED = '1';
+
+    public const ZBX_ACKNOWLEDGE_SELECTED = 0;
+
+    public const ZBX_ACKNOWLEDGE_PROBLEM = 1;
+
+    public const ZBX_PROBLEM_SUPPRESSED_FALSE = 0;
+
+    public const ZBX_PROBLEM_SUPPRESSED_TRUE = 1;
+
+    public const ZBX_PROBLEM_UPDATE_NONE = 0x00;
+
+    public const ZBX_PROBLEM_UPDATE_CLOSE = 0x01;
+
+    public const ZBX_PROBLEM_UPDATE_ACKNOWLEDGE = 0x02;
+
+    public const ZBX_PROBLEM_UPDATE_MESSAGE = 0x04;
+
+    public const ZBX_PROBLEM_UPDATE_SEVERITY = 0x08;
+
+    public const ZBX_EVENT_HISTORY_PROBLEM_EVENT = 0;
+
+    public const ZBX_EVENT_HISTORY_RECOVERY_EVENT = 1;
+
+    public const ZBX_EVENT_HISTORY_MANUAL_UPDATE = 2;
+
+    public const ZBX_EVENT_HISTORY_ALERT = 3;
+
+    public const ZBX_TM_TASK_CLOSE_PROBLEM = 1;
+
+    public const ZBX_TM_TASK_ACKNOWLEDGE = 4;
+
+    public const ZBX_TM_TASK_CHECK_NOW = 6;
+
+    public const ZBX_TM_STATUS_NEW = 1;
+
+    public const ZBX_TM_STATUS_INPROGRESS = 2;
+
+    public const EVENT_SOURCE_TRIGGERS = 0;
+
+    public const EVENT_SOURCE_DISCOVERY = 1;
+
+    public const EVENT_SOURCE_AUTO_REGISTRATION = 2;
+
+    public const EVENT_SOURCE_INTERNAL = 3;
+
+    public const EVENT_OBJECT_TRIGGER = 0;
+
+    public const EVENT_OBJECT_DHOST = 1;
+
+    public const EVENT_OBJECT_DSERVICE = 2;
+
+    public const EVENT_OBJECT_AUTOREGHOST = 3;
+
+    public const EVENT_OBJECT_ITEM = 4;
+
+    public const EVENT_OBJECT_LLDRULE = 5;
+
+    public const TAG_EVAL_TYPE_AND_OR = 0;
+
+    public const TAG_EVAL_TYPE_OR = 2;
+
+    public const TAG_OPERATOR_LIKE = 0;
+
+    public const TAG_OPERATOR_EQUAL = 1;
+
+    public const GRAPH_AGGREGATE_DEFAULT_INTERVAL = '1h';
+
+    public const GRAPH_AGGREGATE_NONE = 0;
+
+    public const GRAPH_AGGREGATE_MIN = 1;
+
+    public const GRAPH_AGGREGATE_MAX = 2;
+
+    public const GRAPH_AGGREGATE_AVG = 3;
+
+    public const GRAPH_AGGREGATE_COUNT = 4;
+
+    public const GRAPH_AGGREGATE_SUM = 5;
+
+    public const GRAPH_AGGREGATE_FIRST = 6;
+
+    public const GRAPH_AGGREGATE_LAST = 7;
+
+    public const GRAPH_AGGREGATE_BY_ITEM = 0;
+
+    public const GRAPH_AGGREGATE_BY_DATASET = 1;
+
+    public const GRAPH_YAXIS_TYPE_CALCULATED = 0;
+
+    public const GRAPH_YAXIS_TYPE_FIXED = 1;
+
+    public const GRAPH_YAXIS_TYPE_ITEM_VALUE = 2;
+
+    public const GRAPH_YAXIS_SIDE_LEFT = 0;
+
+    public const GRAPH_YAXIS_SIDE_RIGHT = 1;
+
+    public const GRAPH_YAXIS_SIDE_BOTTOM = 2;
+
+    public const GRAPH_ITEM_SIMPLE = 0;
+
+    public const GRAPH_ITEM_SUM = 2;
+
+    public const GRAPH_TYPE_NORMAL = 0;
+
+    public const GRAPH_TYPE_STACKED = 1;
+
+    public const GRAPH_TYPE_PIE = 2;
+
+    public const GRAPH_TYPE_EXPLODED = 3;
+
+    public const GRAPH_TYPE_3D = 4;
+
+    public const GRAPH_TYPE_3D_EXPLODED = 5;
+
+    public const GRAPH_TYPE_BAR = 6;
+
+    public const GRAPH_TYPE_COLUMN = 7;
+
+    public const GRAPH_TYPE_BAR_STACKED = 8;
+
+    public const GRAPH_TYPE_COLUMN_STACKED = 9;
+
+    public const SVG_GRAPH_TYPE_LINE = 0;
+
+    public const SVG_GRAPH_TYPE_POINTS = 1;
+
+    public const SVG_GRAPH_TYPE_STAIRCASE = 2;
+
+    public const SVG_GRAPH_TYPE_BAR = 3;
+
+    public const SVG_GRAPH_MISSING_DATA_NONE = 0;
+
+    public const SVG_GRAPH_MISSING_DATA_CONNECTED = 1;
+
+    public const SVG_GRAPH_MISSING_DATA_TREAT_AS_ZERO = 2;
+
+    public const SVG_GRAPH_DATA_SOURCE_AUTO = 0;
+
+    public const SVG_GRAPH_DATA_SOURCE_HISTORY = 1;
+
+    public const SVG_GRAPH_DATA_SOURCE_TRENDS = 2;
+
+    public const SVG_GRAPH_CUSTOM_TIME = 1;
+
+    public const SVG_GRAPH_LEGEND_TYPE_NONE = 0;
+
+    public const SVG_GRAPH_LEGEND_TYPE_SHORT = 1;
+
+    public const SVG_GRAPH_LEGEND_LINES_MIN = 1;
+
+    public const SVG_GRAPH_LEGEND_LINES_MAX = 5;
+
+    public const SVG_GRAPH_PROBLEMS_SHOW = 1;
+
+    public const SVG_GRAPH_SELECTED_ITEM_PROBLEMS = 1;
+
+    public const SVG_GRAPH_AXIS_SHOW = 1;
+
+    public const SVG_GRAPH_AXIS_UNITS_AUTO = 0;
+
+    public const SVG_GRAPH_AXIS_UNITS_STATIC = 1;
+
+    public const SVG_GRAPH_MAX_NUMBER_OF_METRICS = 50;
+
+    public const SVG_GRAPH_DEFAULT_WIDTH = 1;
+
+    public const SVG_GRAPH_DEFAULT_POINTSIZE = 3;
+
+    public const SVG_GRAPH_DEFAULT_TRANSPARENCY = 5;
+
+    public const SVG_GRAPH_DEFAULT_FILL = 3;
+
+    public const BR_DISTRIBUTION_MULTIPLE_PERIODS = 1;
+
+    public const BR_DISTRIBUTION_MULTIPLE_ITEMS = 2;
+
+    public const BR_COMPARE_VALUE_MULTIPLE_PERIODS = 3;
+
+    public const GRAPH_3D_ANGLE = 70;
+
+    public const GRAPH_STACKED_ALFA = 15;
+
+    public const GRAPH_ZERO_LINE_COLOR_LEFT = 'AAAAAA';
+
+    public const GRAPH_ZERO_LINE_COLOR_RIGHT = '888888';
+
+    public const GRAPH_TRIGGER_LINE_OPPOSITE_COLOR = '000000';
+
+    public const ZBX_MAX_TREND_DIFF = 3600;
+
+    public const ZBX_GRAPH_MAX_SKIP_CELL = 16;
+
+    public const ZBX_GRAPH_MAX_SKIP_DELAY = 4;
+
+    public const DOBJECT_STATUS_UP = 0;
+
+    public const DOBJECT_STATUS_DOWN = 1;
+
+    public const DOBJECT_STATUS_DISCOVER = 2;
+
+    public const DOBJECT_STATUS_LOST = 3;
+
+    public const DRULE_STATUS_ACTIVE = 0;
+
+    public const DRULE_STATUS_DISABLED = 1;
+
+    public const DSVC_STATUS_ACTIVE = 0;
+
+    public const DSVC_STATUS_DISABLED = 1;
+
+    public const SVC_SSH = 0;
+
+    public const SVC_LDAP = 1;
+
+    public const SVC_SMTP = 2;
+
+    public const SVC_FTP = 3;
+
+    public const SVC_HTTP = 4;
+
+    public const SVC_POP = 5;
+
+    public const SVC_NNTP = 6;
+
+    public const SVC_IMAP = 7;
+
+    public const SVC_TCP = 8;
+
+    public const SVC_AGENT = 9;
+
+    public const SVC_SNMPv1 = 10;
+
+    public const SVC_SNMPv2c = 11;
+
+    public const SVC_ICMPPING = 12;
+
+    public const SVC_SNMPv3 = 13;
+
+    public const SVC_HTTPS = 14;
+
+    public const SVC_TELNET = 15;
+
+    public const DHOST_STATUS_ACTIVE = 0;
+
+    public const DHOST_STATUS_DISABLED = 1;
+
+    public const IM_FORCED = 0;
+
+    public const IM_ESTABLISHED = 1;
+
+    public const IM_TREE = 2;
+
+    public const TRIGGER_EXPRESSION = 0;
+
+    public const TRIGGER_RECOVERY_EXPRESSION = 1;
+
+    public const EXPRESSION_TYPE_INCLUDED = 0;
+
+    public const EXPRESSION_TYPE_ANY_INCLUDED = 1;
+
+    public const EXPRESSION_TYPE_NOT_INCLUDED = 2;
+
+    public const EXPRESSION_TYPE_TRUE = 3;
+
+    public const EXPRESSION_TYPE_FALSE = 4;
+
+    public const HOST_INVENTORY_DISABLED = -1;
+
+    public const HOST_INVENTORY_MANUAL = 0;
+
+    public const HOST_INVENTORY_AUTOMATIC = 1;
+
+    public const INVENTORY_URL_MACRO_NONE = -1;
+
+    public const INVENTORY_URL_MACRO_HOST = 0;
+
+    public const INVENTORY_URL_MACRO_TRIGGER = 1;
+
+    public const EXPRESSION_HOST_UNKNOWN = '#ERROR_HOST#';
+
+    public const EXPRESSION_HOST_ITEM_UNKNOWN = '#ERROR_ITEM#';
+
+    public const EXPRESSION_NOT_A_MACRO_ERROR = '#ERROR_MACRO#';
+
+    public const EXPRESSION_FUNCTION_UNKNOWN = '#ERROR_FUNCTION#';
+
+    public const EXPRESSION_UNSUPPORTED_VALUE_TYPE = '#ERROR_VALUE_TYPE#';
+
+    public const SPACE = '&nbsp;';
+
+    public const NAME_DELIMITER = ': ';
+
+    public const UNKNOWN_VALUE = '';
+
+    public const ZBX_EOL_LF = 0;
+
+    public const ZBX_EOL_CRLF = 1;
+
+    public const ZBX_BYTE_SUFFIXES = 'KMGT';
+
+    public const ZBX_TIME_SUFFIXES = 'smhdw';
+
+    public const ZBX_TIME_SUFFIXES_WITH_YEAR = 'smhdwMy';
+
+    public const ZBX_PREG_PRINT = '^\x00-\x1F';
+
+    public const ZBX_PREG_MACRO_NAME = '([A-Z0-9\._]+)';
+
+    public const ZBX_PREG_MACRO_NAME_LLD = '([A-Z0-9\._]+)';
+
+    public const ZBX_PREG_INTERNAL_NAMES = '([0-9a-zA-Z_\. \-]+)';
+
+    public const ZBX_PREG_NUMBER = '([\-+]?[0-9]+[.]?[0-9]*['.self::ZBX_BYTE_SUFFIXES.self::ZBX_TIME_SUFFIXES.']?)';
+
+    public const ZBX_PREG_INT = '([\-+]?[0-9]+['.self::ZBX_BYTE_SUFFIXES.self::ZBX_TIME_SUFFIXES.']?)';
+
+    public const ZBX_PREG_DEF_FONT_STRING = '/^[0-9\.:% ]+$/';
+
+    public const ZBX_PREG_DNS_FORMAT = '([0-9a-zA-Z_\.\-$]|\{\$?'.self::ZBX_PREG_MACRO_NAME.'\})*';
+
+    public const ZBX_PREG_HOST_FORMAT = self::ZBX_PREG_INTERNAL_NAMES;
+
+    public const ZBX_PREG_MACRO_NAME_FORMAT = '(\{[A-Z\.]+\})';
+
+    public const ZBX_PREG_EXPRESSION_LLD_MACROS = '(\{\#'.self::ZBX_PREG_MACRO_NAME_LLD.'\})';
+
+    public const ZBX_USER_ONLINE_TIME = 600;
+
+    public const ZBX_GUEST_USER = 'guest';
+
+    public const IPMI_AUTHTYPE_DEFAULT = -1;
+
+    public const IPMI_AUTHTYPE_NONE = 0;
+
+    public const IPMI_AUTHTYPE_MD2 = 1;
+
+    public const IPMI_AUTHTYPE_MD5 = 2;
+
+    public const IPMI_AUTHTYPE_STRAIGHT = 4;
+
+    public const IPMI_AUTHTYPE_OEM = 5;
+
+    public const IPMI_AUTHTYPE_RMCP_PLUS = 6;
+
+    public const IPMI_PRIVILEGE_CALLBACK = 1;
+
+    public const IPMI_PRIVILEGE_USER = 2;
+
+    public const IPMI_PRIVILEGE_OPERATOR = 3;
+
+    public const IPMI_PRIVILEGE_ADMIN = 4;
+
+    public const IPMI_PRIVILEGE_OEM = 5;
+
+    public const ZBX_HAVE_IPV6 = true;
+
+    public const ZBX_DISCOVERER_IPRANGE_LIMIT = 65536;
+
+    public const ZBX_SOCKET_TIMEOUT = 3;
+
+    public const ZBX_SOCKET_BYTES_LIMIT = self::ZBX_MEBIBYTE * 16;
+
+    public const SERVER_CHECK_INTERVAL = 10;
+
+    public const DATE_TIME_FORMAT_SECONDS_XML = 'Y-m-d\TH:i:s\Z';
+
+    public const XML_TAG_MACRO = 'macro';
+
+    public const XML_TAG_HOST = 'host';
+
+    public const XML_TAG_HOSTINVENTORY = 'host_inventory';
+
+    public const XML_TAG_ITEM = 'item';
+
+    public const XML_TAG_TRIGGER = 'trigger';
+
+    public const XML_TAG_GRAPH = 'graph';
+
+    public const XML_TAG_GRAPH_ELEMENT = 'graph_element';
+
+    public const XML_TAG_DEPENDENCY = 'dependency';
+
+    public const ZBX_DEFAULT_IMPORT_HOST_GROUP = 'Imported hosts';
+
+    public const LIBXML_IMPORT_FLAGS = LIBXML_NONET;
+
+    public const XML_STRING = 0x01;
+
+    public const XML_ARRAY = 0x02;
+
+    public const XML_INDEXED_ARRAY = 0x04;
+
+    public const XML_REQUIRED = 0x08;
+
+    public const API_MULTIPLE = 0;
+
+    public const API_STRING_UTF8 = 1;
+
+    public const API_INT32 = 2;
+
+    public const API_ID = 3;
+
+    public const API_BOOLEAN = 4;
+
+    public const API_FLAG = 5;
+
+    public const API_FLOAT = 6;
+
+    public const API_UINT64 = 7;
+
+    public const API_OBJECT = 8;
+
+    public const API_IDS = 9;
+
+    public const API_OBJECTS = 10;
+
+    public const API_STRINGS_UTF8 = 11;
+
+    public const API_INTS32 = 12;
+
+    public const API_FLOATS = 13;
+
+    public const API_UINTS64 = 14;
+
+    public const API_HG_NAME = 15;
+
+    public const API_SCRIPT_NAME = 16;
+
+    public const API_USER_MACRO = 17;
+
+    public const API_TIME_PERIOD = 18;
+
+    public const API_REGEX = 19;
+
+    public const API_HTTP_POST = 20;
+
+    public const API_VARIABLE_NAME = 21;
+
+    public const API_OUTPUT = 22;
+
+    public const API_TIME_UNIT = 23;
+
+    public const API_URL = 24;
+
+    public const API_H_NAME = 25;
+
+    public const API_RANGE_TIME = 26;
+
+    public const API_COLOR = 27;
+
+    public const API_NUMERIC = 28;
+
+    public const API_LLD_MACRO = 29;
+
+    public const API_PSK = 30;
+
+    public const API_REQUIRED = 0x0001;
+
+    public const API_NOT_EMPTY = 0x0002;
+
+    public const API_ALLOW_NULL = 0x0004;
+
+    public const API_NORMALIZE = 0x0008;
+
+    public const API_DEPRECATED = 0x0010;
+
+    public const API_ALLOW_USER_MACRO = 0x0020;
+
+    public const API_ALLOW_COUNT = 0x0040;
+
+    public const API_ALLOW_LLD_MACRO = 0x0080;
+
+    public const API_REQUIRED_LLD_MACRO = 0x0100;
+
+    public const API_TIME_UNIT_WITH_YEAR = 0x0200;
+
+    public const API_ALLOW_EVENT_TAGS_MACRO = 0x0400;
+
+    public const ZBX_API_ERROR_INTERNAL = 111;
+
+    public const ZBX_API_ERROR_PARAMETERS = 100;
+
+    public const ZBX_API_ERROR_PERMISSIONS = 120;
+
+    public const ZBX_API_ERROR_NO_AUTH = 200;
+
+    public const ZBX_API_ERROR_NO_METHOD = 300;
+
+    public const API_OUTPUT_EXTEND = 'extend';
+
+    public const API_OUTPUT_COUNT = 'count';
+
+    public const SEC_PER_MIN = 60;
+
+    public const SEC_PER_HOUR = 3600;
+
+    public const SEC_PER_DAY = 86400;
+
+    public const SEC_PER_WEEK = 604800;
+
+    public const SEC_PER_MONTH = 2592000;
+
+    public const SEC_PER_YEAR = 31536000;
+
+    public const ZBX_JAN_2038 = 2145916800;
+
+    public const DAY_IN_YEAR = 365;
+
+    public const ZBX_MIN_PORT_NUMBER = 0;
+
+    public const ZBX_MAX_PORT_NUMBER = 65535;
+
+    public const ZBX_LAYOUT_NORMAL = 0;
+
+    public const ZBX_LAYOUT_FULLSCREEN = 1;
+
+    public const ZBX_LAYOUT_KIOSKMODE = 2;
+
+    public const ZBX_LAYOUT_MODE = 'layout-mode';
+
+    public const ZBX_TEXTAREA_HTTP_PAIR_NAME_WIDTH = 218;
+
+    public const ZBX_TEXTAREA_HTTP_PAIR_VALUE_WIDTH = 218;
+
+    public const ZBX_TEXTAREA_MACRO_WIDTH = 250;
+
+    public const ZBX_TEXTAREA_MACRO_VALUE_WIDTH = 300;
+
+    public const ZBX_TEXTAREA_TAG_WIDTH = 250;
+
+    public const ZBX_TEXTAREA_TAG_VALUE_WIDTH = 300;
+
+    public const ZBX_TEXTAREA_COLOR_WIDTH = 96;
+
+    public const ZBX_TEXTAREA_FILTER_SMALL_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_FILTER_STANDARD_WIDTH = 300;
+
+    public const ZBX_TEXTAREA_TINY_WIDTH = 75;
+
+    public const ZBX_TEXTAREA_SMALL_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_MEDIUM_WIDTH = 270;
+
+    public const ZBX_TEXTAREA_STANDARD_WIDTH = 453;
+
+    public const ZBX_TEXTAREA_BIG_WIDTH = 540;
+
+    public const ZBX_TEXTAREA_NUMERIC_STANDARD_WIDTH = 75;
+
+    public const ZBX_TEXTAREA_NUMERIC_BIG_WIDTH = 150;
+
+    public const ZBX_TEXTAREA_2DIGITS_WIDTH = 35;
+
+    public const ZBX_TEXTAREA_4DIGITS_WIDTH = 50;
+
+    public const ZBX_TEXTAREA_INTERFACE_IP_WIDTH = 225;
+
+    public const ZBX_TEXTAREA_INTERFACE_DNS_WIDTH = 175;
+
+    public const ZBX_TEXTAREA_INTERFACE_PORT_WIDTH = 100;
+
+    public const ZBX_TEXTAREA_STANDARD_ROWS = 7;
+
+    public const ZBX_HOST_INTERFACE_WIDTH = 750;
+
+    public const ZBX_OVERVIEW_HELP_MIN_WIDTH = 125;
+
+    public const ZBX_ACTION_ADD = 0;
+
+    public const ZBX_ACTION_REPLACE = 1;
+
+    public const ZBX_ACTION_REMOVE = 2;
+
+    public const ZBX_ACTIONS_POPUP_MAX_WIDTH = 800;
+
+    public const WIDGET_ACTION_LOG = 'actionlog';
+
+    public const WIDGET_CLOCK = 'clock';
+
+    public const WIDGET_DATA_OVER = 'dataover';
+
+    public const WIDGET_DISCOVERY = 'discovery';
+
+    public const WIDGET_FAV_GRAPHS = 'favgraphs';
+
+    public const WIDGET_FAV_MAPS = 'favmaps';
+
+    public const WIDGET_FAV_SCREENS = 'favscreens';
+
+    public const WIDGET_SVG_GRAPH = 'svggraph';
+
+    public const WIDGET_GRAPH = 'graph';
+
+    public const WIDGET_GRAPH_PROTOTYPE = 'graphprototype';
+
+    public const WIDGET_HOST_AVAIL = 'hostavail';
+
+    public const WIDGET_MAP = 'map';
+
+    public const WIDGET_NAV_TREE = 'navtree';
+
+    public const WIDGET_PLAIN_TEXT = 'plaintext';
+
+    public const WIDGET_PROBLEM_HOSTS = 'problemhosts';
+
+    public const WIDGET_PROBLEMS = 'problems';
+
+    public const WIDGET_PROBLEMS_BY_SV = 'problemsbysv';
+
+    public const WIDGET_SYSTEM_INFO = 'systeminfo';
+
+    public const WIDGET_TRIG_OVER = 'trigover';
+
+    public const WIDGET_URL = 'url';
+
+    public const WIDGET_WEB = 'web';
+
+    public const WIDGET_SYSMAP_SOURCETYPE_MAP = 1;
+
+    public const WIDGET_SYSMAP_SOURCETYPE_FILTER = 2;
+
+    public const WIDGET_FIELD_SELECT_RES_SYSMAP = 1;
+
+    public const WIDGET_NAVIGATION_TREE_MAX_DEPTH = 10;
+
+    public const WIDGET_HAT_TRIGGERDETAILS = 'hat_triggerdetails';
+
+    public const WIDGET_HAT_EVENTDETAILS = 'hat_eventdetails';
+
+    public const WIDGET_HAT_EVENTACTIONS = 'hat_eventactions';
+
+    public const WIDGET_HAT_EVENTLIST = 'hat_eventlist';
+
+    public const WIDGET_SEARCH_HOSTS = 'search_hosts';
+
+    public const WIDGET_SEARCH_HOSTGROUP = 'search_hostgroup';
+
+    public const WIDGET_SEARCH_TEMPLATES = 'search_templates';
+
+    public const WIDGET_SLIDESHOW = 'hat_slides';
+
+    public const WIDGET_SIMPLE_ITEM = 0;
+
+    public const WIDGET_DYNAMIC_ITEM = 1;
+
+    public const ZBX_WIDGET_ROWS = 20;
+
+    public const ZBX_WIDGET_FIELD_TYPE_INT32 = 0;
+
+    public const ZBX_WIDGET_FIELD_TYPE_STR = 1;
+
+    public const ZBX_WIDGET_FIELD_TYPE_GROUP = 2;
+
+    public const ZBX_WIDGET_FIELD_TYPE_HOST = 3;
+
+    public const ZBX_WIDGET_FIELD_TYPE_ITEM = 4;
+
+    public const ZBX_WIDGET_FIELD_TYPE_ITEM_PROTOTYPE = 5;
+
+    public const ZBX_WIDGET_FIELD_TYPE_GRAPH = 6;
+
+    public const ZBX_WIDGET_FIELD_TYPE_GRAPH_PROTOTYPE = 7;
+
+    public const ZBX_WIDGET_FIELD_TYPE_MAP = 8;
+
+    public const ZBX_WIDGET_FIELD_RESOURCE_GRAPH = 0;
+
+    public const ZBX_WIDGET_FIELD_RESOURCE_SIMPLE_GRAPH = 1;
+
+    public const ZBX_WIDGET_FIELD_RESOURCE_GRAPH_PROTOTYPE = 2;
+
+    public const ZBX_WIDGET_FIELD_RESOURCE_SIMPLE_GRAPH_PROTOTYPE = 3;
+
+    public const ZBX_WIDGET_VIEW_MODE_NORMAL = 0;
+
+    public const ZBX_WIDGET_VIEW_MODE_HIDDEN_HEADER = 1;
+
+    public const DB_ID = "({}>=0&&bccomp({},\"9223372036854775807\")<=0)&&";
+
+    public const NOT_EMPTY = "({}!='')&&";
+
+    public const NOT_ZERO = "({}!=0)&&";
+
+    public const ZBX_VALID_OK = 0;
+
+    public const ZBX_VALID_ERROR = 1;
+
+    public const ZBX_VALID_WARNING = 2;
+
+    public const THEME_DEFAULT = 'default';
+
+    public const ZBX_DEFAULT_THEME = 'blue-theme';
+
+    public const ZBX_DEFAULT_URL = 'zabbix.php?action=dashboard.view';
+
+    public const DATE_FORMAT_CONTEXT = 'Date format (see http://php.net/date)';
+
+    public const AVAILABILITY_REPORT_BY_HOST = 0;
+
+    public const AVAILABILITY_REPORT_BY_TEMPLATE = 1;
+
+    public const ZBX_MONITORED_BY_ANY = 0;
+
+    public const ZBX_MONITORED_BY_SERVER = 1;
+
+    public const ZBX_MONITORED_BY_PROXY = 2;
+
+    public const QUEUE_OVERVIEW = 0;
+
+    public const QUEUE_OVERVIEW_BY_PROXY = 1;
+
+    public const QUEUE_DETAILS = 2;
+
+    public const QUEUE_DETAIL_ITEM_COUNT = 500;
+
+    public const COPY_TYPE_TO_HOST_GROUP = 0;
+
+    public const COPY_TYPE_TO_HOST = 1;
+
+    public const COPY_TYPE_TO_TEMPLATE = 2;
+
+    public const HISTORY_GRAPH = 'showgraph';
+
+    public const HISTORY_BATCH_GRAPH = 'batchgraph';
+
+    public const HISTORY_VALUES = 'showvalues';
+
+    public const HISTORY_LATEST = 'showlatest';
+
+    public const ITEM_STORAGE_OFF = 0;
+
+    public const ITEM_STORAGE_CUSTOM = 1;
+
+    public const ITEM_NO_STORAGE_VALUE = 0;
+
+    public const MAP_DEFAULT_ICON = 'Server_(96)';
+
+    public const ZBX_STYLE_ACTION_BUTTONS = 'action-buttons';
+
+    public const ZBX_STYLE_ADM_IMG = 'adm-img';
+
+    public const ZBX_STYLE_AVERAGE_BG = 'average-bg';
+
+    public const ZBX_STYLE_ARROW_DOWN = 'arrow-down';
+
+    public const ZBX_STYLE_ARROW_LEFT = 'arrow-left';
+
+    public const ZBX_STYLE_ARROW_RIGHT = 'arrow-right';
+
+    public const ZBX_STYLE_ARROW_UP = 'arrow-up';
+
+    public const ZBX_STYLE_BLUE = 'blue';
+
+    public const ZBX_STYLE_BTN_ADD_FAV = 'btn-add-fav';
+
+    public const ZBX_STYLE_BTN_ALT = 'btn-alt';
+
+    public const ZBX_STYLE_BTN_BACK_MAP = 'btn-back-map';
+
+    public const ZBX_STYLE_BTN_BACK_MAP_CONTAINER = 'btn-back-map-container';
+
+    public const ZBX_STYLE_BTN_BACK_MAP_CONTENT = 'btn-back-map-content';
+
+    public const ZBX_STYLE_BTN_BACK_MAP_ICON = 'btn-back-map-icon';
+
+    public const ZBX_STYLE_BTN_CONF = 'btn-conf';
+
+    public const ZBX_STYLE_BTN_ACTION = 'btn-action';
+
+    public const ZBX_STYLE_BTN_DASHBRD_CONF = 'btn-dashbrd-conf';
+
+    public const ZBX_STYLE_BTN_DASHBRD_NORMAL = 'btn-dashbrd-normal';
+
+    public const ZBX_STYLE_BTN_DEBUG = 'btn-debug';
+
+    public const ZBX_STYLE_BTN_GREY = 'btn-grey';
+
+    public const ZBX_STYLE_BTN_INFO = 'btn-info';
+
+    public const ZBX_STYLE_BTN_LINK = 'btn-link';
+
+    public const ZBX_STYLE_BTN_KIOSK = 'btn-kiosk';
+
+    public const ZBX_STYLE_BTN_MAX = 'btn-max';
+
+    public const ZBX_STYLE_BTN_MIN = 'btn-min';
+
+    public const ZBX_STYLE_BTN_REMOVE_FAV = 'btn-remove-fav';
+
+    public const ZBX_STYLE_BTN_SEARCH = 'btn-search';
+
+    public const ZBX_STYLE_BTN_TIME = 'btn-time';
+
+    public const ZBX_STYLE_BTN_TIME_LEFT = 'btn-time-left';
+
+    public const ZBX_STYLE_BTN_TIME_OUT = 'btn-time-out';
+
+    public const ZBX_STYLE_BTN_TIME_RIGHT = 'btn-time-right';
+
+    public const ZBX_STYLE_BTN_WIDGET_ACTION = 'btn-widget-action';
+
+    public const ZBX_STYLE_BTN_WIDGET_COLLAPSE = 'btn-widget-collapse';
+
+    public const ZBX_STYLE_BTN_WIDGET_DELETE = 'btn-widget-delete';
+
+    public const ZBX_STYLE_BTN_WIDGET_EDIT = 'btn-widget-edit';
+
+    public const ZBX_STYLE_BTN_WIDGET_EXPAND = 'btn-widget-expand';
+
+    public const ZBX_STYLE_BOTTOM = 'bottom';
+
+    public const ZBX_STYLE_BROWSER_LOGO_CHROME = 'browser-logo-chrome';
+
+    public const ZBX_STYLE_BROWSER_LOGO_FF = 'browser-logo-ff';
+
+    public const ZBX_STYLE_BROWSER_LOGO_IE = 'browser-logo-ie';
+
+    public const ZBX_STYLE_BROWSER_LOGO_OPERA = 'browser-logo-opera';
+
+    public const ZBX_STYLE_BROWSER_LOGO_SAFARI = 'browser-logo-safari';
+
+    public const ZBX_STYLE_BROWSER_WARNING_CONTAINER = 'browser-warning-container';
+
+    public const ZBX_STYLE_BROWSER_WARNING_FOOTER = 'browser-warning-footer';
+
+    public const ZBX_STYLE_CELL = 'cell';
+
+    public const ZBX_STYLE_CELL_WIDTH = 'cell-width';
+
+    public const ZBX_STYLE_CENTER = 'center';
+
+    public const ZBX_STYLE_CHECKBOX_RADIO = 'checkbox-radio';
+
+    public const ZBX_STYLE_CLOCK = 'clock';
+
+    public const ZBX_STYLE_COLUMNS_3 = 'col-3';
+
+    public const ZBX_STYLE_SYSMAP = 'sysmap';
+
+    public const ZBX_STYLE_NAVIGATIONTREE = 'navtree';
+
+    public const ZBX_STYLE_CHECKBOX_LIST = 'checkbox-list';
+
+    public const ZBX_STYLE_CLOCK_SVG = 'clock-svg';
+
+    public const ZBX_STYLE_CLOCK_FACE = 'clock-face';
+
+    public const ZBX_STYLE_CLOCK_HAND = 'clock-hand';
+
+    public const ZBX_STYLE_CLOCK_HAND_SEC = 'clock-hand-sec';
+
+    public const ZBX_STYLE_CLOCK_LINES = 'clock-lines';
+
+    public const ZBX_STYLE_COLOR_PICKER = 'color-picker';
+
+    public const ZBX_STYLE_COLOR_PREVIEW_BOX = 'color-preview-box';
+
+    public const ZBX_STYLE_COLUMN_TAGS_1 = 'column-tags-1';
+
+    public const ZBX_STYLE_COLUMN_TAGS_2 = 'column-tags-2';
+
+    public const ZBX_STYLE_COLUMN_TAGS_3 = 'column-tags-3';
+
+    public const ZBX_STYLE_COMPACT_VIEW = 'compact-view';
+
+    public const ZBX_STYLE_CURSOR_POINTER = 'cursor-pointer';
+
+    public const ZBX_STYLE_DASHBRD_GRID_CONTAINER = 'dashbrd-grid-container';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET = 'dashbrd-widget';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_FLUID = 'dashbrd-widget-fluid';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_HEAD = 'dashbrd-widget-head';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_FOOT = 'dashbrd-widget-foot';
+
+    public const ZBX_STYLE_DASHBRD_EDIT = 'dashbrd-edit';
+
+    public const ZBX_STYLE_DASHBRD_WIDGET_GRAPH_LINK = 'dashbrd-widget-graph-link';
+
+    public const ZBX_STYLE_DASHED_BORDER = 'dashed-border';
+
+    public const ZBX_STYLE_DEBUG_OUTPUT = 'debug-output';
+
+    public const ZBX_STYLE_DISABLED = 'disabled';
+
+    public const ZBX_STYLE_DISASTER_BG = 'disaster-bg';
+
+    public const ZBX_STYLE_DRAG_ICON = 'drag-icon';
+
+    public const ZBX_STYLE_PROBLEM_UNACK_FG = 'problem-unack-fg';
+
+    public const ZBX_STYLE_PROBLEM_ACK_FG = 'problem-ack-fg';
+
+    public const ZBX_STYLE_OK_UNACK_FG = 'ok-unack-fg';
+
+    public const ZBX_STYLE_OK_ACK_FG = 'ok-ack-fg';
+
+    public const ZBX_STYLE_OVERRIDES_LIST = 'overrides-list';
+
+    public const ZBX_STYLE_OVERRIDES_LIST_ITEM = 'overrides-list-item';
+
+    public const ZBX_STYLE_OVERRIDES_OPTIONS_LIST = 'overrides-options-list';
+
+    public const ZBX_STYLE_PLUS_ICON = 'plus-icon';
+
+    public const ZBX_STYLE_DRAG_DROP_AREA = 'drag-drop-area';
+
+    public const ZBX_STYLE_TABLE_FORMS_SEPARATOR = 'table-forms-separator';
+
+    public const ZBX_STYLE_TIME_INPUT = 'time-input';
+
+    public const ZBX_STYLE_TIME_INPUT_ERROR = 'time-input-error';
+
+    public const ZBX_STYLE_TIME_QUICK = 'time-quick';
+
+    public const ZBX_STYLE_TIME_QUICK_RANGE = 'time-quick-range';
+
+    public const ZBX_STYLE_TIME_SELECTION_CONTAINER = 'time-selection-container';
+
+    public const ZBX_STYLE_FILTER_BREADCRUMB = 'filter-breadcrumb';
+
+    public const ZBX_STYLE_FILTER_BTN_CONTAINER = 'filter-btn-container';
+
+    public const ZBX_STYLE_FILTER_CONTAINER = 'filter-container';
+
+    public const ZBX_STYLE_FILTER_HIGHLIGHT_ROW_CB = 'filter-highlight-row-cb';
+
+    public const ZBX_STYLE_FILTER_FORMS = 'filter-forms';
+
+    public const ZBX_STYLE_FILTER_TRIGGER = 'filter-trigger';
+
+    public const ZBX_STYLE_FLH_AVERAGE_BG = 'flh-average-bg';
+
+    public const ZBX_STYLE_FLH_DISASTER_BG = 'flh-disaster-bg';
+
+    public const ZBX_STYLE_FLH_HIGH_BG = 'flh-high-bg';
+
+    public const ZBX_STYLE_FLH_INFO_BG = 'flh-info-bg';
+
+    public const ZBX_STYLE_FLH_NA_BG = 'flh-na-bg';
+
+    public const ZBX_STYLE_FLH_WARNING_BG = 'flh-warning-bg';
+
+    public const ZBX_STYLE_FLOAT_LEFT = 'float-left';
+
+    public const ZBX_STYLE_FORM_INPUT_MARGIN = 'form-input-margin';
+
+    public const ZBX_STYLE_FORM_NEW_GROUP = 'form-new-group';
+
+    public const ZBX_STYLE_GRAPH_WRAPPER = 'graph-wrapper';
+
+    public const ZBX_STYLE_GREEN = 'green';
+
+    public const ZBX_STYLE_GREEN_BG = 'green-bg';
+
+    public const ZBX_STYLE_GREY = 'grey';
+
+    public const ZBX_STYLE_TEAL = 'teal';
+
+    public const ZBX_STYLE_HEADER_LOGO = 'header-logo';
+
+    public const ZBX_STYLE_HEADER_TITLE = 'header-title';
+
+    public const ZBX_STYLE_HIGH_BG = 'high-bg';
+
+    public const ZBX_STYLE_HOR_LIST = 'hor-list';
+
+    public const ZBX_STYLE_HOVER_NOBG = 'hover-nobg';
+
+    public const ZBX_STYLE_ICON_ACKN = 'icon-ackn';
+
+    public const ZBX_STYLE_ICON_CAL = 'icon-cal';
+
+    public const ZBX_STYLE_ICON_DEPEND_DOWN = 'icon-depend-down';
+
+    public const ZBX_STYLE_ICON_DEPEND_UP = 'icon-depend-up';
+
+    public const ZBX_STYLE_ICON_DESCRIPTION = 'icon-description';
+
+    public const ZBX_STYLE_ICON_INFO = 'icon-info';
+
+    public const ZBX_STYLE_ICON_INVISIBLE = 'icon-invisible';
+
+    public const ZBX_STYLE_ICON_MAINT = 'icon-maint';
+
+    public const ZBX_STYLE_ICON_WZRD_ACTION = 'icon-wzrd-action';
+
+    public const ZBX_STYLE_ICON_NONE = 'icon-none';
+
+    public const ZBX_STYLE_ACTION_COMMAND = 'icon-action-command';
+
+    public const ZBX_STYLE_ACTION_ICON_CLOSE = 'icon-action-close';
+
+    public const ZBX_STYLE_ACTION_ICON_MSG = 'icon-action-msg';
+
+    public const ZBX_STYLE_ACTION_ICON_MSGS = 'icon-action-msgs';
+
+    public const ZBX_STYLE_ACTION_ICON_SEV_UP = 'icon-action-severity-up';
+
+    public const ZBX_STYLE_ACTION_ICON_SEV_DOWN = 'icon-action-severity-down';
+
+    public const ZBX_STYLE_ACTION_ICON_SEV_CHANGED = 'icon-action-severity-changed';
+
+    public const ZBX_STYLE_ACTION_MESSAGE = 'icon-action-message';
+
+    public const ZBX_STYLE_ACTION_ICON_ACK = 'icon-action-ack';
+
+    public const ZBX_STYLE_PROBLEM_GENERATED = 'icon-problem-generated';
+
+    public const ZBX_STYLE_PROBLEM_RECOVERY = 'icon-problem-recovery';
+
+    public const ZBX_STYLE_ACTIONS_NUM_GRAY = 'icon-actions-number-gray';
+
+    public const ZBX_STYLE_ACTIONS_NUM_YELLOW = 'icon-actions-number-yellow';
+
+    public const ZBX_STYLE_ACTIONS_NUM_RED = 'icon-actions-number-red';
+
+    public const ZBX_STYLE_INACTIVE_BG = 'inactive-bg';
+
+    public const ZBX_STYLE_INFO_BG = 'info-bg';
+
+    public const ZBX_STYLE_INPUT_COLOR_PICKER = 'input-color-picker';
+
+    public const ZBX_STYLE_LAYOUT_KIOSKMODE = 'layout-kioskmode';
+
+    public const ZBX_STYLE_LEFT = 'left';
+
+    public const ZBX_STYLE_LINK_ACTION = 'link-action';
+
+    public const ZBX_STYLE_LINK_ALT = 'link-alt';
+
+    public const ZBX_STYLE_LIST_CHECK_RADIO = 'list-check-radio';
+
+    public const ZBX_STYLE_LIST_TABLE = 'list-table';
+
+    public const ZBX_STYLE_LIST_TABLE_FOOTER = 'list-table-footer';
+
+    public const ZBX_STYLE_LIST_VERTICAL_ACCORDION = 'list-vertical-accordion';
+
+    public const ZBX_STYLE_LIST_ACCORDION_FOOT = 'list-accordion-foot';
+
+    public const ZBX_STYLE_LIST_ACCORDION_ITEM = 'list-accordion-item';
+
+    public const ZBX_STYLE_LIST_ACCORDION_ITEM_OPENED = 'list-accordion-item-opened';
+
+    public const ZBX_STYLE_LIST_ACCORDION_ITEM_CLOSED = 'list-accordion-item-closed';
+
+    public const ZBX_STYLE_LIST_ACCORDION_ITEM_HEAD = 'list-accordion-item-head';
+
+    public const ZBX_STYLE_LIST_ACCORDION_ITEM_BODY = 'list-accordion-item-body';
+
+    public const ZBX_STYLE_LOCAL_CLOCK = 'local-clock';
+
+    public const ZBX_STYLE_LOG_NA_BG = 'log-na-bg';
+
+    public const ZBX_STYLE_LOG_INFO_BG = 'log-info-bg';
+
+    public const ZBX_STYLE_LOG_WARNING_BG = 'log-warning-bg';
+
+    public const ZBX_STYLE_LOG_HIGH_BG = 'log-high-bg';
+
+    public const ZBX_STYLE_LOG_DISASTER_BG = 'log-disaster-bg';
+
+    public const ZBX_STYLE_LOGO = 'logo';
+
+    public const ZBX_STYLE_MAP_AREA = 'map-area';
+
+    public const ZBX_STYLE_MIDDLE = 'middle';
+
+    public const ZBX_STYLE_MONOSPACE_FONT = 'monospace-font';
+
+    public const ZBX_STYLE_MSG_GOOD = 'msg-good';
+
+    public const ZBX_STYLE_MSG_BAD = 'msg-bad';
+
+    public const ZBX_STYLE_MSG_WARNING = 'msg-warning';
+
+    public const ZBX_STYLE_MSG_GLOBAL_FOOTER = 'msg-global-footer';
+
+    public const ZBX_STYLE_MSG_DETAILS = 'msg-details';
+
+    public const ZBX_STYLE_MSG_DETAILS_BORDER = 'msg-details-border';
+
+    public const ZBX_STYLE_NA_BG = 'na-bg';
+
+    public const ZBX_STYLE_NORMAL_BG = 'normal-bg';
+
+    public const ZBX_STYLE_NOTIF_BODY = 'notif-body';
+
+    public const ZBX_STYLE_NOTIF_INDIC = 'notif-indic';
+
+    public const ZBX_STYLE_NOTIF_INDIC_CONTAINER = 'notif-indic-container';
+
+    public const ZBX_STYLE_NOTHING_TO_SHOW = 'nothing-to-show';
+
+    public const ZBX_STYLE_NOWRAP = 'nowrap';
+
+    public const ZBX_STYLE_WORDWRAP = 'wordwrap';
+
+    public const ZBX_STYLE_ORANGE = 'orange';
+
+    public const ZBX_STYLE_OVERLAY_CLOSE_BTN = 'overlay-close-btn';
+
+    public const ZBX_STYLE_OVERLAY_DESCR = 'overlay-descr';
+
+    public const ZBX_STYLE_OVERLAY_DESCR_URL = 'overlay-descr-url';
+
+    public const ZBX_STYLE_OVERFLOW_ELLIPSIS = 'overflow-ellipsis';
+
+    public const ZBX_STYLE_OBJECT_GROUP = 'object-group';
+
+    public const ZBX_STYLE_PAGING_BTN_CONTAINER = 'paging-btn-container';
+
+    public const ZBX_STYLE_PAGING_SELECTED = 'paging-selected';
+
+    public const ZBX_STYLE_PRELOADER = 'preloader';
+
+    public const ZBX_STYLE_PAGE_TITLE = 'page-title-general';
+
+    public const ZBX_STYLE_PROGRESS_BAR_BG = 'progress-bar-bg';
+
+    public const ZBX_STYLE_PROGRESS_BAR_CONTAINER = 'progress-bar-container';
+
+    public const ZBX_STYLE_PROGRESS_BAR_LABEL = 'progress-bar-label';
+
+    public const ZBX_STYLE_RED = 'red';
+
+    public const ZBX_STYLE_RED_BG = 'red-bg';
+
+    public const ZBX_STYLE_REL_CONTAINER = 'rel-container';
+
+    public const ZBX_STYLE_REMOVE_BTN = 'remove-btn';
+
+    public const ZBX_STYLE_RIGHT = 'right';
+
+    public const ZBX_STYLE_ROW = 'row';
+
+    public const ZBX_STYLE_INLINE_SR_ONLY = 'inline-sr-only';
+
+    public const ZBX_STYLE_SCREEN_TABLE = 'screen-table';
+
+    public const ZBX_STYLE_SEARCH = 'search';
+
+    public const ZBX_STYLE_SECOND_COLUMN_LABEL = 'second-column-label';
+
+    public const ZBX_STYLE_SELECTED = 'selected';
+
+    public const ZBX_STYLE_SELECTED_ITEM_COUNT = 'selected-item-count';
+
+    public const ZBX_STYLE_SERVER_NAME = 'server-name';
+
+    public const ZBX_STYLE_SETUP_CONTAINER = 'setup-container';
+
+    public const ZBX_STYLE_SETUP_FOOTER = 'setup-footer';
+
+    public const ZBX_STYLE_SETUP_LEFT = 'setup-left';
+
+    public const ZBX_STYLE_SETUP_LEFT_CURRENT = 'setup-left-current';
+
+    public const ZBX_STYLE_SETUP_RIGHT = 'setup-right';
+
+    public const ZBX_STYLE_SETUP_RIGHT_BODY = 'setup-right-body';
+
+    public const ZBX_STYLE_SETUP_TITLE = 'setup-title';
+
+    public const ZBX_STYLE_SIGNIN_CONTAINER = 'signin-container';
+
+    public const ZBX_STYLE_SIGNIN_LINKS = 'signin-links';
+
+    public const ZBX_STYLE_SIGNIN_LOGO = 'signin-logo';
+
+    public const ZBX_STYLE_SIGN_IN_TXT = 'sign-in-txt';
+
+    public const ZBX_STYLE_STATUS_AVERAGE_BG = 'status-average-bg';
+
+    public const ZBX_STYLE_STATUS_CONTAINER = 'status-container';
+
+    public const ZBX_STYLE_STATUS_DARK_GREY = 'status-dark-grey';
+
+    public const ZBX_STYLE_STATUS_DISABLED_BG = 'status-disabled-bg';
+
+    public const ZBX_STYLE_STATUS_DISASTER_BG = 'status-disaster-bg';
+
+    public const ZBX_STYLE_STATUS_GREEN = 'status-green';
+
+    public const ZBX_STYLE_STATUS_GREY = 'status-grey';
+
+    public const ZBX_STYLE_STATUS_HIGH_BG = 'status-high-bg';
+
+    public const ZBX_STYLE_STATUS_INFO_BG = 'status-info-bg';
+
+    public const ZBX_STYLE_STATUS_NA_BG = 'status-na-bg';
+
+    public const ZBX_STYLE_STATUS_RED = 'status-red';
+
+    public const ZBX_STYLE_STATUS_WARNING_BG = 'status-warning-bg';
+
+    public const ZBX_STYLE_STATUS_YELLOW = 'status-yellow';
+
+    public const ZBX_STYLE_SVG_GRAPH = 'svg-graph';
+
+    public const ZBX_STYLE_SVG_GRAPH_PREVIEW = 'svg-graph-preview';
+
+    public const ZBX_STYLE_SUBFILTER = 'subfilter';
+
+    public const ZBX_STYLE_SUBFILTER_ENABLED = 'subfilter-enabled';
+
+    public const ZBX_STYLE_TABLE = 'table';
+
+    public const ZBX_STYLE_TABLE_FORMS = 'table-forms';
+
+    public const ZBX_STYLE_TABLE_FORMS_CONTAINER = 'table-forms-container';
+
+    public const ZBX_STYLE_TABLE_FORMS_SECOND_COLUMN = 'table-forms-second-column';
+
+    public const ZBX_STYLE_TABLE_FORMS_TD_LEFT = 'table-forms-td-left';
+
+    public const ZBX_STYLE_TABLE_FORMS_TD_RIGHT = 'table-forms-td-right';
+
+    public const ZBX_STYLE_TABLE_PAGING = 'table-paging';
+
+    public const ZBX_STYLE_TABLE_STATS = 'table-stats';
+
+    public const ZBX_STYLE_TABS_NAV = 'tabs-nav';
+
+    public const ZBX_STYLE_TAG = 'tag';
+
+    public const ZBX_STYLE_TEXTAREA_FLEXIBLE = 'textarea-flexible';
+
+    public const ZBX_STYLE_TEXTAREA_FLEXIBLE_CONTAINER = 'textarea-flexible-container';
+
+    public const ZBX_STYLE_TEXTAREA_FLEXIBLE_PARENT = 'textarea-flexible-parent';
+
+    public const ZBX_STYLE_TFOOT_BUTTONS = 'tfoot-buttons';
+
+    public const ZBX_STYLE_TD_DRAG_ICON = 'td-drag-icon';
+
+    public const ZBX_STYLE_TIME_ZONE = 'time-zone';
+
+    public const ZBX_STYLE_TIMELINE_AXIS = 'timeline-axis';
+
+    public const ZBX_STYLE_TIMELINE_DATE = 'timeline-date';
+
+    public const ZBX_STYLE_TIMELINE_DOT = 'timeline-dot';
+
+    public const ZBX_STYLE_TIMELINE_DOT_BIG = 'timeline-dot-big';
+
+    public const ZBX_STYLE_TIMELINE_TD = 'timeline-td';
+
+    public const ZBX_STYLE_TIMELINE_TH = 'timeline-th';
+
+    public const ZBX_STYLE_TOP = 'top';
+
+    public const ZBX_STYLE_TOP_NAV = 'top-nav';
+
+    public const ZBX_STYLE_TOP_NAV_CONTAINER = 'top-nav-container';
+
+    public const ZBX_STYLE_TOP_NAV_HELP = 'top-nav-help';
+
+    public const ZBX_STYLE_TOP_NAV_ICONS = 'top-nav-icons';
+
+    public const ZBX_STYLE_TOP_NAV_PROFILE = 'top-nav-profile';
+
+    public const ZBX_STYLE_TOP_NAV_SIGNOUT = 'top-nav-signout';
+
+    public const ZBX_STYLE_TOP_NAV_SUPPORT = 'top-nav-support';
+
+    public const ZBX_STYLE_TOP_NAV_ZBBSHARE = 'top-nav-zbbshare';
+
+    public const ZBX_STYLE_TOP_SUBNAV = 'top-subnav';
+
+    public const ZBX_STYLE_TOP_SUBNAV_CONTAINER = 'top-subnav-container';
+
+    public const ZBX_STYLE_TOTALS_LIST = 'totals-list';
+
+    public const ZBX_STYLE_TOTALS_LIST_HORIZONTAL = 'totals-list-horizontal';
+
+    public const ZBX_STYLE_TOTALS_LIST_VERTICAL = 'totals-list-vertical';
+
+    public const ZBX_STYLE_TOTALS_LIST_COUNT = 'count';
+
+    public const ZBX_STYLE_TREEVIEW = 'treeview';
+
+    public const ZBX_STYLE_TREEVIEW_PLUS = 'treeview-plus';
+
+    public const ZBX_STYLE_UPPERCASE = 'uppercase';
+
+    public const ZBX_STYLE_WARNING_BG = 'warning-bg';
+
+    public const ZBX_STYLE_BLINK_HIDDEN = 'blink-hidden';
+
+    public const ZBX_STYLE_YELLOW = 'yellow';
+
+    public const ZBX_STYLE_FIELD_LABEL_ASTERISK = 'form-label-asterisk';
+
+    public const ZBX_STYLE_COLUMNS = 'columns-wrapper';
+
+    public const ZBX_STYLE_COLUMN_5 = 'column-5';
+
+    public const ZBX_STYLE_COLUMN_10 = 'column-10';
+
+    public const ZBX_STYLE_COLUMN_15 = 'column-15';
+
+    public const ZBX_STYLE_COLUMN_20 = 'column-20';
+
+    public const ZBX_STYLE_COLUMN_33 = 'column-33';
+
+    public const ZBX_STYLE_COLUMN_35 = 'column-35';
+
+    public const ZBX_STYLE_COLUMN_40 = 'column-40';
+
+    public const ZBX_STYLE_COLUMN_50 = 'column-50';
+
+    public const ZBX_STYLE_COLUMN_75 = 'column-75';
+
+    public const ZBX_STYLE_COLUMN_90 = 'column-90';
+
+    public const ZBX_STYLE_COLUMN_95 = 'column-95';
+
+    public const ZBX_STYLE_COLUMN_CENTER = 'column-center';
+
+    public const ZBX_STYLE_COLUMN_MIDDLE = 'column-middle';
+
+    public const ZBX_STYLE_HOST_AVAIL_WIDGET = 'host-avail-widget';
+
+    public const ZBX_STYLE_HOST_AVAIL_TRUE = 'host-avail-true';
+
+    public const ZBX_STYLE_HOST_AVAIL_FALSE = 'host-avail-false';
+
+    public const ZBX_STYLE_HOST_AVAIL_UNKNOWN = 'host-avail-unknown';
+
+    public const ZBX_STYLE_HOST_AVAIL_TOTAL = 'host-avail-total';
+
+    public const ZBX_STYLE_BY_SEVERITY_WIDGET = 'by-severity-widget';
+
+    public const ZBX_PROPERTY_INHERITED = 0x01;
+
+    public const ZBX_PROPERTY_OWN = 0x02;
+
+    public const ZBX_PROPERTY_BOTH = 0x03;
+
+    public const PROBLEMS_SHOW_TAGS_NONE = 0;
+
+    public const PROBLEMS_SHOW_TAGS_1 = 1;
+
+    public const PROBLEMS_SHOW_TAGS_2 = 2;
+
+    public const PROBLEMS_SHOW_TAGS_3 = 3;
+
+    public const PROBLEMS_TAG_NAME_FULL = 0;
+
+    public const PROBLEMS_TAG_NAME_SHORTENED = 1;
+
+    public const PROBLEMS_TAG_NAME_NONE = 2;
+
+    public const OPERATIONAL_DATA_SHOW_NONE = 0;
+
+    public const OPERATIONAL_DATA_SHOW_SEPARATELY = 1;
+
+    public const OPERATIONAL_DATA_SHOW_WITH_PROBLEM = 2;
+
+    public const X_FRAME_OPTIONS = 'SAMEORIGIN';
+
     /**
      * @var array
      */
@@ -610,6 +3341,39 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method action.validateFilterConditionsIntegrity.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function actionValidateFilterConditionsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('action.validateFilterConditionsIntegrity', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('action.validateFilterConditionsIntegrity', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method action.validateOperationsIntegrity.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -1072,39 +3836,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method application.checkInput.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function applicationCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.checkInput', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method application.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -1336,6 +4067,171 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method autoregistration.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function autoregistrationGet($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('autoregistration.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('autoregistration.get', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method autoregistration.update.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function autoregistrationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('autoregistration.update', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('autoregistration.update', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method autoregistration.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function autoregistrationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('autoregistration.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('autoregistration.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method autoregistration.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function autoregistrationPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('autoregistration.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('autoregistration.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method autoregistration.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function autoregistrationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('autoregistration.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('autoregistration.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method configuration.export.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -1501,6 +4397,468 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method correlation.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationGet($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.get', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.create.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.create', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.create', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.update.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.update', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.update', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.delete.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.delete', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.delete', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method correlation.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function correlationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('correlation.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('correlation.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardGet($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.get', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.create.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardCreate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.create', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.create', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.update.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.update', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.update', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.delete.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardDelete($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.delete', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.delete', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method dashboard.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function dashboardPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('dashboard.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('dashboard.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method dcheck.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -1530,72 +4888,6 @@ class ZabbixApi
 
         // request
         return $this->request('dcheck.get', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method dcheck.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function dcheckIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method dcheck.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function dcheckIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2029,72 +5321,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method discoveryrule.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function discoveryruleIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method discoveryrule.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function discoveryruleIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method discoveryrule.findInterfaceForItem.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -2124,6 +5350,39 @@ class ZabbixApi
 
         // request
         return $this->request('discoveryrule.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method discoveryrule.validateItemPreprocessingSteps.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function discoveryruleValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('discoveryrule.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('discoveryrule.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2260,39 +5519,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method drule.checkInput.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function druleCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.checkInput', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method drule.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -2388,72 +5614,6 @@ class ZabbixApi
 
         // request
         return $this->request('drule.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method drule.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function druleIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method drule.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function druleIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -2751,6 +5911,39 @@ class ZabbixApi
 
         // request
         return $this->request('event.acknowledge', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method event.getTagFilters.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function eventGetTagFilters($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('event.getTagFilters', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('event.getTagFilters', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -3745,72 +6938,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method host.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method host.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method host.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -4141,72 +7268,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method hostgroup.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostgroupIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method hostgroup.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostgroupIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method hostgroup.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -4467,72 +7528,6 @@ class ZabbixApi
 
         // request
         return $this->request('hostprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method hostprototype.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostprototypeIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method hostprototype.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function hostprototypeIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5131,6 +8126,237 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method httptest.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestGet($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.get', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.create.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestCreate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.create', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.create', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.update.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.update', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.update', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.delete.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestDelete($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.delete', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.delete', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method httptest.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function httptestPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('httptest.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('httptest.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method image.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -5490,72 +8716,6 @@ class ZabbixApi
 
         // request
         return $this->request('iconmap.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method iconmap.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function iconmapIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method iconmap.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function iconmapIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -5923,7 +9083,7 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method item.isReadable.
+     *          method item.validateItemPreprocessingSteps.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
@@ -5942,49 +9102,16 @@ class ZabbixApi
      *
      * @return \stdClass
      */
-    public function itemIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
+    public function itemValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
 
         // check if we've to authenticate
-        $auth = !in_array('item.isReadable', self::$anonymousFunctions, true);
+        $auth = !in_array('item.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('item.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method item.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function itemIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6319,7 +9446,7 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method itemprototype.isReadable.
+     *          method itemprototype.validateItemPreprocessingSteps.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
@@ -6338,49 +9465,16 @@ class ZabbixApi
      *
      * @return \stdClass
      */
-    public function itemprototypeIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
+    public function itemprototypeValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
 
         // check if we've to authenticate
-        $auth = !in_array('itemprototype.isReadable', self::$anonymousFunctions, true);
+        $auth = !in_array('itemprototype.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('itemprototype.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method itemprototype.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function itemprototypeIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -6847,105 +9941,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method map.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method map.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method map.checkCircleSelementsLink.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function mapCheckCircleSelementsLink($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.checkCircleSelementsLink', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.checkCircleSelementsLink', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method map.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -7276,6 +10271,138 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method problem.get.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function problemGet($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('problem.get', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('problem.get', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method problem.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function problemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('problem.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('problem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method problem.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function problemPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('problem.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('problem.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method problem.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function problemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('problem.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('problem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method proxy.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -7404,72 +10531,6 @@ class ZabbixApi
 
         // request
         return $this->request('proxy.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method proxy.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function proxyIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method proxy.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function proxyIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -7969,72 +11030,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method service.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function serviceIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method service.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function serviceIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method service.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -8530,72 +11525,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method screenitem.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function screenitemIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method screenitem.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function screenitemIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method screenitem.tableName.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -8992,6 +11921,138 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method task.create.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function taskCreate($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('task.create', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('task.create', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method task.tableName.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function taskTableName($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('task.tableName', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('task.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method task.pk.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function taskPk($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('task.pk', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('task.pk', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
+     *          method task.pkOption.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function taskPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('task.pkOption', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('task.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method template.pkOption.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -9252,72 +12313,6 @@ class ZabbixApi
 
         // request
         return $this->request('template.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method template.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function templateIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method template.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function templateIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -9949,39 +12944,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method trigger.checkInput.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function triggerCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.checkInput', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method trigger.create.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10147,39 +13109,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method trigger.syncTemplates.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function triggerSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method trigger.syncTemplateDependencies.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10213,7 +13142,7 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method trigger.isReadable.
+     *          method trigger.implode_expressions.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
@@ -10232,21 +13161,21 @@ class ZabbixApi
      *
      * @return \stdClass
      */
-    public function triggerIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
+    public function triggerImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
 
         // check if we've to authenticate
-        $auth = !in_array('trigger.isReadable', self::$anonymousFunctions, true);
+        $auth = !in_array('trigger.implode_expressions', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.implode_expressions', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method trigger.isWritable.
+     *          method trigger.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
@@ -10265,16 +13194,16 @@ class ZabbixApi
      *
      * @return \stdClass
      */
-    public function triggerIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
+    public function triggerSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
 
         // check if we've to authenticate
-        $auth = !in_array('trigger.isWritable', self::$anonymousFunctions, true);
+        $auth = !in_array('trigger.syncTemplates', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('trigger.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -10576,6 +13505,39 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
+     *          method triggerprototype.implode_expressions.
+     *
+     * The $params Array can be used, to pass parameters to the Zabbix API.
+     * For more informations about these parameters, check the Zabbix API
+     * documentation at https://www.zabbix.com/documentation/.
+     *
+     * The $arrayKeyProperty can be used to get an associative instead of an
+     * indexed array as response. A valid value for the $arrayKeyProperty is
+     * is any property of the returned JSON objects (e.g. "name", "host",
+     * "hostid", "graphid", "screenitemid").
+     *
+     * @param mixed       $params             Zabbix API parameters
+     * @param string|null $arrayKeyProperty   Object property for key of array
+     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
+     *
+     * @throws  Exception
+     *
+     * @return \stdClass
+     */
+    public function triggerprototypeImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
+    {
+        // get params array for request
+        $params = $this->getRequestParamsArray($params);
+
+        // check if we've to authenticate
+        $auth = !in_array('triggerprototype.implode_expressions', self::$anonymousFunctions, true);
+
+        // request
+        return $this->request('triggerprototype.implode_expressions', $params, $arrayKeyProperty, $auth, $assoc);
+    }
+
+    /**
+     * Requests the Zabbix API and returns the response of the API
      *          method triggerprototype.syncTemplates.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10807,39 +13769,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method user.updateProfile.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userUpdateProfile($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.updateProfile', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.updateProfile', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method user.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -10873,7 +13802,7 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method user.addMedia.
+     *          method user.loginHttp.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
      * For more informations about these parameters, check the Zabbix API
@@ -10892,115 +13821,16 @@ class ZabbixApi
      *
      * @return \stdClass
      */
-    public function userAddMedia($params = [], $arrayKeyProperty = null, $assoc = false)
+    public function userLoginHttp($params = [], $arrayKeyProperty = null, $assoc = false)
     {
         // get params array for request
         $params = $this->getRequestParamsArray($params);
 
         // check if we've to authenticate
-        $auth = !in_array('user.addMedia', self::$anonymousFunctions, true);
+        $auth = !in_array('user.loginHttp', self::$anonymousFunctions, true);
 
         // request
-        return $this->request('user.addMedia', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method user.updateMedia.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userUpdateMedia($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.updateMedia', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.updateMedia', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method user.deleteMedia.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userDeleteMedia($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.deleteMedia', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.deleteMedia', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method user.deleteMediaReal.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userDeleteMediaReal($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.deleteMediaReal', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.deleteMediaReal', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.loginHttp', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11034,72 +13864,6 @@ class ZabbixApi
 
         // request
         return $this->request('user.checkAuthentication', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method user.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method user.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function userIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11302,72 +14066,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.massAdd.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.massUpdate.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.massUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method usergroup.delete.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -11397,72 +14095,6 @@ class ZabbixApi
 
         // request
         return $this->request('usergroup.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usergroup.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usergroupIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
@@ -11929,138 +14561,6 @@ class ZabbixApi
 
     /**
      * Requests the Zabbix API and returns the response of the API
-     *          method usermedia.get.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usermediaGet($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermedia.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermedia.get', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usermedia.tableName.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usermediaTableName($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermedia.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermedia.tableName', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usermedia.pk.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usermediaPk($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermedia.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermedia.pk', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method usermedia.pkOption.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function usermediaPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermedia.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermedia.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
      *          method valuemap.get.
      *
      * The $params Array can be used, to pass parameters to the Zabbix API.
@@ -12288,303 +14788,6 @@ class ZabbixApi
 
         // request
         return $this->request('valuemap.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.get.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestGet($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.get', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.create.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestCreate($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.create', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.update.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.update', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.delete.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestDelete($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.delete', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.isReadable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestIsReadable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.isReadable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.isReadable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.isWritable.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestIsWritable($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.isWritable', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.isWritable', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.tableName.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestTableName($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.tableName', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.pk.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestPk($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.pk', $params, $arrayKeyProperty, $auth, $assoc);
-    }
-
-    /**
-     * Requests the Zabbix API and returns the response of the API
-     *          method httptest.pkOption.
-     *
-     * The $params Array can be used, to pass parameters to the Zabbix API.
-     * For more informations about these parameters, check the Zabbix API
-     * documentation at https://www.zabbix.com/documentation/.
-     *
-     * The $arrayKeyProperty can be used to get an associative instead of an
-     * indexed array as response. A valid value for the $arrayKeyProperty is
-     * is any property of the returned JSON objects (e.g. "name", "host",
-     * "hostid", "graphid", "screenitemid").
-     *
-     * @param mixed       $params             Zabbix API parameters
-     * @param string|null $arrayKeyProperty   Object property for key of array
-     * @param bool        $assoc              Return the result as an associative array instead of `stdClass`
-     *
-     * @throws  Exception
-     *
-     * @return \stdClass
-     */
-    public function httptestPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
-    {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
     }
 
     /**
