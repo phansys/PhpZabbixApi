@@ -245,7 +245,7 @@ class <CLASSNAME_CONCRETE>
         }
 
         try {
-            $this->response = $this->client->request('POST', '', $this->requestOptions + [
+            $this->response = $this->client->request('POST', $this->apiUrl, $this->requestOptions + [
                 RequestOptions::HEADERS => ['Content-type' => 'application/json-rpc'],
                 RequestOptions::JSON => $this->payload,
             ]);
