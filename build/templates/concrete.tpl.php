@@ -21,17 +21,9 @@ use Psr\Http\Message\ResponseInterface;
  * Class for the Zabbix API.
  */
 class <CLASSNAME_CONCRETE>
-{
-<!START_API_CONSTANT>
+{<!START_API_CONSTANT>
     public const <PHP_CONST_NAME> = <PHP_CONST_VALUE>;
 <!END_API_CONSTANT>
-    /**
-     * @var array
-     */
-    private static $anonymousFunctions = [
-        'apiinfo.version',
-    ];
-
     /**
      * @var bool
      */
@@ -46,6 +38,21 @@ class <CLASSNAME_CONCRETE>
      * @var array
      */
     private $defaultParams = [];
+
+    /**
+     * @var string
+     */
+    private $user;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @var string
+     */
+    private $authToken;
 
     /**
      * @var int
@@ -108,7 +115,8 @@ class <CLASSNAME_CONCRETE>
         if ($authToken) {
             $this->setAuthToken($authToken);
         } elseif ($user && $password) {
-            $this->userLogin(['user' => $user, 'password' => $password]);
+            $this->user = $user;
+            $this->password = $password;
         }
     }
 
@@ -217,10 +225,14 @@ class <CLASSNAME_CONCRETE>
      * @param bool $auth       enable authentication (default TRUE)
      * @param bool $assoc      return the result as an associative array
      *
-     * @return \stdClass    API JSON response
+     * @return mixed    API JSON response
      */
     public function request($method, $params = null, $resultArrayKey = null, $auth = true, $assoc = false)
     {
+        if (!$this->authToken && $auth && $this->user && $this->password) {
+            $this->userLogin(['user' => $this->user, 'password' => $this->password]);
+        }
+
         // sanity check and conversion for params array
         if (!$params) {
             $params = [];
@@ -326,7 +338,7 @@ class <CLASSNAME_CONCRETE>
             try {
                 // get auth token and try to execute a user.get (dummy check)
                 $this->authToken = file_get_contents($tokenCacheFile);
-                $this->userGet();
+                $this->userGet(['countOutput' => true]);
             } catch (Exception $e) {
                 // user.get failed, token invalid so reset it and remove file
                 $this->authToken = '';
@@ -403,14 +415,7 @@ class <CLASSNAME_CONCRETE>
      */
     public function <PHP_METHOD>($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('<API_METHOD>', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('<API_METHOD>', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('<API_METHOD>', $this->getRequestParamsArray($params), $arrayKeyProperty, <IS_AUTHENTICATION_REQUIRED>);
     }
 <!END_API_METHOD>
     /**

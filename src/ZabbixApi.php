@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ZabbixApi
 {
-
     public const ZABBIX_VERSION = '4.4.0';
 
     public const ZABBIX_API_VERSION = '4.4.0';
@@ -2754,13 +2753,6 @@ class ZabbixApi
     public const X_FRAME_OPTIONS = 'SAMEORIGIN';
 
     /**
-     * @var array
-     */
-    private static $anonymousFunctions = [
-        'apiinfo.version',
-    ];
-
-    /**
      * @var bool
      */
     private $printCommunication = false;
@@ -2774,6 +2766,21 @@ class ZabbixApi
      * @var array
      */
     private $defaultParams = [];
+
+    /**
+     * @var string
+     */
+    private $user;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @var string
+     */
+    private $authToken;
 
     /**
      * @var int
@@ -2836,7 +2843,8 @@ class ZabbixApi
         if ($authToken) {
             $this->setAuthToken($authToken);
         } elseif ($user && $password) {
-            $this->userLogin(['user' => $user, 'password' => $password]);
+            $this->user = $user;
+            $this->password = $password;
         }
     }
 
@@ -2945,10 +2953,14 @@ class ZabbixApi
      * @param bool $auth       enable authentication (default TRUE)
      * @param bool $assoc      return the result as an associative array
      *
-     * @return \stdClass    API JSON response
+     * @return mixed    API JSON response
      */
     public function request($method, $params = null, $resultArrayKey = null, $auth = true, $assoc = false)
     {
+        if (!$this->authToken && $auth && $this->user && $this->password) {
+            $this->userLogin(['user' => $this->user, 'password' => $this->password]);
+        }
+
         // sanity check and conversion for params array
         if (!$params) {
             $params = [];
@@ -3054,7 +3066,7 @@ class ZabbixApi
             try {
                 // get auth token and try to execute a user.get (dummy check)
                 $this->authToken = file_get_contents($tokenCacheFile);
-                $this->userGet();
+                $this->userGet(['countOutput' => true]);
             } catch (Exception $e) {
                 // user.get failed, token invalid so reset it and remove file
                 $this->authToken = '';
@@ -3131,14 +3143,7 @@ class ZabbixApi
      */
     public function apiTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('api.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('api.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('api.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3164,14 +3169,7 @@ class ZabbixApi
      */
     public function apiPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('api.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('api.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('api.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3197,14 +3195,7 @@ class ZabbixApi
      */
     public function apiPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('api.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('api.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('api.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3230,14 +3221,7 @@ class ZabbixApi
      */
     public function actionGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3263,14 +3247,7 @@ class ZabbixApi
      */
     public function actionCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3296,14 +3273,7 @@ class ZabbixApi
      */
     public function actionUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3329,14 +3299,7 @@ class ZabbixApi
      */
     public function actionDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3362,14 +3325,7 @@ class ZabbixApi
      */
     public function actionValidateFilterConditionsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.validateFilterConditionsIntegrity', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.validateFilterConditionsIntegrity', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.validateFilterConditionsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3395,14 +3351,7 @@ class ZabbixApi
      */
     public function actionValidateOperationsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.validateOperationsIntegrity', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.validateOperationsIntegrity', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.validateOperationsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3428,14 +3377,7 @@ class ZabbixApi
      */
     public function actionValidateOperationConditions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.validateOperationConditions', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.validateOperationConditions', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.validateOperationConditions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3461,14 +3403,7 @@ class ZabbixApi
      */
     public function actionTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3494,14 +3429,7 @@ class ZabbixApi
      */
     public function actionPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3527,14 +3455,7 @@ class ZabbixApi
      */
     public function actionPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('action.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('action.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('action.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3560,14 +3481,7 @@ class ZabbixApi
      */
     public function alertGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('alert.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('alert.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('alert.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3593,14 +3507,7 @@ class ZabbixApi
      */
     public function alertTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('alert.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('alert.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('alert.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3626,14 +3533,7 @@ class ZabbixApi
      */
     public function alertPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('alert.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('alert.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('alert.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3659,14 +3559,7 @@ class ZabbixApi
      */
     public function alertPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('alert.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('alert.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('alert.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3692,14 +3585,7 @@ class ZabbixApi
      */
     public function apiinfoVersion($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('apiinfo.version', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('apiinfo.version', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('apiinfo.version', $this->getRequestParamsArray($params), $arrayKeyProperty, false);
     }
 
     /**
@@ -3725,14 +3611,7 @@ class ZabbixApi
      */
     public function apiinfoTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('apiinfo.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('apiinfo.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('apiinfo.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3758,14 +3637,7 @@ class ZabbixApi
      */
     public function apiinfoPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('apiinfo.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('apiinfo.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('apiinfo.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3791,14 +3663,7 @@ class ZabbixApi
      */
     public function apiinfoPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('apiinfo.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('apiinfo.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('apiinfo.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3824,14 +3689,7 @@ class ZabbixApi
      */
     public function applicationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3857,14 +3715,7 @@ class ZabbixApi
      */
     public function applicationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3890,14 +3741,7 @@ class ZabbixApi
      */
     public function applicationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3923,14 +3767,7 @@ class ZabbixApi
      */
     public function applicationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3956,14 +3793,7 @@ class ZabbixApi
      */
     public function applicationMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -3989,14 +3819,7 @@ class ZabbixApi
      */
     public function applicationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4022,14 +3845,7 @@ class ZabbixApi
      */
     public function applicationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4055,14 +3871,7 @@ class ZabbixApi
      */
     public function applicationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('application.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('application.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('application.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4088,14 +3897,7 @@ class ZabbixApi
      */
     public function autoregistrationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('autoregistration.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('autoregistration.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('autoregistration.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4121,14 +3923,7 @@ class ZabbixApi
      */
     public function autoregistrationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('autoregistration.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('autoregistration.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('autoregistration.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4154,14 +3949,7 @@ class ZabbixApi
      */
     public function autoregistrationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('autoregistration.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('autoregistration.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('autoregistration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4187,14 +3975,7 @@ class ZabbixApi
      */
     public function autoregistrationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('autoregistration.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('autoregistration.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('autoregistration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4220,14 +4001,7 @@ class ZabbixApi
      */
     public function autoregistrationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('autoregistration.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('autoregistration.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('autoregistration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4253,14 +4027,7 @@ class ZabbixApi
      */
     public function configurationExport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('configuration.export', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('configuration.export', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('configuration.export', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4286,14 +4053,7 @@ class ZabbixApi
      */
     public function configurationImport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('configuration.import', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('configuration.import', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('configuration.import', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4319,14 +4079,7 @@ class ZabbixApi
      */
     public function configurationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('configuration.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('configuration.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('configuration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4352,14 +4105,7 @@ class ZabbixApi
      */
     public function configurationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('configuration.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('configuration.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('configuration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4385,14 +4131,7 @@ class ZabbixApi
      */
     public function configurationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('configuration.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('configuration.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('configuration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4418,14 +4157,7 @@ class ZabbixApi
      */
     public function correlationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4451,14 +4183,7 @@ class ZabbixApi
      */
     public function correlationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4484,14 +4209,7 @@ class ZabbixApi
      */
     public function correlationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4517,14 +4235,7 @@ class ZabbixApi
      */
     public function correlationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4550,14 +4261,7 @@ class ZabbixApi
      */
     public function correlationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4583,14 +4287,7 @@ class ZabbixApi
      */
     public function correlationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4616,14 +4313,7 @@ class ZabbixApi
      */
     public function correlationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('correlation.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('correlation.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('correlation.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4649,14 +4339,7 @@ class ZabbixApi
      */
     public function dashboardGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4682,14 +4365,7 @@ class ZabbixApi
      */
     public function dashboardCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4715,14 +4391,7 @@ class ZabbixApi
      */
     public function dashboardUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4748,14 +4417,7 @@ class ZabbixApi
      */
     public function dashboardDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4781,14 +4443,7 @@ class ZabbixApi
      */
     public function dashboardTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4814,14 +4469,7 @@ class ZabbixApi
      */
     public function dashboardPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4847,14 +4495,7 @@ class ZabbixApi
      */
     public function dashboardPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dashboard.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dashboard.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dashboard.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4880,14 +4521,7 @@ class ZabbixApi
      */
     public function dcheckGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dcheck.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4913,14 +4547,7 @@ class ZabbixApi
      */
     public function dcheckTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dcheck.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4946,14 +4573,7 @@ class ZabbixApi
      */
     public function dcheckPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dcheck.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -4979,14 +4599,7 @@ class ZabbixApi
      */
     public function dcheckPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dcheck.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dcheck.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dcheck.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5012,14 +4625,7 @@ class ZabbixApi
      */
     public function dhostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dhost.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dhost.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dhost.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5045,14 +4651,7 @@ class ZabbixApi
      */
     public function dhostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dhost.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dhost.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dhost.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5078,14 +4677,7 @@ class ZabbixApi
      */
     public function dhostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dhost.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dhost.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dhost.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5111,14 +4703,7 @@ class ZabbixApi
      */
     public function dhostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dhost.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dhost.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dhost.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5144,14 +4729,7 @@ class ZabbixApi
      */
     public function discoveryruleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5177,14 +4755,7 @@ class ZabbixApi
      */
     public function discoveryruleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5210,14 +4781,7 @@ class ZabbixApi
      */
     public function discoveryruleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5243,14 +4807,7 @@ class ZabbixApi
      */
     public function discoveryruleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5276,14 +4833,7 @@ class ZabbixApi
      */
     public function discoveryruleCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.copy', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.copy', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5309,14 +4859,7 @@ class ZabbixApi
      */
     public function discoveryruleSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5342,14 +4885,7 @@ class ZabbixApi
      */
     public function discoveryruleFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.findInterfaceForItem', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5375,14 +4911,7 @@ class ZabbixApi
      */
     public function discoveryruleValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5408,14 +4937,7 @@ class ZabbixApi
      */
     public function discoveryruleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5441,14 +4963,7 @@ class ZabbixApi
      */
     public function discoveryrulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5474,14 +4989,7 @@ class ZabbixApi
      */
     public function discoveryrulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('discoveryrule.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('discoveryrule.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('discoveryrule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5507,14 +5015,7 @@ class ZabbixApi
      */
     public function druleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5540,14 +5041,7 @@ class ZabbixApi
      */
     public function druleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5573,14 +5067,7 @@ class ZabbixApi
      */
     public function druleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5606,14 +5093,7 @@ class ZabbixApi
      */
     public function druleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5639,14 +5119,7 @@ class ZabbixApi
      */
     public function druleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5672,14 +5145,7 @@ class ZabbixApi
      */
     public function drulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5705,14 +5171,7 @@ class ZabbixApi
      */
     public function drulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('drule.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('drule.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('drule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5738,14 +5197,7 @@ class ZabbixApi
      */
     public function dserviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dservice.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dservice.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dservice.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5771,14 +5223,7 @@ class ZabbixApi
      */
     public function dserviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dservice.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dservice.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dservice.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5804,14 +5249,7 @@ class ZabbixApi
      */
     public function dservicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dservice.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dservice.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dservice.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5837,14 +5275,7 @@ class ZabbixApi
      */
     public function dservicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('dservice.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('dservice.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('dservice.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5870,14 +5301,7 @@ class ZabbixApi
      */
     public function eventGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5903,14 +5327,7 @@ class ZabbixApi
      */
     public function eventAcknowledge($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.acknowledge', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.acknowledge', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.acknowledge', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5936,14 +5353,7 @@ class ZabbixApi
      */
     public function eventGetTagFilters($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.getTagFilters', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.getTagFilters', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.getTagFilters', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -5969,14 +5379,7 @@ class ZabbixApi
      */
     public function eventTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6002,14 +5405,7 @@ class ZabbixApi
      */
     public function eventPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6035,14 +5431,7 @@ class ZabbixApi
      */
     public function eventPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('event.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('event.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('event.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6068,14 +5457,7 @@ class ZabbixApi
      */
     public function graphGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6101,14 +5483,7 @@ class ZabbixApi
      */
     public function graphSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6134,14 +5509,7 @@ class ZabbixApi
      */
     public function graphDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6167,14 +5535,7 @@ class ZabbixApi
      */
     public function graphUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6200,14 +5561,7 @@ class ZabbixApi
      */
     public function graphCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6233,14 +5587,7 @@ class ZabbixApi
      */
     public function graphTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6266,14 +5613,7 @@ class ZabbixApi
      */
     public function graphPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6299,14 +5639,7 @@ class ZabbixApi
      */
     public function graphPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graph.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graph.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graph.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6332,14 +5665,7 @@ class ZabbixApi
      */
     public function graphitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphitem.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphitem.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6365,14 +5691,7 @@ class ZabbixApi
      */
     public function graphitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphitem.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6398,14 +5717,7 @@ class ZabbixApi
      */
     public function graphitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphitem.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6431,14 +5743,7 @@ class ZabbixApi
      */
     public function graphitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphitem.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6464,14 +5769,7 @@ class ZabbixApi
      */
     public function graphprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6497,14 +5795,7 @@ class ZabbixApi
      */
     public function graphprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6530,14 +5821,7 @@ class ZabbixApi
      */
     public function graphprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6563,14 +5847,7 @@ class ZabbixApi
      */
     public function graphprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6596,14 +5873,7 @@ class ZabbixApi
      */
     public function graphprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6629,14 +5899,7 @@ class ZabbixApi
      */
     public function graphprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6662,14 +5925,7 @@ class ZabbixApi
      */
     public function graphprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6695,14 +5951,7 @@ class ZabbixApi
      */
     public function graphprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('graphprototype.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('graphprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('graphprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6728,14 +5977,7 @@ class ZabbixApi
      */
     public function hostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6761,14 +6003,7 @@ class ZabbixApi
      */
     public function hostCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6794,14 +6029,7 @@ class ZabbixApi
      */
     public function hostUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6827,14 +6055,7 @@ class ZabbixApi
      */
     public function hostMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6860,14 +6081,7 @@ class ZabbixApi
      */
     public function hostMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.massUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6893,14 +6107,7 @@ class ZabbixApi
      */
     public function hostMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.massRemove', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6926,14 +6133,7 @@ class ZabbixApi
      */
     public function hostDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6959,14 +6159,7 @@ class ZabbixApi
      */
     public function hostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -6992,14 +6185,7 @@ class ZabbixApi
      */
     public function hostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7025,14 +6211,7 @@ class ZabbixApi
      */
     public function hostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('host.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('host.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('host.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7058,14 +6237,7 @@ class ZabbixApi
      */
     public function hostgroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7091,14 +6263,7 @@ class ZabbixApi
      */
     public function hostgroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7124,14 +6289,7 @@ class ZabbixApi
      */
     public function hostgroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7157,14 +6315,7 @@ class ZabbixApi
      */
     public function hostgroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7190,14 +6341,7 @@ class ZabbixApi
      */
     public function hostgroupMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7223,14 +6367,7 @@ class ZabbixApi
      */
     public function hostgroupMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.massRemove', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7256,14 +6393,7 @@ class ZabbixApi
      */
     public function hostgroupMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.massUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7289,14 +6419,7 @@ class ZabbixApi
      */
     public function hostgroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7322,14 +6445,7 @@ class ZabbixApi
      */
     public function hostgroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7355,14 +6471,7 @@ class ZabbixApi
      */
     public function hostgroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostgroup.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostgroup.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostgroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7388,14 +6497,7 @@ class ZabbixApi
      */
     public function hostprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7421,14 +6523,7 @@ class ZabbixApi
      */
     public function hostprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7454,14 +6549,7 @@ class ZabbixApi
      */
     public function hostprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7487,14 +6575,7 @@ class ZabbixApi
      */
     public function hostprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7520,14 +6601,7 @@ class ZabbixApi
      */
     public function hostprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7553,14 +6627,7 @@ class ZabbixApi
      */
     public function hostprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7586,14 +6653,7 @@ class ZabbixApi
      */
     public function hostprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7619,14 +6679,7 @@ class ZabbixApi
      */
     public function hostprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostprototype.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7652,14 +6705,7 @@ class ZabbixApi
      */
     public function historyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('history.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('history.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('history.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7685,14 +6731,7 @@ class ZabbixApi
      */
     public function historyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('history.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('history.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('history.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7718,14 +6757,7 @@ class ZabbixApi
      */
     public function historyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('history.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('history.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('history.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7751,14 +6783,7 @@ class ZabbixApi
      */
     public function historyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('history.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('history.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('history.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7784,14 +6809,7 @@ class ZabbixApi
      */
     public function hostinterfaceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7817,14 +6835,7 @@ class ZabbixApi
      */
     public function hostinterfaceCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.checkInput', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.checkInput', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.checkInput', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7850,14 +6861,7 @@ class ZabbixApi
      */
     public function hostinterfaceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7883,14 +6887,7 @@ class ZabbixApi
      */
     public function hostinterfaceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7916,14 +6913,7 @@ class ZabbixApi
      */
     public function hostinterfaceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7949,14 +6939,7 @@ class ZabbixApi
      */
     public function hostinterfaceMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -7982,14 +6965,7 @@ class ZabbixApi
      */
     public function hostinterfaceMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.massRemove', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8015,14 +6991,7 @@ class ZabbixApi
      */
     public function hostinterfaceReplaceHostInterfaces($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.replaceHostInterfaces', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.replaceHostInterfaces', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.replaceHostInterfaces', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8048,14 +7017,7 @@ class ZabbixApi
      */
     public function hostinterfaceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8081,14 +7043,7 @@ class ZabbixApi
      */
     public function hostinterfacePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8114,14 +7069,7 @@ class ZabbixApi
      */
     public function hostinterfacePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('hostinterface.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('hostinterface.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('hostinterface.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8147,14 +7095,7 @@ class ZabbixApi
      */
     public function httptestGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8180,14 +7121,7 @@ class ZabbixApi
      */
     public function httptestCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8213,14 +7147,7 @@ class ZabbixApi
      */
     public function httptestUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8246,14 +7173,7 @@ class ZabbixApi
      */
     public function httptestDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8279,14 +7199,7 @@ class ZabbixApi
      */
     public function httptestTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8312,14 +7225,7 @@ class ZabbixApi
      */
     public function httptestPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8345,14 +7251,7 @@ class ZabbixApi
      */
     public function httptestPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('httptest.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('httptest.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('httptest.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8378,14 +7277,7 @@ class ZabbixApi
      */
     public function imageGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8411,14 +7303,7 @@ class ZabbixApi
      */
     public function imageCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8444,14 +7329,7 @@ class ZabbixApi
      */
     public function imageUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8477,14 +7355,7 @@ class ZabbixApi
      */
     public function imageDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8510,14 +7381,7 @@ class ZabbixApi
      */
     public function imageTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8543,14 +7407,7 @@ class ZabbixApi
      */
     public function imagePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8576,14 +7433,7 @@ class ZabbixApi
      */
     public function imagePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('image.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('image.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('image.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8609,14 +7459,7 @@ class ZabbixApi
      */
     public function iconmapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8642,14 +7485,7 @@ class ZabbixApi
      */
     public function iconmapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8675,14 +7511,7 @@ class ZabbixApi
      */
     public function iconmapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8708,14 +7537,7 @@ class ZabbixApi
      */
     public function iconmapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8741,14 +7563,7 @@ class ZabbixApi
      */
     public function iconmapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8774,14 +7589,7 @@ class ZabbixApi
      */
     public function iconmapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8807,14 +7615,7 @@ class ZabbixApi
      */
     public function iconmapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('iconmap.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('iconmap.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('iconmap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8840,14 +7641,7 @@ class ZabbixApi
      */
     public function itemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8873,14 +7667,7 @@ class ZabbixApi
      */
     public function itemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8906,14 +7693,7 @@ class ZabbixApi
      */
     public function itemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8939,14 +7719,7 @@ class ZabbixApi
      */
     public function itemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -8972,14 +7745,7 @@ class ZabbixApi
      */
     public function itemSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9005,14 +7771,7 @@ class ZabbixApi
      */
     public function itemValidateInventoryLinks($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.validateInventoryLinks', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.validateInventoryLinks', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.validateInventoryLinks', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9038,14 +7797,7 @@ class ZabbixApi
      */
     public function itemAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.addRelatedObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.addRelatedObjects', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9071,14 +7823,7 @@ class ZabbixApi
      */
     public function itemFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.findInterfaceForItem', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9104,14 +7849,7 @@ class ZabbixApi
      */
     public function itemValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9137,14 +7875,7 @@ class ZabbixApi
      */
     public function itemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9170,14 +7901,7 @@ class ZabbixApi
      */
     public function itemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9203,14 +7927,7 @@ class ZabbixApi
      */
     public function itemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('item.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('item.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('item.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9236,14 +7953,7 @@ class ZabbixApi
      */
     public function itemprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9269,14 +7979,7 @@ class ZabbixApi
      */
     public function itemprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9302,14 +8005,7 @@ class ZabbixApi
      */
     public function itemprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9335,14 +8031,7 @@ class ZabbixApi
      */
     public function itemprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9368,14 +8057,7 @@ class ZabbixApi
      */
     public function itemprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9401,14 +8083,7 @@ class ZabbixApi
      */
     public function itemprototypeAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.addRelatedObjects', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.addRelatedObjects', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9434,14 +8109,7 @@ class ZabbixApi
      */
     public function itemprototypeFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.findInterfaceForItem', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.findInterfaceForItem', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9467,14 +8135,7 @@ class ZabbixApi
      */
     public function itemprototypeValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.validateItemPreprocessingSteps', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.validateItemPreprocessingSteps', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9500,14 +8161,7 @@ class ZabbixApi
      */
     public function itemprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9533,14 +8187,7 @@ class ZabbixApi
      */
     public function itemprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9566,14 +8213,7 @@ class ZabbixApi
      */
     public function itemprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('itemprototype.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('itemprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('itemprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9599,14 +8239,7 @@ class ZabbixApi
      */
     public function maintenanceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9632,14 +8265,7 @@ class ZabbixApi
      */
     public function maintenanceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9665,14 +8291,7 @@ class ZabbixApi
      */
     public function maintenanceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9698,14 +8317,7 @@ class ZabbixApi
      */
     public function maintenanceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9731,14 +8343,7 @@ class ZabbixApi
      */
     public function maintenanceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9764,14 +8369,7 @@ class ZabbixApi
      */
     public function maintenancePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9797,14 +8395,7 @@ class ZabbixApi
      */
     public function maintenancePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('maintenance.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('maintenance.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('maintenance.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9830,14 +8421,7 @@ class ZabbixApi
      */
     public function mapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9863,14 +8447,7 @@ class ZabbixApi
      */
     public function mapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9896,14 +8473,7 @@ class ZabbixApi
      */
     public function mapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9929,14 +8499,7 @@ class ZabbixApi
      */
     public function mapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9962,14 +8525,7 @@ class ZabbixApi
      */
     public function mapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -9995,14 +8551,7 @@ class ZabbixApi
      */
     public function mapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10028,14 +8577,7 @@ class ZabbixApi
      */
     public function mapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('map.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('map.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('map.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10061,14 +8603,7 @@ class ZabbixApi
      */
     public function mediatypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10094,14 +8629,7 @@ class ZabbixApi
      */
     public function mediatypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10127,14 +8655,7 @@ class ZabbixApi
      */
     public function mediatypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10160,14 +8681,7 @@ class ZabbixApi
      */
     public function mediatypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10193,14 +8707,7 @@ class ZabbixApi
      */
     public function mediatypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10226,14 +8733,7 @@ class ZabbixApi
      */
     public function mediatypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10259,14 +8759,7 @@ class ZabbixApi
      */
     public function mediatypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('mediatype.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('mediatype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('mediatype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10292,14 +8785,7 @@ class ZabbixApi
      */
     public function problemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('problem.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('problem.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('problem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10325,14 +8811,7 @@ class ZabbixApi
      */
     public function problemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('problem.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('problem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('problem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10358,14 +8837,7 @@ class ZabbixApi
      */
     public function problemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('problem.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('problem.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('problem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10391,14 +8863,7 @@ class ZabbixApi
      */
     public function problemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('problem.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('problem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('problem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10424,14 +8889,7 @@ class ZabbixApi
      */
     public function proxyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10457,14 +8915,7 @@ class ZabbixApi
      */
     public function proxyCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10490,14 +8941,7 @@ class ZabbixApi
      */
     public function proxyUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10523,14 +8967,7 @@ class ZabbixApi
      */
     public function proxyDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10556,14 +8993,7 @@ class ZabbixApi
      */
     public function proxyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10589,14 +9019,7 @@ class ZabbixApi
      */
     public function proxyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10622,14 +9045,7 @@ class ZabbixApi
      */
     public function proxyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('proxy.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('proxy.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('proxy.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10655,14 +9071,7 @@ class ZabbixApi
      */
     public function serviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10688,14 +9097,7 @@ class ZabbixApi
      */
     public function serviceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10721,14 +9123,7 @@ class ZabbixApi
      */
     public function serviceValidateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.validateUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.validateUpdate', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.validateUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10754,14 +9149,7 @@ class ZabbixApi
      */
     public function serviceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10787,14 +9175,7 @@ class ZabbixApi
      */
     public function serviceValidateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.validateDelete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.validateDelete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.validateDelete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10820,14 +9201,7 @@ class ZabbixApi
      */
     public function serviceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10853,14 +9227,7 @@ class ZabbixApi
      */
     public function serviceAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.addDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10886,14 +9253,7 @@ class ZabbixApi
      */
     public function serviceDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.deleteDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.deleteDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10919,14 +9279,7 @@ class ZabbixApi
      */
     public function serviceValidateAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.validateAddTimes', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.validateAddTimes', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.validateAddTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10952,14 +9305,7 @@ class ZabbixApi
      */
     public function serviceAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.addTimes', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.addTimes', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.addTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -10985,14 +9331,7 @@ class ZabbixApi
      */
     public function serviceGetSla($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.getSla', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.getSla', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.getSla', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11018,14 +9357,7 @@ class ZabbixApi
      */
     public function serviceDeleteTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.deleteTimes', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.deleteTimes', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.deleteTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11051,14 +9383,7 @@ class ZabbixApi
      */
     public function serviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11084,14 +9409,7 @@ class ZabbixApi
      */
     public function servicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11117,14 +9435,7 @@ class ZabbixApi
      */
     public function servicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('service.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('service.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('service.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11150,14 +9461,7 @@ class ZabbixApi
      */
     public function screenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11183,14 +9487,7 @@ class ZabbixApi
      */
     public function screenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11216,14 +9513,7 @@ class ZabbixApi
      */
     public function screenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11249,14 +9539,7 @@ class ZabbixApi
      */
     public function screenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11282,14 +9565,7 @@ class ZabbixApi
      */
     public function screenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11315,14 +9591,7 @@ class ZabbixApi
      */
     public function screenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11348,14 +9617,7 @@ class ZabbixApi
      */
     public function screenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screen.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screen.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11381,14 +9643,7 @@ class ZabbixApi
      */
     public function screenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11414,14 +9669,7 @@ class ZabbixApi
      */
     public function screenitemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11447,14 +9695,7 @@ class ZabbixApi
      */
     public function screenitemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11480,14 +9721,7 @@ class ZabbixApi
      */
     public function screenitemUpdateByPosition($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.updateByPosition', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.updateByPosition', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.updateByPosition', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11513,14 +9747,7 @@ class ZabbixApi
      */
     public function screenitemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11546,14 +9773,7 @@ class ZabbixApi
      */
     public function screenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11579,14 +9799,7 @@ class ZabbixApi
      */
     public function screenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11612,14 +9825,7 @@ class ZabbixApi
      */
     public function screenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('screenitem.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('screenitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('screenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11645,14 +9851,7 @@ class ZabbixApi
      */
     public function scriptGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11678,14 +9877,7 @@ class ZabbixApi
      */
     public function scriptCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11711,14 +9903,7 @@ class ZabbixApi
      */
     public function scriptUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11744,14 +9929,7 @@ class ZabbixApi
      */
     public function scriptDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11777,14 +9955,7 @@ class ZabbixApi
      */
     public function scriptExecute($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.execute', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.execute', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.execute', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11810,14 +9981,7 @@ class ZabbixApi
      */
     public function scriptGetScriptsByHosts($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.getScriptsByHosts', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.getScriptsByHosts', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.getScriptsByHosts', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11843,14 +10007,7 @@ class ZabbixApi
      */
     public function scriptTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11876,14 +10033,7 @@ class ZabbixApi
      */
     public function scriptPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11909,14 +10059,7 @@ class ZabbixApi
      */
     public function scriptPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('script.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('script.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('script.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11942,14 +10085,7 @@ class ZabbixApi
      */
     public function taskCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('task.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('task.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('task.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -11975,14 +10111,7 @@ class ZabbixApi
      */
     public function taskTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('task.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('task.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('task.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12008,14 +10137,7 @@ class ZabbixApi
      */
     public function taskPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('task.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('task.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('task.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12041,14 +10163,7 @@ class ZabbixApi
      */
     public function taskPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('task.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('task.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('task.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12074,14 +10189,7 @@ class ZabbixApi
      */
     public function templatePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12107,14 +10215,7 @@ class ZabbixApi
      */
     public function templateGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12140,14 +10241,7 @@ class ZabbixApi
      */
     public function templateCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12173,14 +10267,7 @@ class ZabbixApi
      */
     public function templateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12206,14 +10293,7 @@ class ZabbixApi
      */
     public function templateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12239,14 +10319,7 @@ class ZabbixApi
      */
     public function templateMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.massAdd', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.massAdd', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12272,14 +10345,7 @@ class ZabbixApi
      */
     public function templateMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.massUpdate', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.massUpdate', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12305,14 +10371,7 @@ class ZabbixApi
      */
     public function templateMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.massRemove', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.massRemove', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12338,14 +10397,7 @@ class ZabbixApi
      */
     public function templateTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12371,14 +10423,7 @@ class ZabbixApi
      */
     public function templatePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('template.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('template.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('template.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12404,14 +10449,7 @@ class ZabbixApi
      */
     public function templatescreenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12437,14 +10475,7 @@ class ZabbixApi
      */
     public function templatescreenCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.copy', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.copy', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12470,14 +10501,7 @@ class ZabbixApi
      */
     public function templatescreenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12503,14 +10527,7 @@ class ZabbixApi
      */
     public function templatescreenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12536,14 +10553,7 @@ class ZabbixApi
      */
     public function templatescreenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12569,14 +10579,7 @@ class ZabbixApi
      */
     public function templatescreenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12602,14 +10605,7 @@ class ZabbixApi
      */
     public function templatescreenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12635,14 +10631,7 @@ class ZabbixApi
      */
     public function templatescreenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreen.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreen.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12668,14 +10657,7 @@ class ZabbixApi
      */
     public function templatescreenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreenitem.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreenitem.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12701,14 +10683,7 @@ class ZabbixApi
      */
     public function templatescreenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreenitem.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreenitem.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12734,14 +10709,7 @@ class ZabbixApi
      */
     public function templatescreenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreenitem.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreenitem.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12767,14 +10735,7 @@ class ZabbixApi
      */
     public function templatescreenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('templatescreenitem.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('templatescreenitem.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('templatescreenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12800,14 +10761,7 @@ class ZabbixApi
      */
     public function trendGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trend.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trend.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trend.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12833,14 +10787,7 @@ class ZabbixApi
      */
     public function trendTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trend.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trend.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trend.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12866,14 +10813,7 @@ class ZabbixApi
      */
     public function trendPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trend.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trend.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trend.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12899,14 +10839,7 @@ class ZabbixApi
      */
     public function trendPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trend.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trend.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trend.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12932,14 +10865,7 @@ class ZabbixApi
      */
     public function triggerGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12965,14 +10891,7 @@ class ZabbixApi
      */
     public function triggerCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -12998,14 +10917,7 @@ class ZabbixApi
      */
     public function triggerUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13031,14 +10943,7 @@ class ZabbixApi
      */
     public function triggerDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13064,14 +10969,7 @@ class ZabbixApi
      */
     public function triggerAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.addDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13097,14 +10995,7 @@ class ZabbixApi
      */
     public function triggerDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.deleteDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.deleteDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13130,14 +11021,7 @@ class ZabbixApi
      */
     public function triggerSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.syncTemplateDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.syncTemplateDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13163,14 +11047,7 @@ class ZabbixApi
      */
     public function triggerImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.implode_expressions', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.implode_expressions', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13196,14 +11073,7 @@ class ZabbixApi
      */
     public function triggerSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13229,14 +11099,7 @@ class ZabbixApi
      */
     public function triggerTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13262,14 +11125,7 @@ class ZabbixApi
      */
     public function triggerPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13295,14 +11151,7 @@ class ZabbixApi
      */
     public function triggerPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('trigger.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('trigger.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('trigger.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13328,14 +11177,7 @@ class ZabbixApi
      */
     public function triggerprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13361,14 +11203,7 @@ class ZabbixApi
      */
     public function triggerprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13394,14 +11229,7 @@ class ZabbixApi
      */
     public function triggerprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13427,14 +11255,7 @@ class ZabbixApi
      */
     public function triggerprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13460,14 +11281,7 @@ class ZabbixApi
      */
     public function triggerprototypeAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.addDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.addDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13493,14 +11307,7 @@ class ZabbixApi
      */
     public function triggerprototypeSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.syncTemplateDependencies', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.syncTemplateDependencies', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13526,14 +11333,7 @@ class ZabbixApi
      */
     public function triggerprototypeImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.implode_expressions', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.implode_expressions', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13559,14 +11359,7 @@ class ZabbixApi
      */
     public function triggerprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.syncTemplates', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.syncTemplates', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13592,14 +11385,7 @@ class ZabbixApi
      */
     public function triggerprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13625,14 +11411,7 @@ class ZabbixApi
      */
     public function triggerprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13658,14 +11437,7 @@ class ZabbixApi
      */
     public function triggerprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('triggerprototype.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('triggerprototype.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('triggerprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13691,14 +11463,7 @@ class ZabbixApi
      */
     public function userGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13724,14 +11489,7 @@ class ZabbixApi
      */
     public function userCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13757,14 +11515,7 @@ class ZabbixApi
      */
     public function userUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13790,14 +11541,7 @@ class ZabbixApi
      */
     public function userDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13823,14 +11567,7 @@ class ZabbixApi
      */
     public function userLoginHttp($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.loginHttp', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.loginHttp', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.loginHttp', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13856,14 +11593,7 @@ class ZabbixApi
      */
     public function userCheckAuthentication($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.checkAuthentication', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.checkAuthentication', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.checkAuthentication', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13889,14 +11619,7 @@ class ZabbixApi
      */
     public function userTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13922,14 +11645,7 @@ class ZabbixApi
      */
     public function userPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13955,14 +11671,7 @@ class ZabbixApi
      */
     public function userPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('user.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('user.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('user.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -13988,14 +11697,7 @@ class ZabbixApi
      */
     public function usergroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14021,14 +11723,7 @@ class ZabbixApi
      */
     public function usergroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14054,14 +11749,7 @@ class ZabbixApi
      */
     public function usergroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14087,14 +11775,7 @@ class ZabbixApi
      */
     public function usergroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14120,14 +11801,7 @@ class ZabbixApi
      */
     public function usergroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14153,14 +11827,7 @@ class ZabbixApi
      */
     public function usergroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14186,14 +11853,7 @@ class ZabbixApi
      */
     public function usergroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usergroup.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usergroup.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usergroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14219,14 +11879,7 @@ class ZabbixApi
      */
     public function usermacroGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14252,14 +11905,7 @@ class ZabbixApi
      */
     public function usermacroCreateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.createGlobal', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.createGlobal', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.createGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14285,14 +11931,7 @@ class ZabbixApi
      */
     public function usermacroUpdateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.updateGlobal', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.updateGlobal', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.updateGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14318,14 +11957,7 @@ class ZabbixApi
      */
     public function usermacroDeleteGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.deleteGlobal', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.deleteGlobal', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.deleteGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14351,14 +11983,7 @@ class ZabbixApi
      */
     public function usermacroCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14384,14 +12009,7 @@ class ZabbixApi
      */
     public function usermacroUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14417,14 +12035,7 @@ class ZabbixApi
      */
     public function usermacroDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14450,14 +12061,7 @@ class ZabbixApi
      */
     public function usermacroReplaceMacros($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.replaceMacros', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.replaceMacros', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.replaceMacros', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14483,14 +12087,7 @@ class ZabbixApi
      */
     public function usermacroTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14516,14 +12113,7 @@ class ZabbixApi
      */
     public function usermacroPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14549,14 +12139,7 @@ class ZabbixApi
      */
     public function usermacroPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('usermacro.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('usermacro.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('usermacro.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14582,14 +12165,7 @@ class ZabbixApi
      */
     public function valuemapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.get', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.get', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14615,14 +12191,7 @@ class ZabbixApi
      */
     public function valuemapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.create', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.create', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14648,14 +12217,7 @@ class ZabbixApi
      */
     public function valuemapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.update', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.update', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14681,14 +12243,7 @@ class ZabbixApi
      */
     public function valuemapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.delete', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.delete', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14714,14 +12269,7 @@ class ZabbixApi
      */
     public function valuemapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.tableName', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.tableName', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14747,14 +12295,7 @@ class ZabbixApi
      */
     public function valuemapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.pk', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.pk', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**
@@ -14780,14 +12321,7 @@ class ZabbixApi
      */
     public function valuemapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        // get params array for request
-        $params = $this->getRequestParamsArray($params);
-
-        // check if we've to authenticate
-        $auth = !in_array('valuemap.pkOption', self::$anonymousFunctions, true);
-
-        // request
-        return $this->request('valuemap.pkOption', $params, $arrayKeyProperty, $auth, $assoc);
+        return $this->request('valuemap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
     }
 
     /**

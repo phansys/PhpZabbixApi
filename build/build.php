@@ -232,14 +232,20 @@
     // initialize variable for API methods
     $apiMethods = '';
 
+    $anonymousFunctions = [
+        'apiinfo.version',
+    ];
+
     // build API methods
     foreach($apiArray as $resource => $actions)
     {
         foreach($actions as $action)
         {
+            $apiMethod = $resource.'.'.$action;
             $methodPlaceholders = array(
-                'API_METHOD' => $resource.'.'.$action,
-                'PHP_METHOD' => $resource.ucfirst($action)
+                'API_METHOD' => $apiMethod,
+                'PHP_METHOD' => $resource.ucfirst($action),
+                'IS_AUTHENTICATION_REQUIRED' => in_array($apiMethod, $anonymousFunctions, true) ? 'false' : 'true',
             );
             $apiMethods .= replacePlaceholders($matches[4], $methodPlaceholders);
         }
