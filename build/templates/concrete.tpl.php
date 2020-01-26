@@ -317,7 +317,7 @@ class <CLASSNAME_CONCRETE>
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return string
      */
     final public function userLogin(array $params = [], $arrayKeyProperty = null, $tokenCacheDir = null)
     {
@@ -411,11 +411,11 @@ class <CLASSNAME_CONCRETE>
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function <PHP_METHOD>($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('<API_METHOD>', $this->getRequestParamsArray($params), $arrayKeyProperty, <IS_AUTHENTICATION_REQUIRED>);
+        return $this->request('<API_METHOD>', $this->getRequestParamsArray($params), $arrayKeyProperty, <IS_AUTHENTICATION_REQUIRED>, $assoc);
     }
 <!END_API_METHOD>
     /**

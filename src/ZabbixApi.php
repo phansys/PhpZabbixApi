@@ -3045,7 +3045,7 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return string
      */
     final public function userLogin(array $params = [], $arrayKeyProperty = null, $tokenCacheDir = null)
     {
@@ -3139,11 +3139,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('api.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('api.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3165,11 +3165,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('api.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('api.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3191,11 +3191,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('api.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('api.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3217,11 +3217,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3243,11 +3243,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3269,11 +3269,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3295,11 +3295,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3321,11 +3321,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionValidateFilterConditionsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.validateFilterConditionsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.validateFilterConditionsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3347,11 +3347,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionValidateOperationsIntegrity($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.validateOperationsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.validateOperationsIntegrity', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3373,11 +3373,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionValidateOperationConditions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.validateOperationConditions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.validateOperationConditions', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3399,11 +3399,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3425,11 +3425,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3451,11 +3451,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function actionPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('action.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('action.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3477,11 +3477,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function alertGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('alert.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('alert.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3503,11 +3503,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function alertTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('alert.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('alert.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3529,11 +3529,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function alertPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('alert.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('alert.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3555,11 +3555,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function alertPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('alert.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('alert.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3581,11 +3581,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiinfoVersion($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('apiinfo.version', $this->getRequestParamsArray($params), $arrayKeyProperty, false);
+        return $this->request('apiinfo.version', $this->getRequestParamsArray($params), $arrayKeyProperty, false, $assoc);
     }
 
     /**
@@ -3607,11 +3607,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiinfoTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('apiinfo.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('apiinfo.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3633,11 +3633,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiinfoPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('apiinfo.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('apiinfo.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3659,11 +3659,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function apiinfoPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('apiinfo.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('apiinfo.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3685,11 +3685,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3711,11 +3711,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3737,11 +3737,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3763,11 +3763,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3789,11 +3789,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3815,11 +3815,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3841,11 +3841,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3867,11 +3867,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function applicationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('application.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('application.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3893,11 +3893,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function autoregistrationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('autoregistration.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('autoregistration.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3919,11 +3919,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function autoregistrationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('autoregistration.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('autoregistration.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3945,11 +3945,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function autoregistrationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('autoregistration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('autoregistration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3971,11 +3971,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function autoregistrationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('autoregistration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('autoregistration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -3997,11 +3997,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function autoregistrationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('autoregistration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('autoregistration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4023,11 +4023,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function configurationExport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('configuration.export', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('configuration.export', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4049,11 +4049,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function configurationImport($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('configuration.import', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('configuration.import', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4075,11 +4075,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function configurationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('configuration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('configuration.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4101,11 +4101,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function configurationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('configuration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('configuration.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4127,11 +4127,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function configurationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('configuration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('configuration.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4153,11 +4153,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4179,11 +4179,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4205,11 +4205,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4231,11 +4231,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4257,11 +4257,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4283,11 +4283,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4309,11 +4309,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function correlationPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('correlation.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('correlation.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4335,11 +4335,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4361,11 +4361,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4387,11 +4387,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4413,11 +4413,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4439,11 +4439,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4465,11 +4465,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4491,11 +4491,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dashboardPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dashboard.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dashboard.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4517,11 +4517,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dcheckGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dcheck.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dcheck.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4543,11 +4543,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dcheckTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dcheck.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dcheck.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4569,11 +4569,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dcheckPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dcheck.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dcheck.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4595,11 +4595,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dcheckPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dcheck.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dcheck.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4621,11 +4621,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dhostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dhost.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dhost.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4647,11 +4647,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dhostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dhost.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dhost.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4673,11 +4673,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dhostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dhost.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dhost.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4699,11 +4699,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dhostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dhost.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dhost.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4725,11 +4725,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4751,11 +4751,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4777,11 +4777,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4803,11 +4803,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4829,11 +4829,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4855,11 +4855,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4881,11 +4881,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4907,11 +4907,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4933,11 +4933,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryruleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4959,11 +4959,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryrulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -4985,11 +4985,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function discoveryrulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('discoveryrule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('discoveryrule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5011,11 +5011,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function druleGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5037,11 +5037,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function druleCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5063,11 +5063,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function druleUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5089,11 +5089,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function druleDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5115,11 +5115,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function druleTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5141,11 +5141,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function drulePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5167,11 +5167,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function drulePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('drule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('drule.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5193,11 +5193,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dserviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dservice.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dservice.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5219,11 +5219,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dserviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dservice.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dservice.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5245,11 +5245,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dservicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dservice.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dservice.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5271,11 +5271,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function dservicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('dservice.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('dservice.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5297,11 +5297,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5323,11 +5323,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventAcknowledge($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.acknowledge', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.acknowledge', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5349,11 +5349,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventGetTagFilters($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.getTagFilters', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.getTagFilters', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5375,11 +5375,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5401,11 +5401,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5427,11 +5427,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function eventPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('event.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('event.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5453,11 +5453,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5479,11 +5479,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5505,11 +5505,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5531,11 +5531,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5557,11 +5557,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5583,11 +5583,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5609,11 +5609,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5635,11 +5635,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graph.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graph.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5661,11 +5661,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5687,11 +5687,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5713,11 +5713,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5739,11 +5739,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5765,11 +5765,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5791,11 +5791,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5817,11 +5817,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5843,11 +5843,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5869,11 +5869,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5895,11 +5895,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5921,11 +5921,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5947,11 +5947,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function graphprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('graphprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('graphprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5973,11 +5973,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -5999,11 +5999,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6025,11 +6025,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6051,11 +6051,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6077,11 +6077,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6103,11 +6103,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6129,11 +6129,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6155,11 +6155,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6181,11 +6181,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6207,11 +6207,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('host.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('host.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6233,11 +6233,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6259,11 +6259,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6285,11 +6285,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6311,11 +6311,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6337,11 +6337,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6363,11 +6363,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6389,11 +6389,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6415,11 +6415,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6441,11 +6441,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6467,11 +6467,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostgroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostgroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostgroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6493,11 +6493,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6519,11 +6519,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6545,11 +6545,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6571,11 +6571,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6597,11 +6597,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6623,11 +6623,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6649,11 +6649,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6675,11 +6675,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6701,11 +6701,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function historyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('history.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('history.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6727,11 +6727,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function historyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('history.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('history.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6753,11 +6753,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function historyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('history.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('history.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6779,11 +6779,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function historyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('history.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('history.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6805,11 +6805,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6831,11 +6831,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceCheckInput($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.checkInput', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.checkInput', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6857,11 +6857,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6883,11 +6883,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6909,11 +6909,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6935,11 +6935,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6961,11 +6961,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -6987,11 +6987,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceReplaceHostInterfaces($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.replaceHostInterfaces', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.replaceHostInterfaces', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7013,11 +7013,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfaceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7039,11 +7039,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfacePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7065,11 +7065,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function hostinterfacePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('hostinterface.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('hostinterface.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7091,11 +7091,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7117,11 +7117,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7143,11 +7143,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7169,11 +7169,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7195,11 +7195,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7221,11 +7221,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7247,11 +7247,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function httptestPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('httptest.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('httptest.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7273,11 +7273,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imageGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7299,11 +7299,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imageCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7325,11 +7325,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imageUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7351,11 +7351,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imageDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7377,11 +7377,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imageTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7403,11 +7403,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imagePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7429,11 +7429,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function imagePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('image.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('image.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7455,11 +7455,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7481,11 +7481,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7507,11 +7507,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7533,11 +7533,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7559,11 +7559,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7585,11 +7585,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7611,11 +7611,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function iconmapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('iconmap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('iconmap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7637,11 +7637,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7663,11 +7663,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7689,11 +7689,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7715,11 +7715,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7741,11 +7741,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7767,11 +7767,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemValidateInventoryLinks($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.validateInventoryLinks', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.validateInventoryLinks', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7793,11 +7793,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7819,11 +7819,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7845,11 +7845,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7871,11 +7871,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7897,11 +7897,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7923,11 +7923,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('item.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('item.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7949,11 +7949,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -7975,11 +7975,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8001,11 +8001,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8027,11 +8027,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8053,11 +8053,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8079,11 +8079,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeAddRelatedObjects($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.addRelatedObjects', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8105,11 +8105,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeFindInterfaceForItem($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.findInterfaceForItem', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8131,11 +8131,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeValidateItemPreprocessingSteps($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.validateItemPreprocessingSteps', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8157,11 +8157,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8183,11 +8183,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8209,11 +8209,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function itemprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('itemprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('itemprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8235,11 +8235,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenanceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8261,11 +8261,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenanceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8287,11 +8287,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenanceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8313,11 +8313,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenanceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8339,11 +8339,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenanceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8365,11 +8365,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenancePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8391,11 +8391,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function maintenancePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('maintenance.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('maintenance.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8417,11 +8417,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8443,11 +8443,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8469,11 +8469,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8495,11 +8495,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8521,11 +8521,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8547,11 +8547,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8573,11 +8573,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('map.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('map.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8599,11 +8599,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8625,11 +8625,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8651,11 +8651,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8677,11 +8677,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8703,11 +8703,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8729,11 +8729,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8755,11 +8755,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function mediatypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('mediatype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('mediatype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8781,11 +8781,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function problemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('problem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('problem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8807,11 +8807,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function problemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('problem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('problem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8833,11 +8833,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function problemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('problem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('problem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8859,11 +8859,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function problemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('problem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('problem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8885,11 +8885,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8911,11 +8911,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8937,11 +8937,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8963,11 +8963,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -8989,11 +8989,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9015,11 +9015,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9041,11 +9041,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function proxyPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('proxy.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('proxy.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9067,11 +9067,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9093,11 +9093,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9119,11 +9119,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceValidateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.validateUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.validateUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9145,11 +9145,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9171,11 +9171,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceValidateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.validateDelete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.validateDelete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9197,11 +9197,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9223,11 +9223,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9249,11 +9249,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9275,11 +9275,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceValidateAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.validateAddTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.validateAddTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9301,11 +9301,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceAddTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.addTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.addTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9327,11 +9327,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceGetSla($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.getSla', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.getSla', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9353,11 +9353,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceDeleteTimes($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.deleteTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.deleteTimes', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9379,11 +9379,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function serviceTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9405,11 +9405,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function servicePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9431,11 +9431,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function servicePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('service.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('service.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9457,11 +9457,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9483,11 +9483,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9509,11 +9509,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9535,11 +9535,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9561,11 +9561,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9587,11 +9587,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9613,11 +9613,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9639,11 +9639,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9665,11 +9665,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9691,11 +9691,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9717,11 +9717,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemUpdateByPosition($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.updateByPosition', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.updateByPosition', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9743,11 +9743,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9769,11 +9769,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9795,11 +9795,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9821,11 +9821,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function screenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('screenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('screenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9847,11 +9847,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9873,11 +9873,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9899,11 +9899,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9925,11 +9925,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9951,11 +9951,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptExecute($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.execute', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.execute', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -9977,11 +9977,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptGetScriptsByHosts($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.getScriptsByHosts', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.getScriptsByHosts', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10003,11 +10003,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10029,11 +10029,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10055,11 +10055,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function scriptPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('script.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('script.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10081,11 +10081,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function taskCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('task.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('task.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10107,11 +10107,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function taskTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('task.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('task.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10133,11 +10133,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function taskPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('task.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('task.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10159,11 +10159,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function taskPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('task.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('task.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10185,11 +10185,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10211,11 +10211,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10237,11 +10237,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10263,11 +10263,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10289,11 +10289,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10315,11 +10315,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateMassAdd($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.massAdd', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10341,11 +10341,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateMassUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.massUpdate', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10367,11 +10367,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateMassRemove($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.massRemove', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10393,11 +10393,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templateTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10419,11 +10419,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('template.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('template.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10445,11 +10445,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10471,11 +10471,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenCopy($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.copy', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10497,11 +10497,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10523,11 +10523,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10549,11 +10549,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10575,11 +10575,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10601,11 +10601,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10627,11 +10627,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreen.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10653,11 +10653,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenitemGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreenitem.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10679,11 +10679,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenitemTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreenitem.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10705,11 +10705,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenitemPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreenitem.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10731,11 +10731,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function templatescreenitemPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('templatescreenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('templatescreenitem.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10757,11 +10757,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function trendGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trend.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trend.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10783,11 +10783,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function trendTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trend.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trend.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10809,11 +10809,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function trendPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trend.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trend.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10835,11 +10835,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function trendPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trend.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trend.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10861,11 +10861,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10887,11 +10887,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10913,11 +10913,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10939,11 +10939,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10965,11 +10965,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -10991,11 +10991,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerDeleteDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.deleteDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11017,11 +11017,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11043,11 +11043,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11069,11 +11069,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11095,11 +11095,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11121,11 +11121,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11147,11 +11147,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('trigger.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('trigger.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11173,11 +11173,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11199,11 +11199,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11225,11 +11225,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11251,11 +11251,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11277,11 +11277,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeAddDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.addDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11303,11 +11303,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeSyncTemplateDependencies($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.syncTemplateDependencies', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11329,11 +11329,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeImplode_expressions($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.implode_expressions', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11355,11 +11355,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeSyncTemplates($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.syncTemplates', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11381,11 +11381,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypeTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11407,11 +11407,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypePk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11433,11 +11433,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function triggerprototypePkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('triggerprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('triggerprototype.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11459,11 +11459,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11485,11 +11485,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11511,11 +11511,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11537,11 +11537,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11563,11 +11563,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userLoginHttp($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.loginHttp', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.loginHttp', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11589,11 +11589,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userCheckAuthentication($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.checkAuthentication', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.checkAuthentication', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11615,11 +11615,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11641,11 +11641,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11667,11 +11667,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function userPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('user.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('user.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11693,11 +11693,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11719,11 +11719,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11745,11 +11745,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11771,11 +11771,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11797,11 +11797,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11823,11 +11823,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11849,11 +11849,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usergroupPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usergroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usergroup.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11875,11 +11875,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11901,11 +11901,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroCreateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.createGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.createGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11927,11 +11927,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroUpdateGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.updateGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.updateGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11953,11 +11953,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroDeleteGlobal($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.deleteGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.deleteGlobal', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -11979,11 +11979,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12005,11 +12005,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12031,11 +12031,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12057,11 +12057,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroReplaceMacros($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.replaceMacros', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.replaceMacros', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12083,11 +12083,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12109,11 +12109,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12135,11 +12135,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function usermacroPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('usermacro.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('usermacro.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12161,11 +12161,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapGet($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.get', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12187,11 +12187,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapCreate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.create', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12213,11 +12213,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapUpdate($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.update', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12239,11 +12239,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapDelete($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.delete', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12265,11 +12265,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapTableName($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.tableName', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12291,11 +12291,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapPk($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.pk', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
@@ -12317,11 +12317,11 @@ class ZabbixApi
      *
      * @throws  Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function valuemapPkOption($params = [], $arrayKeyProperty = null, $assoc = false)
     {
-        return $this->request('valuemap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true);
+        return $this->request('valuemap.pkOption', $this->getRequestParamsArray($params), $arrayKeyProperty, true, $assoc);
     }
 
     /**
