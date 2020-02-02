@@ -27,7 +27,7 @@
 
 namespace ZabbixApi;
 
-final class <CLASSNAME_ZABBIX_API> implements <INTERFACENAME_ZABBIX_API_INTERFACE>
+class <CLASSNAME_ZABBIX_API> implements <INTERFACENAME_ZABBIX_API_INTERFACE>
 {
     /**
      * Boolean if requests/responses should be printed out (JSON).

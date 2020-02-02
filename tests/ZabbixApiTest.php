@@ -39,7 +39,7 @@ final class ZabbixApiTest extends TestCase
     {
         $this->assertTrue(class_exists('ZabbixApi\ZabbixApi'));
 
-        $this->assertGreaterThanOrEqual(0, version_compare(ZabbixApi::ZABBIX_VERSION, '2.4'));
+        $this->assertGreaterThanOrEqual(0, version_compare(ZabbixApi::ZABBIX_VERSION, '2.0'));
 
         $zabbix = new ZabbixApi('http://localhost/json_rpc.php');
 
@@ -54,8 +54,8 @@ final class ZabbixApiTest extends TestCase
 
         $ro = new \ReflectionObject($zabbix);
 
-        $this->assertGreaterThanOrEqual(360, count($ro->getMethods(\ReflectionMethod::IS_PUBLIC)));
-        $this->assertGreaterThanOrEqual(668, count($ro->getConstants()));
+        $this->assertGreaterThanOrEqual(299, count($ro->getMethods(\ReflectionMethod::IS_PUBLIC)));
+        $this->assertGreaterThanOrEqual(637, count($ro->getConstants()));
     }
 
     public function testUserLoginOnConsecutiveCalls()

@@ -42,8 +42,19 @@ if (!is_dir(PATH_ZABBIX)) {
     throw new RuntimeException('ERROR: Zabbix path "'.PATH_ZABBIX.'" is not a directory! Please check the PATH_ZABBIX configuration constant.');
 }
 
-// load Zabbix internal constants, to access ZABBIX_API_VERSION
-require PATH_ZABBIX.'/include/defines.inc.php';
+$defines = file_get_contents(PATH_ZABBIX.'/include/defines.inc.php');
+preg_match_all('{^define\(\'(?<constant_names>[^\']+)\',\s*(?!\);)(?<constant_values>.+)\)\;.*\n}m', $defines, $constantsArray);
+
+$zabbixApiVersion = null;
+
+// build API constants
+foreach ($constantsArray['constant_names'] as $k => $name) {
+    if ('ZABBIX_API_VERSION' === $name) {
+        $zabbixApiVersion = trim($constantsArray['constant_values'][$k], '\'"');
+
+        break;
+    }
+}
 
 /**
  * Path to the API.php class file of the Zabbix PHP front-end.
@@ -62,7 +73,7 @@ if (!file_exists(PATH_ZABBIX_API_CLASS_FILE)) {
  * This directory and the contained class files will be used, to determine all
  * available methods for each API class.
  */
-if (version_compare(ZABBIX_API_VERSION, '2.4') >= 0) {
+if (version_compare($zabbixApiVersion, '2.4') >= 0) {
     define('PATH_ZABBIX_API_CLASSES_DIRECTORY', PATH_ZABBIX.'/include/classes/api/services');
 } else {
     define('PATH_ZABBIX_API_CLASSES_DIRECTORY', PATH_ZABBIX.'/api/classes');
@@ -104,7 +115,7 @@ $templatePlaceholders = array(
 require PATH_ZABBIX_API_CLASS_FILE;
 
 // create new class to fetch class map for API classes
-if (version_compare(ZABBIX_API_VERSION, '2.4') >= 0) {
+if (version_compare($zabbixApiVersion, '2.4') >= 0) {
     require PATH_ZABBIX.'/include/classes/core/CRegistryFactory.php';
     require PATH_ZABBIX.'/include/classes/api/CApiServiceFactory.php';
     require PATH_ZABBIX.'/include/classes/api/CApiService.php';
@@ -191,9 +202,6 @@ if (6 !== count($matches)) {
     throw new RuntimeException('Template "'.PATH_TEMPLATES.'/ZabbixApiInterface.tpl.php" parsing failed!');
 }
 
-$defines = file_get_contents(PATH_ZABBIX.'/include/defines.inc.php');
-preg_match_all('{^define\(\'(?<constant_names>[^\']+)\',\s*(?!\);)(?<constant_values>.+)\)\;.*\n}m', $defines, $constantsArray);
-
 // initialize variable for API constants
 $apiConstants = '';
 
@@ -219,6 +227,11 @@ foreach ($constantsArray['constant_names'] as $k => $name) {
                 }
             }
         }
+    }
+
+    if (!is_numeric($value) && !in_array($value[0], array('"', "'"), true)) {
+        // omit the constant values which are not scalars (I.E. unresolved function calls)
+        continue;
     }
     $constantPlaceholders = array(
         'PHP_CONST_NAME' => $name,
