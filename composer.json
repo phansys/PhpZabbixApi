@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": "^5.3|^7.0",
+        "ext-bcmath": "*",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-pcre": "*"

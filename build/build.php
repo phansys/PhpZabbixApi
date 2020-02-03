@@ -43,11 +43,8 @@ if (!is_dir(PATH_ZABBIX)) {
 }
 
 // load Zabbix internal constants, to access ZABBIX_API_VERSION
-// In Zabbix 2.0.0 there are some undefined functions called from `defines.inc.php`
-try {
-    @include PATH_ZABBIX.'/include/defines.inc.php';
-} catch (Error $e) {
-}
+include PATH_ZABBIX.'/include/gettextwrapper.inc.php';
+include PATH_ZABBIX.'/include/defines.inc.php';
 
 $defines = file_get_contents(PATH_ZABBIX.'/include/defines.inc.php');
 preg_match_all('{^define\(\'(?<constant_names>[^\']+)\',\s*(?!\);)(?<constant_values>.+)\)\;.*\n}m', $defines, $constantsArray);
