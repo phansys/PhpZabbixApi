@@ -42,6 +42,13 @@ if (!is_dir(PATH_ZABBIX)) {
     throw new RuntimeException('ERROR: Zabbix path "'.PATH_ZABBIX.'" is not a directory! Please check the PATH_ZABBIX configuration constant.');
 }
 
+// load Zabbix internal constants, to access ZABBIX_API_VERSION
+// In Zabbix 2.0.0 there are some undefined functions called from `defines.inc.php`
+try {
+    @include PATH_ZABBIX.'/include/defines.inc.php';
+} catch (Error $e) {
+}
+
 $defines = file_get_contents(PATH_ZABBIX.'/include/defines.inc.php');
 preg_match_all('{^define\(\'(?<constant_names>[^\']+)\',\s*(?!\);)(?<constant_values>.+)\)\;.*\n}m', $defines, $constantsArray);
 
@@ -221,7 +228,16 @@ foreach ($constantsArray['constant_names'] as $k => $name) {
                 $value = preg_replace('#\b'.$declaredName.'\b#', $declaredNameValue, $value);
             } elseif (false !== $declaredNameKey = array_search($declaredName, $constantsArray['constant_names'], true)) {
                 $declaredNameValue = $constantsArray['constant_values'][$declaredNameKey];
-                $value = eval('return '.preg_replace('#\b'.$declaredName.'\b#', $declaredNameValue, $value).';');
+                try {
+                    $value = @eval('return '.preg_replace('#\b'.$declaredName.'\b#', $declaredNameValue, $value).';');
+                } catch (ParseError $e) {
+                    $value = false;
+                }
+
+                if (false === $value) {
+                    continue 2;
+                }
+
                 if (is_string($value)) {
                     $value = '\''.$value.'\'';
                 }
