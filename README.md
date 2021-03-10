@@ -26,7 +26,7 @@ Make sure the version of the library matches the Zabbix™ PHP front-end / API v
 
 ### Building
 
-If you want to build your own library, have a look at the configuration file `inc/config.inc.php`.
+If you want to build your own library, have a look at the configuration file `build/config.inc.php`.
 You might want to point `PATH_ZABBIX`  to your Zabbix™ installation directory.
 
 If you setup everything correctly, you should be able to create the library by executing:

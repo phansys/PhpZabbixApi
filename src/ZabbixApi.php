@@ -13,6 +13,7 @@ namespace ZabbixApi;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
@@ -12407,8 +12408,13 @@ class ZabbixApi
     {
         $content = $response->getBody();
 
-        if (null === ($this->responseDecoded = \GuzzleHttp\json_decode($content, $assoc)) && JSON_ERROR_NONE !== ($jsonLastError = json_last_error())) {
-            throw new Exception(sprintf('Response body could not be parsed since the JSON structure could not be decoded, %s (%d): %s', json_last_error_msg(), $jsonLastError, $content), $jsonLastError);
+        try {
+            $this->responseDecoded = \GuzzleHttp\json_decode($content, $assoc);
+        } catch (InvalidArgumentException $ex) {
+            throw new Exception(sprintf(
+                'Response body could not be parsed since the JSON structure could not be decoded: %s',
+                $content
+            ), $ex->getCode(), $ex);
         }
 
         if ($assoc) {
